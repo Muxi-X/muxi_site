@@ -1,0 +1,183 @@
+/*** layout ***/
+.mdl-layout__drawer-button {
+  margin: 8px 12px; }
+
+.index_card {
+  margin-bottom: 48px; }
+
+.card_title {
+  font-size: 24px;
+  margin: 0;
+  margin-bottom: 10px; }
+
+.section_center {
+  padding-top: 48px;
+  max-width: 860px;
+  margin: 0 auto; }
+
+.card_inner {
+  margin: 30px;
+  margin-bottom: 10px;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  padding: 0;
+  color: inherit;
+  width: calc(100% - 60px); }
+
+.card_circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  margin: 8px 0;
+  overflow: hidden; }
+
+.card_circle img {
+  width: 100%;
+  height: 100%; }
+
+.card_text {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  padding-top: 8px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+  line-height: 18px; }
+
+.index_card .card_action {
+  padding: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden; }
+
+.card_more {
+  padding: 0;
+  margin: 0;
+  text-align: right; }
+
+.card_action_btn {
+  margin: 0;
+  display: inline-block;
+  padding-left: 22px;
+  vertical-align: middle;
+  line-height: 36px; }
+
+.card_action_btn i {
+  position: relative;
+  vertical-align: middle; }
+
+.mdl-badge[data-badge]:after {
+  right: -10px; }
+
+.mdl-badge {
+  margin-right: 12px; }
+
+.mdl-card__actions a {
+  color: #00BCD4;
+  margin: 0; }
+
+.second_comments {
+  margin: 40px;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  padding: 0;
+  color: inherit;
+  width: calc(100% - 80px); }
+
+.second_comments_h4 {
+  padding-bottom: 20px; }
+
+.second_comments_content {
+  padding-top: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+  font-size: 13px;
+  color: #616161; }
+
+/*** header ***/
+.demo-layout-transparent {
+  background: url("../images/transparent.jpg") center/cover; }
+
+.demo-layout-transparent .mdl-layout__header,
+.demo-layout-transparent .mdl-layout__drawer-button {
+  /* This background is dark, so we set text to white. Use 87% black instead if
+   your background is light. */
+  color: white; }
+
+.header {
+  height: 300px;
+  position: relative; }
+
+.btn_add {
+  position: absolute;
+  top: -30px;
+  right: 8%; }
+
+.tab_bar {
+  position: relative;
+  background-color: #fff; }
+
+.send_card {
+  width: 100%; }
+
+.send_card .send_title {
+  display: block;
+  width: 80%;
+  padding: 30px 0 20px;
+  margin: 0 auto;
+  border: 0;
+  font-size: 22px;
+  height: 22px;
+  min-height: 22px;
+  line-height: 1.4;
+  font-weight: bold;
+  text-align: center;
+  overflow: hidden;
+  resize: none;
+  outline: 0; }
+.send_card .send_content {
+  border-top: 1px solid #ccc; }
+.send_card .flask-pagedown {
+  width: 50%;
+  height: 400px;
+  overflow-y: scroll;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box; }
+.send_card .share_md {
+  border: none;
+  overflow: hidden;
+  word-wrap: break-word;
+  resize: none;
+  width: 100%;
+  padding: 20px 15px 20px 20px;
+  height: 100%;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 16px;
+  -webkit-appearance: none;
+  -webkit-rtl-ordering: logical;
+  -webkit-user-select: text; }
+.send_card .flask-pagedown-preview {
+  width: 50%;
+  height: 400px;
+  overflow-y: scroll;
+  background: #f6f6f6;
+  border-left: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 20px 15px 20px 20px;
+  font-size: 16px;
+  word-wrap: break-word; }
+.send_card .send_submit_btn {
+  margin: 10px 0px 10px 50px; }
+
+.footer {
+  margin-top: 100px; }
+
+/*# sourceMappingURL=main.css.map */

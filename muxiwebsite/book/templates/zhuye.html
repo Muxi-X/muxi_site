@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>木犀图书</title>
+	<link href="/book/static/css/First.css" rel="stylesheet" type="text/css" />
+	<link href="/book/static/css/reset.css" rel="stylesheet" type="text/css" />
+	<link href="/book/static/css/new_First.css" rel="stylesheet" type="text/css" >
+</head>
+<body>
+<style>
+	#bgimage{
+		background: #eee url(/static/image/bgimage.png);
+		height: 50px;
+}
+</style>
+	  <!--此处占位-->
+  <div id="container">
+  	<div id="bgimage"></div>
+	<div class="header">
+		<nav>
+		   <ul class="menu">
+				<li><a href="/home">HOME</a></li>
+				<li><a href="javascript:void(0)" onclick="showBorder()">SEARCH</a></li>
+		<!--弹出框-->
+				<div id="content" class="light_content">
+		<div class="close"><a href="javascript:void(0)" onclick="hideBorder()">关闭</a>
+		</div>
+	<form>
+		<div class="search">
+			<input type="text" class="ipt" placeholder="书名、关键词" name="search">
+			<input type="image" src="../主页/image/search.png" class="search_logo" alt="search">
+	    </div>
+		<div class="choose">
+		    <input type="radio" name="range" value="can"/>可借
+		    <input type="radio" name="range" value="all"/>全部
+		</div>
+	<ul class="tags">
+		<li><a href="#">前端</a></li>
+		<li><a href="#">后台</a></li>
+		<li><a href="#">设计</a></li>
+		<li><a href="#">互联网</a></li>
+		<li><a href="#">其他</a></li>
+	</ul>
+	 </form>
+	</div>
+	<div id="fade" class="black_overlay"></div>
+
+				{% if current_user.is_authenticated() %}
+					<li><a href="/user/{{ current_user.username }}">Hi!{{ current_user.username }}</a></li>
+					<li><a href="/logout">LOG OUT</li>
+				{% else %}
+					<li><a href="/login">LOG ON</a></li>
+				{% endif %}
+			</ul>
+		</nav>
+	</div>
+	<div class="left">
+		<p class="content">新增图书</p>
+	{% for book in new_book_list %}
+		<div class="new_book">
+			<a href="/info/{{ book.name }}"><img src={{ book.image }} alt="" class="book"></a>
+			<!--显示层-->
+			<div class="book_information">
+				<a href="#">
+					<p class="title">{{ book.name }}</p>
+				 	<p class="author">{{ book.author }}</p>
+				 </a>
+			<!--隐藏层-->
+				<div class="book_information_1">
+					<a href="/info/{{ book.name }}">
+					<p class="title_hid">{{ book.name}}</p>
+				 	<p class="author">{{ book.author }}</p>
+				 </a>
+				 <div class="days">
+				 	<p>
+				    类别：{{ book.tag }}<br/>
+						<br/>
+						{{ book.summary[:40] }}...
+					</p>
+				 </div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+
+<div class="right">
+		<span class="content">最近借阅</span>
+		{% for book in get_book_list %}
+		 <div class="new_book">
+			<a href="#"><img src={{ book.image }} alt="" class="book"></a>
+			<div class="book_information">
+				<a href="#">
+					<p class="title">{{ book.name }}</p>
+				</a>
+				 	<p class="author">{{ book.author }}</p>
+
+				<div class="book_information_1 ">
+					<a href="#">
+						<p class="title">{{ book.name }}</p>
+
+						<p class="author">朱承浩</p>
+					</a>
+				 		<div class="days">
+				 			<p>借阅者：{{ book.user.username}}</p>
+							<p>到期时间：{{ book.end }}</p>
+					 	</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	<!--占位-->
+</div>
+<div class="zhanwei">木犀工作室出品</div>
+</div>
+<script type="text/javascript" src="/book/static/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/book/static/js/shouye.js"></script>
+</body>
+</html>

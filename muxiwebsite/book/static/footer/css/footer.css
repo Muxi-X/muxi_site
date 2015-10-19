@@ -1,0 +1,19 @@
+.footer{
+	width: 100%;
+	text-align: center;
+	background-color:  #332a1c;
+}
+.footer_word a:hover{
+		color: #fff843;
+
+}
+.word_first a{
+	color: #eee;
+	font-size: 15px;
+	line-height: 60px;
+}
+.word_second a{
+	color: #eee;
+	font-size: 12px;
+	line-height: 50px;
+}

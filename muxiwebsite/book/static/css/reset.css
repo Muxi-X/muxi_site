@@ -1,0 +1,24 @@
+html, body, div, span,h1, h2, h3, h4, h5, h6, p,ul,ol{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: "Microsoft Yahei","微软雅黑","heiti";
+	vertical-align: baseline;
+}
+nav{
+	display:block;
+}
+a,a:link,a:hover{
+	text-decoration: none;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}

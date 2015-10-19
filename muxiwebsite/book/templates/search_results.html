@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block css_file %}
+  <link href="/book/static/css/First.css" rel="stylesheet" type="text/css" />
+  <link href="/book/static/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="/book/static/css/new_First.css" rel="stylesheet", type="text/css" />
+  <link href="/book/static/header/css/header.css" rel="stylesheet" type="text/css" />
+  <link href="/book/static/footer/css/footer.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block page_content %}
+{% include 'header.html' %}
+<div class="container">
+  <div class="result_bgc">
+    {% for book in get_book_list %}
+    <div class="result_bookinformation">
+        <div class="left">
+          <h4>书名：{{ book.name }}</h4>
+          <p><strong>类别:</strong> {{ book.tag }}</p>
+          <p>{{ book.summary[:100] }}...<a href="/info/{{ book.name }}"><span>详情</span></a></p>
+        </div>
+      {% if book.status %}
+        <span class="result_borrow">已借</span>
+      {% else %}
+        <span class="result_borrow">未借</span>
+      {% endif %}
+
+         <div class="result_book">
+          <a href="/info/{{ book.name }}">
+            <img src={{ book.image }} alt="" class="book">
+            <div class="result_book_content">
+              <p class="title_hid">{{ book.name}}</p>
+              <p class="author">{{ book.author }}</p>
+            </div>
+          </a>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% include 'footer.html' %}
+{% endblock %}
+
+
+
+{% block script_file %}
+  <script type="text/javascript" src="/book/static/js/jquery-1.3.2.min.js"></script>
+  <script type="text/javascript" src="/book/static/js/shouye.js"></script>
+   <script type="text/javascript" src="/book/static/header/js/header.js"></script>
+{% endblock %}

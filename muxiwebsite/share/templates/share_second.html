@@ -1,0 +1,58 @@
+{% extends "share_base.html" %} {% block title %}
+<title>木犀分享-详情</title>
+{% endblock %} {% block content %}
+<section class="section_center">
+    <div class="index_card mdl-card mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+        <div class="card_inner mdl-grid mdl-grid--no-spacing">
+            <div class="mdl-cell mdl-cell--12-col">
+                <h2 class="card_title">{{ share.title }}</h2>
+            </div>
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                <div class="card_circle mdl-color--primary">
+                    <img src="{{ share.avatar}}" alt="avatar">
+                </div>
+            </div>
+            <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                {{ share.content }}
+            </div>
+        </div>
+        <div class=" mdl-grid mdl-grid--no-spacing mdl-card__actions card_action">
+            <div class="card_action_btn mdl-cell mdl-cell--2-col">
+                <i class="material-icons mdl-color-text--grey mdl-badge" data-badge="{{ share.comments }}">message</i>
+                <i class="material-icons mdl-color-text--grey">favorite</i>
+            </div>
+
+            <div class="card_more mdl-cell mdl-cell--10-col">
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="mdl-card mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+        <div class="second_comments mdl-grid mdl-grid--no-spacing">
+            <h4 class="mdl-cell mdl-cell--12-col second_comments_h4">Comments</h4>
+            {% if current_user.is_authenticated %}
+            <form method="post">
+                {{ form.hidden_tag() }}
+                {{ form.comment }}
+                {{ form.submit }}
+            </form>
+            {% endif %}
+            {% for comment in comments %}
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                <div class="card_circle ">
+                    <img src="{{ comment.avatar}}" alt="{{ comment.username }}">
+                </div>
+            </div>
+            <div class="second_comments_content mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+               {{ comment.content }}
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+</section>
+{% endblock %}

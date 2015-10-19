@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}
+        <link rel="stylesheet" href="/share/static/css/material.min.css">
+        <script src="/share/static/js/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="/share/static/css/main.css">
+        <link rel="icon" href="/share/static/images/share_128.ico" sizes="32x32">
+        <link rel="icon" href="/share/static/images/share_128.ico" sizes="64x64">
+        <link rel="icon" href="/share/static/images/share_128.ico" sizes="128x128">
+    {% endblock %}
+    {% block title %}
+    {% endblock %}
+</head>
+
+<body class="mdl-color--grey-100">
+    {% include 'share_header.html' %}
+    {% block content %}
+    {% endblock %}
+    {% include 'share_footer.html' %}
+</body>
+
+</html>
