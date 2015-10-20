@@ -10,16 +10,16 @@
         </a>
     {% endif %}
     <div class="mdl-tabs__tab-bar" id="header_tab_bar">
-        <a class="mdl-tabs__tab is-active header_tabs">NEW</a>
+        <a href="/new/1" class="mdl-tabs__tab is-active header_tabs">NEW</a>
         <a href="/hot" class="mdl-tabs__tab header_tabs">HOT</a>
-        <a href="/" class="mdl-tabs__tab header_tabs">MINE</a>
+        <a href="/1" class="mdl-tabs__tab header_tabs">MINE</a>
     </div>
-    <a href="/share/new" class="header_tab_links" style="display:none"></a>
+    <a href="/share/new/1" class="header_tab_links" style="display:none"></a>
     <a href="/share/hot" class="header_tab_links" style="display:none"></a>
-    <a href="/share" class="header_tab_links" style="display:none"></a>
+    <a href="/share/1" class="header_tab_links" style="display:none"></a>
 </div>
 <section class="section_center">
-    {% for share in shares %}
+    {% for share in shares.items %}
     <div class="index_card mdl-card mdl-cell mdl-cell--12-col">
         <div class="card_inner mdl-grid mdl-grid--no-spacing">
             <div class="mdl-cell mdl-cell--12-col">
@@ -48,4 +48,6 @@
     {% endfor %}
 </section>
 <script src="/share/static/js/index.min.js"></script>
+{% if shares.has_prev %}<a href="{{ url_for('share.index', page = shares.prev_num) }}">上一页<a>{% else %}上一页{% endif %} |
+{% if shares.has_next %}<a href="{{ url_for('share.index', page = shares.next_num) }}">下一页</a>a>{% else %}下一页{% endif %}
 {% endblock %}

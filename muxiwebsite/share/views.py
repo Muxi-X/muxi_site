@@ -17,23 +17,26 @@
 # models import
 from . import share
 from .forms import ShareForm, CommentForm
-from .. import  db
+from .. import  db, app
 from ..models import Share, Comment, User
 # from ..auth._decorate import auth_login, auth_logout
 from flask import url_for, render_template, redirect
 from flask.ext.login import current_user, login_required
 
 
-@share.route('/')
-@share.route('/new')
-def index():
+@share.route('/<int:page>')
+@share.route('/new/<int:page>')
+def index(page = 1):
     """
     muxi_share 分享你的知识
 
         主页，默认显示最新的分享
+        添加分页，默认显示第一页
+
     """
-    shares = Share.query.order_by('-id').all()
-    for share in shares:
+    # 添加分页, share变为分页对象
+    shares = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
+    for share in shares.items:
         share.content = share.share
         share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
         share.comments = len(Comment.query.filter_by(share_id=share.id).all())
@@ -45,8 +48,8 @@ def index():
 def hot():
     """显示最热扩展:评论数最多的扩展"""
     hots = {}
-    shares = Share.query.all()  # 所有有评论的分享
-    for share in shares:
+    shares = Share.query.paginate(1, app.config['SHARE_PER_PAGE'], False)
+    for share in shares.items:
         share.content = share.share
         share.comments = len(Comment.query.filter_by(share_id=share.id).all())
         share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
@@ -103,6 +106,6 @@ def add_share():
         )
         db.session.add(share)
         db.session.commit()
-        return redirect(url_for('.index'))
+        return redirect(url_for('.index', page = 1))
 
     return render_template("share_send.html", form=form)
