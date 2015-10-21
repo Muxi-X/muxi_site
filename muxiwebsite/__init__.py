@@ -24,18 +24,21 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.pagedown import PageDown
 from flask.ext.misaka import Misaka
+import os
+from basedir import basedir
 
 
 # 实例创建＋蓝图注册
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/apple/muxi_project/muxi_site/muxi_data.sqlite"  # 系统相应替换
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_site.sqlite')  # 系统相应替换
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['WHOOSH_BASE'] = "search.db"
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索最多加载5个搜索结果
 # app.config['UPLOAD_FOLDER'] = '/Users/apple/www/bitbucket/muxi_site/muxiwebsite/book/static/image/'
 app.config['MUXI_ADMIN'] = 'neo1218'
+app.config["SHARE_PER_PAGE"] = 8
 
 
 # 初始化扩展(app全局属性)
