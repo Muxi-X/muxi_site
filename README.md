@@ -12,7 +12,7 @@
 #### 分支
 
     master: 主分支: 发布特定功能
-    dev: 开发分支
+    development: 开发分支
 
 ### 合作
 #### 1:本地环境搭建
@@ -51,9 +51,9 @@
 
     git clone https://github.com/your_username/muxi_site.git
 
-2: 从dev分支开出功能分支(以feature为例)
+2: 从development分支开出功能分支(以feature为例)
 
-    git checkout -b feature dev
+    git checkout -b feature development
 
 3: 在feature分支进行功能开发
 
@@ -67,9 +67,9 @@
 
 6: 在Github 上向dev分支发送pull request
 
-7: 并入dev分支(项目维护人负责)
+7: 并入development分支(项目维护人负责)
 
-8: merge dev分支到master，发布版本(项目维护人负责)
+8: merge development分支到master，发布版本(项目维护人负责)
 
 ### 进度
 
