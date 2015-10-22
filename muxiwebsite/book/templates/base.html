@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
-	<meta charset="UTF-8">
-  {% block title %}{% endblock %}
-	<!--css file-->
-  {% block css_file %}{% endblock %}
-</head>
-<body onclick="fade()" class="bgimage">
-<!-- 消息闪现 -->
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="flashes" id="flashes">
-    {% for message in messages %}
-      <div>{{ message }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% endwith %}
-{% block page_content %}{% endblock %}
-{% block script_file %} {% endblock %}
-</body>
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}{% endblock %}
+        <!--css file-->
+        {% block css_file %}{% endblock %}
+    </head>
+    <body onclick="fade()" class="bgimage">
+        <!-- 消息闪现 -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flashes" id="flashes">
+            {% for message in messages %}
+            <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% block page_content %}{% endblock %}
+        {% block script_file %} {% endblock %}
+    </body>
 </html>
