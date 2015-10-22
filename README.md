@@ -67,9 +67,9 @@
 
 6: 在Github 上向dev分支发送pull request
 
-7: 并入dev分支
+7: 并入dev分支(项目维护人负责)
 
-8: merge dev分支到master，发布版本
+8: merge dev分支到master，发布版本(项目维护人负责)
 
 ### 进度
 
