@@ -3,7 +3,7 @@
 
     我们在路上、前方不会太远
 
-木犀官网项目是面向木犀内部的一系列服务网站,分为介绍、图书、分享、博客四个板块
+木犀官网项目是面向木犀内部的一系列服务网站,分为团队介绍、图书、分享、博客四个板块
 
 <hr>
 
@@ -53,6 +53,7 @@
 
 2: 从development分支开出功能分支(以feature为例)
 
+    git checkout development
     git checkout -b feature development
 
 3: 在feature分支进行功能开发
