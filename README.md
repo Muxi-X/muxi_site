@@ -65,6 +65,8 @@
 
 5: 向feature分支提交
 
+    请提交时只提交改动的文件，并写好commit信息
+
 6: 在Github 上向dev分支发送pull request
 
 7: 并入development分支(项目维护人负责)
