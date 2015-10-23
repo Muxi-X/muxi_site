@@ -73,6 +73,8 @@ from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import sys
+import bleach
+import markdown
 
 
 # python 3搜索的不兼容
@@ -248,7 +250,7 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    blog_id = db.Column(db.Integer, db.Foreignkey('blogs.id'))
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
     """
     @staticmethod
@@ -279,8 +281,8 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=true, default=datetime.utcnow)
-    author.id = db.Column(db.Integer, db.Foreignkey('users.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='blog', lazy='dynamic')
 
     @staticmethod
@@ -293,8 +295,9 @@ class Blog(db.Model):
         user_count = User.query.count()
         for i in range(count):
             u = User.query.offset(randint(0, user_count - 1)).first()
-            b = Blog(body = forgery_py.lorem_ipsum.sentences(randint(1, 5)),
-                timestamp =forgery_py.date.date(True)),
+            b = Blog(
+                body = forgery_py.lorem_ipsum.sentences(randint(1, 5)),
+                timestamp =forgery_py.date.date(True),
                 author = u)
             db.session.add(b)
             db.session.commit()
@@ -308,7 +311,7 @@ class Blog(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
 
-""""
+"""
     def to_json(self):
         #编写json字典
         json_post = {
@@ -332,7 +335,7 @@ class Blog(db.Model):
         if body is None or body == '':
             raise ValidationError('post does not have a body')
         return Blog(body=body)
-""""
+"""
 
 db.event.listen(Blog.body, 'set', Blog.on_changed_body)
 #用于监听markdown编辑器

@@ -8,3 +8,5 @@ flask-admin
 flask-whooshalchemy
 flask-pagedown
 flask-misaka
+bleach
+markdown
