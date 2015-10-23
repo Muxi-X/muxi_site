@@ -57,6 +57,14 @@
                  permissions                Integer(base 16)                               用户角色对应的权限
                  users                      relationship                                   拥有该角色的用户列表
                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                                         blogs
+                 id                         Integer, primary_key                           主键
+                 body                       Text                                           博客的内容
+                 body_html                  Text                                           博客内容的html格式
+                 timestamp                  datetime                                       时间戳
+                 author.id                  Integer, ForeignKey                            博客对应作者的id
+                 comments                   relationship                                   该博客下的评论                            
+
 """
 
 from . import db, login_manager, app
@@ -157,8 +165,9 @@ class User(db.Model, UserMixin):
     # avatar = db.String
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
-    comments = db.relationship('Comment', backref='user', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    blogs = db.relationship('Blog', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
         """用户角色实现"""
@@ -239,6 +248,7 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    blog_id = db.Column(db.Integer, db.Foreignkey('blogs.id'))
 
     """
     @staticmethod
@@ -262,3 +272,66 @@ class Comment(db.Model):
 
     def __repr__(self):
         return "<the instance of model Comment>"
+
+class Blog(db.Model):
+    """博客类"""
+    __tablename__ = 'blogs'
+    id = db.Column(db.Integer, primary_key = True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=true, default=datetime.utnow)
+    author.id = db.Column(db.Integer, db.Foreignkey('users.id'))
+    comments = db.relationship('Comment', backref='blog', lazy='dynamic')
+
+    @staticmethod
+    def generate_fake(count=100):
+        # 生成虚拟数据
+        from random import randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count - 1)).first()
+            b = Blog(body = forgery_py.lorem_ipsum.sentences(randint(1, 5)),
+                timestamp =forgery_py.date.date(True)),
+                author = u)
+            db.session.add(b)
+            db.session.commit()
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+    def to_json(self):
+        #编写json字典
+        json_post = {
+            'url': url_for('api.get_blog', id=self.id, _external=True),
+            #url部分因为还不知道视图函数名 先编了一个
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.timestamp,
+            'author': url_for('api.get_user', id=self.author_id,
+                              _external=True),
+            'comments': url_for('api.get_blog_comments', id=self.id,
+                                _external=True),
+            'comment_count': self.comments.count()
+        }
+        return json_blog
+
+    @staticmethod
+    def from_json(json_post):
+        #该函数可以修改json字典的内容
+        body = json_blog.get('body')
+        if body is None or body == '':
+            raise ValidationError('post does not have a body')
+        return Blog(body=body)
+
+
+db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+#用于监听markdown编辑器
