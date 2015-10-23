@@ -279,7 +279,7 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=true, default=datetime.utnow)
+    timestamp = db.Column(db.DateTime, index=true, default=datetime.utcnow)
     author.id = db.Column(db.Integer, db.Foreignkey('users.id'))
     comments = db.relationship('Comment', backref='blog', lazy='dynamic')
 
@@ -308,6 +308,7 @@ class Blog(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
 
+""""
     def to_json(self):
         #编写json字典
         json_post = {
@@ -331,7 +332,7 @@ class Blog(db.Model):
         if body is None or body == '':
             raise ValidationError('post does not have a body')
         return Blog(body=body)
-
+""""
 
 db.event.listen(Blog.body, 'set', Blog.on_changed_body)
 #用于监听markdown编辑器
