@@ -1,13 +1,13 @@
 """v1
 
-Revision ID: 4ca1ef608336
+Revision ID: e994a357ef2
 Revises: None
-Create Date: 2015-10-18 10:35:25.756954
+Create Date: 2015-11-05 22:21:57.040459
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '4ca1ef608336'
+revision = 'e994a357ef2'
 down_revision = None
 
 from alembic import op
@@ -33,6 +33,16 @@ def upgrade():
     sa.ForeignKeyConstraint(['role_id'], ['roles.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('blogs',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('body', sa.Text(), nullable=True),
+    sa.Column('body_html', sa.Text(), nullable=True),
+    sa.Column('timestamp', sa.DateTime(), nullable=True),
+    sa.Column('author_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['author_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_blogs_timestamp'), 'blogs', ['timestamp'], unique=False)
     op.create_table('books',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(length=164), nullable=True),
@@ -64,7 +74,9 @@ def upgrade():
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('share_id', sa.Integer(), nullable=True),
     sa.Column('author_id', sa.Integer(), nullable=True),
+    sa.Column('blog_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['author_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['blog_id'], ['blogs.id'], ),
     sa.ForeignKeyConstraint(['share_id'], ['shares.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -79,6 +91,8 @@ def downgrade():
     op.drop_index(op.f('ix_shares_timestamp'), table_name='shares')
     op.drop_table('shares')
     op.drop_table('books')
+    op.drop_index(op.f('ix_blogs_timestamp'), table_name='blogs')
+    op.drop_table('blogs')
     op.drop_table('users')
     op.drop_index(op.f('ix_roles_default'), table_name='roles')
     op.drop_table('roles')

@@ -1,14 +1,14 @@
-"""v2
+"""update1
 
-Revision ID: 58a84c691653
-Revises: 4ca1ef608336
-Create Date: 2015-10-18 10:45:35.260485
+Revision ID: 4c395d6b404b
+Revises: e994a357ef2
+Create Date: 2015-11-06 01:20:03.621881
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '58a84c691653'
-down_revision = '4ca1ef608336'
+revision = '4c395d6b404b'
+down_revision = 'e994a357ef2'
 
 from alembic import op
 import sqlalchemy as sa

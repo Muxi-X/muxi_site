@@ -217,7 +217,7 @@ class Share(db.Model):
     share = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    comment = db.relationship('Comment', backref='share', lazy='dynamic')
+    comment = db.relationship('Comment', backref='shares', lazy='dynamic')
 
     @staticmethod
     def generate_fake(count=10):
