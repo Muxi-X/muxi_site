@@ -5,7 +5,7 @@
 {% block content %}
 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect tab_bar">
     {% if current_user.is_authenticated %}
-        <a href="/share/share_send" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored btn_add">
+        <a href="/share/send" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored btn_add">
             <i class="material-icons">add</i>
         </a>
     {% endif %}
@@ -14,8 +14,8 @@
         <a href="/hot" class="mdl-tabs__tab header_tabs">HOT</a>
         <a href="/1" class="mdl-tabs__tab header_tabs">MINE</a>
     </div>
-    <a href="/share/new/1" class="header_tab_links" style="display:none"></a>
-    <a href="/share/hot" class="header_tab_links" style="display:none"></a>
+    <a href="/share/1?sort=new" class="header_tab_links" style="display:none"></a>
+    <a href="/share/1?sort=hot" class="header_tab_links" style="display:none"></a>
     <a href="/share/1" class="header_tab_links" style="display:none"></a>
 </div>
 <section class="section_center">
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                {{ share.content }}
+                {{ share.content|markdown }}
             </div>
         </div>
         <div class=" mdl-grid mdl-grid--no-spacing mdl-card__actions card_action">
@@ -41,7 +41,7 @@
             </div>
 
             <div class="card_more mdl-cell mdl-cell--10-col">
-                <a href="/share/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
+                <a href="/share/view/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
             </div>
         </div>
     </div>

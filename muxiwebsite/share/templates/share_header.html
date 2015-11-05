@@ -11,11 +11,11 @@
                 <!-- Navigation -->
                 <nav class="mdl-navigation mdl-layout--large-screen-only">
                     <a class="mdl-navigation__link" href="/share/1">分享</a>
-                    {% if current_user.is_authenticated %}
-                        <a class="mdl-navigation__link" href="/auth/logout">登出</a>
-                    {% else %}
+					{% if current_user.is_authenticated %}
+						<a class="mdl-navigation__link" href="/auth/logout">登出</a>
+					{% else %}
                         <a class="mdl-navigation__link" href="/auth/login">登录</a>
-                    {% endif %}
+					{% endif %}
                 </nav>
             </div>
         </header>

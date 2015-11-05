@@ -45,7 +45,7 @@ app.config["SHARE_PER_PAGE"] = 8
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
-login_manager.login_view = 'login'
+login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
 misaka = Misaka(app)
 
