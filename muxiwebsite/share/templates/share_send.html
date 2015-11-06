@@ -4,18 +4,10 @@
 <section class="section_center">
     <div class="send_card mdl-card mdl-shadow--2dp">
         <form method="post">
-            <!--input type="text" class="send_title" placeholder="分享主题"></input-->
             {{ form.hidden_tag() }}
             {{ form.title(class="send_title", placeholder="分享主题") }}
             <div class="send_content mdl-grid mdl-grid--no-spacing">
-                <div class="flask-pagedown">
-                    <textarea name="share_md" id="share_md" cols="30" rows="10"
-                        class="share_md"></textarea>
-                    {{ form.share }}
-                </div>
-				<!--div class="flask-pagedown-preview">
-                   我是预览啊啊
-                </div-->
+                {{ form.share }}
             </div>
 
             <div class="mdl-card__actions mdl-card--border">

@@ -1,4 +1,5 @@
 flask
+misaka==1.0.2
 flask-sqlalchemy
 flask-script
 flask-login
@@ -10,3 +11,4 @@ flask-pagedown
 flask-misaka
 bleach
 markdown
+

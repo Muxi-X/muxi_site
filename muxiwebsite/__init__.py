@@ -38,7 +38,7 @@ app.config['WHOOSH_BASE'] = "search.db"
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索最多加载5个搜索结果
 # app.config['UPLOAD_FOLDER'] = '/Users/apple/www/bitbucket/muxi_site/muxiwebsite/book/static/image/'
 app.config['MUXI_ADMIN'] = 'neo1218'
-app.config["SHARE_PER_PAGE"] = 8
+app.config["SHARE_PER_PAGE"] = 5
 
 
 # 初始化扩展(app全局属性)
