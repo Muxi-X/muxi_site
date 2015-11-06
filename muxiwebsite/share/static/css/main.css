@@ -215,4 +215,17 @@ margin-left: 20px;
 .forward_container a{
   margin-right: 20px;
 }
+
+/*** comment ***/
+.comment_form{
+  width: 100%;
+}
+.comment_ta{
+  display: block;
+  width: 100%;
+  height: 120px;
+}
+.comment_ta textarea{
+  height: 71px;
+}
 /*# sourceMappingURL=main.css.map */
