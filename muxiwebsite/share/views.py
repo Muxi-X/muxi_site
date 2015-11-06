@@ -35,18 +35,21 @@ def index(page = 1):
     添加分页，默认显示第一页
 
     """
+    flag = 0;
     # 添加分页, share变为分页对象
     shares = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
     if request.args.get('sort') == "new":
+        flag = 0;
         shares = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
     elif request.args.get('sort') == "hot":
+        flag = 1;
         shares = Share.query.join(Share.comment).order_by(Share.comment).paginate(1, app.config['SHARE_PER_PAGE'], False)
     for share in shares.items:
         share.content = share.share
         share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
         share.comments = len(Comment.query.filter_by(share_id=share.id).all())
         share.author = User.query.filter_by(id=share.author_id).first().username
-    return render_template('share_index.html', shares=shares)
+    return render_template('share_index.html', shares=shares,flag=flag)
 
 
 @share.route('/view/<int:id>', methods=["GET", "POST"])

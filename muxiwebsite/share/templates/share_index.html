@@ -8,11 +8,11 @@
     </a>
     {% endif %}
     <div class="mdl-tabs__tab-bar" id="header_tab_bar">
-        <a href="/new/1" class="mdl-tabs__tab is-active header_tabs">NEW</a>
-        <a href="/hot" class="mdl-tabs__tab header_tabs">HOT</a>
+        <a href="/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
+        <a href="/hot" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
         <a href="/1" class="mdl-tabs__tab header_tabs">MINE</a>
     </div>
-    <a href="/share/1?sort=new" class="header_tab_links" style="display:none"></a>
+    <a href="/share/1?sort=new" class="header_tab_links " style="display:none"></a>
     <a href="/share/1?sort=hot" class="header_tab_links" style="display:none"></a>
     <a href="/share/1" class="header_tab_links" style="display:none"></a>
 </div>
