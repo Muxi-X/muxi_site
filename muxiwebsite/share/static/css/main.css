@@ -150,7 +150,7 @@
   overflow-y: scroll;
   border-right: 1px solid #ccc;
   box-sizing: border-box; }
-.send_card .share_md {
+.send_card .flask-pagedown-input {
   border: none;
   overflow: hidden;
   word-wrap: break-word;
@@ -180,4 +180,39 @@
 .footer {
   margin-top: 100px; }
 
+/*** markdown style ***/
+.card_text h1,.card_text h2,.card_text h3,.card_text h4{
+  margin: 0;
+}
+.card_text img{
+  width: 100%;
+  height:auto;
+}
+.card_text a{
+  text-decoration: none;
+}
+
+/*** pager***/
+.pager{
+  width: 100%;
+  font-size: 0;
+}
+.pager_container{
+  width:50%;
+  display:inline-block;
+  font-size: 24px;
+}
+.prev_container{
+  text-align: left;
+  
+}
+.prev_container a{
+margin-left: 20px;
+}
+.forward_container{
+  text-align: right;
+}
+.forward_container a{
+  margin-right: 20px;
+}
 /*# sourceMappingURL=main.css.map */
