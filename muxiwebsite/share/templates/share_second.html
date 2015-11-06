@@ -39,11 +39,12 @@
             </div>
             {% endfor %}
             {% if current_user.is_authenticated %}
+             <h4 class="mdl-cell mdl-cell--12-col second_comments_h4 padding_t_30">Add New Comments</h4> 
             <form method="post" class="comment_form">
                 {{ form.hidden_tag() }}
                 <div class="mdl-textfield mdl-js-textfield comment_ta">
                     {{ form.comment(class="mdl-textfield__input") }} 
-                    <label class="mdl-textfield__label" for="sample5">Text lines...</label>
+                    <label class="mdl-textfield__label" for="sample5">Comment here...</label>
                 </div>
                 {{ form.submit(class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised",value="提交")}}
             </form>
