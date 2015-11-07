@@ -1,4 +1,8 @@
 *.pyc
 -1
-venv
 **/*.pyc
+
+venv
+migrations
+search.db
+muxi_data.sqlite

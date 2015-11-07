@@ -2,7 +2,7 @@ flask
 misaka==1.0.2
 flask-sqlalchemy
 flask-script
-flask-login
+flask-login==0.3.2
 flask-wtf
 flask-migrate
 flask-admin

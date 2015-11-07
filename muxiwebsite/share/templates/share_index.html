@@ -11,10 +11,17 @@
         <a href="/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
         <a href="/hot" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
         <a href="/1" class="mdl-tabs__tab header_tabs">MINE</a>
+		{% if current_user.can(Permission.MODERATE_COMMENTS) %}
+			<a class="mdl-navigation__link" href="{{ url_for('share.moderate') }}">管理</a>
+		{% endif %}
     </div>
     <a href="/share/1?sort=new" class="header_tab_links " style="display:none"></a>
     <a href="/share/1?sort=hot" class="header_tab_links" style="display:none"></a>
     <a href="/share/1" class="header_tab_links" style="display:none"></a>
+	{% if current_user.can(Permission.MODERATE_COMMENTS) %}
+		<a href="{{ url_for('share.moderate') }}" class="header_tab_links" style="display:none"></a>
+	{% endif %}
+	{{ current_user.return_username() }}
 </div>
 <section class="section_center">
     {% for share in shares.items %}

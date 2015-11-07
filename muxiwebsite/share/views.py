@@ -18,7 +18,7 @@
 from . import share
 from .forms import ShareForm, CommentForm
 from .. import  db, app
-from ..models import Share, Comment, User
+from ..models import Share, Comment, User, Permission
 # from ..auth._decorate import auth_login, auth_logout
 from flask import url_for, render_template, redirect, request
 from flask.ext.login import current_user, login_required
@@ -49,7 +49,7 @@ def index(page = 1):
         share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
         share.comments = len(Comment.query.filter_by(share_id=share.id).all())
         share.author = User.query.filter_by(id=share.author_id).first().username
-    return render_template('share_index.html', shares=shares,flag=flag)
+    return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission)
 
 
 @share.route('/view/<int:id>', methods=["GET", "POST"])
@@ -102,3 +102,5 @@ def add_share():
         return redirect(url_for('.index', page = 1))
 
     return render_template("share_send.html", form=form)
+
+
