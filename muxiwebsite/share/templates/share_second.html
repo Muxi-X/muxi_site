@@ -21,25 +21,13 @@
                 <i class="material-icons mdl-color-text--grey mdl-badge" data-badge="{{ share.comments }}">message</i>
                 <i class="material-icons mdl-color-text--grey">favorite</i>
             </div>
-
             <div class="card_more mdl-cell mdl-cell--10-col">
-
             </div>
-
-
         </div>
     </div>
-
     <div class="mdl-card mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
         <div class="second_comments mdl-grid mdl-grid--no-spacing">
-            <h4 class="mdl-cell mdl-cell--12-col second_comments_h4">Comments</h4>
-            {% if current_user.is_authenticated %}
-            <form method="post">
-                {{ form.hidden_tag() }}
-                {{ form.comment }}
-                {{ form.submit }}
-            </form>
-            {% endif %}
+            <h4 class="mdl-cell mdl-cell--12-col second_comments_h4">Comments</h4> 
             {% for comment in comments %}
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
                 <div class="card_circle ">
@@ -47,11 +35,20 @@
                 </div>
             </div>
             <div class="second_comments_content mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-               {{ comment.content }}
+                {{ comment.content }}
             </div>
             {% endfor %}
-
-
+            {% if current_user.is_authenticated %}
+             <h4 class="mdl-cell mdl-cell--12-col second_comments_h4 padding_t_30">Add New Comments</h4> 
+            <form method="post" class="comment_form">
+                {{ form.hidden_tag() }}
+                <div class="mdl-textfield mdl-js-textfield comment_ta">
+                    {{ form.comment(class="mdl-textfield__input") }} 
+                    <label class="mdl-textfield__label" for="sample5">Comment here...</label>
+                </div>
+                {{ form.submit(class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised",value="提交")}}
+            </form>
+            {% endif %} 
         </div>
     </div>
 </section>

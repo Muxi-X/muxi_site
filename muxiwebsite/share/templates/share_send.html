@@ -1,6 +1,13 @@
-{% extends "share_base.html" %} {% block title %}
+{% extends "share_base.html" %} 
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript" src="/share/static/js/Markdown.Converter.min.js"></script>
+    <script type="text/javascript" src="/share/static/js/Markdown.Sanitizer.min.js"></script>
+{% endblock%}
+{% block title %}
 <title>木犀分享-新分享</title>
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 <section class="section_center">
     <div class="send_card mdl-card mdl-shadow--2dp">
         <form method="post">
