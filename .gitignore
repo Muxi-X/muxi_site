@@ -1,4 +1,4 @@
-.pyc
+*.pyc
 -1
 venv
 **/*.pyc
