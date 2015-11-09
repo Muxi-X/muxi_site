@@ -16,13 +16,14 @@
 
 # models import
 from . import share
-from .forms import ShareForm, CommentForm
+from .forms import ShareForm, CommentForm, EditForm
 from .. import  db, app
 from ..models import Share, Comment, User, Permission
 # from ..auth._decorate import auth_login, auth_logout
-from flask import url_for, render_template, redirect, request
+from flask import url_for, render_template, redirect, request, current_app
 from flask.ext.login import current_user, login_required
 from sqlalchemy import desc
+from ..decorators import permission_required
 
 
 @share.route('/')
@@ -104,3 +105,23 @@ def add_share():
     return render_template("share_send.html", form=form)
 
 
+@share.route('/edit-share/<int:id>', methods=["POST", "GET"])
+@login_required
+@permission_required(Permission.WRITE_ARTICLES)
+def edit(id):
+	"""
+	用户可以修改自己的分享
+	"""
+	form = EditForm()
+	share = Share.query.filter_by(id=id).first()
+	if form.validate_on_submit():
+		share.title = form.title.data
+		share.share = form.share.data
+		db.session.add(share)
+		db.session.commit()
+		return redirect(url_for("share.index", page=1))
+	return render_template(
+			"edit-share.html",
+			share=share,
+			form=form
+			)
