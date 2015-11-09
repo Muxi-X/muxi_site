@@ -12,7 +12,7 @@
 #### 分支
 
     master: 主分支: 发布特定功能
-    development: 开发分支
+    develop: 开发分支
 
 ### 合作
 #### 1:本地环境搭建
@@ -69,8 +69,8 @@
 
 2: 从development分支开出功能分支(以feature为例)
 
-    git checkout development
-    git checkout -b feature development
+    git checkout develop
+    git checkout -b feature develop
 
 3: 在feature分支进行功能开发
 
@@ -105,8 +105,6 @@
 	2015年11月5日 : 木犀分享基本功能完成，待前端修改相关样式
     -----------------------------------------------------
 	2015年11月7日 : 编写data脚本，自动构建本地测试数据库
-
-
-
-
+    -----------------------------------------------------
+	2015年11月9日 : 新的开发分支 develop 替代 development
 
