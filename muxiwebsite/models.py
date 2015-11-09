@@ -182,9 +182,9 @@ class User(db.Model, UserMixin):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
-	def can(self, permissions):
-		"""判断用户的权限"""
-		return self.role is not None and (self.role.permissions & permissions) == permissions
+    def can(self, permissions):
+	"""判断用户的权限"""
+	return self.role is not None and (self.role.permissions & permissions) == permissions
 
     @property
     def password(self):
