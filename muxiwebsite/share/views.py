@@ -62,10 +62,10 @@ def view_share(id):
     form = CommentForm()
     if form.validate_on_submit():
         comment = Comment(
-            comment = form.comment.data,
-            author_id = current_user.id,
-            share_id = id
-        )
+                comment = form.comment.data,
+                author_id = current_user.id,
+                share_id = id
+                )
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('share.view_share', id=id))
@@ -80,11 +80,11 @@ def view_share(id):
         comment.username = User.query.filter_by(id=comment.author_id).first().username
         comment.content = comment.comment
     return render_template(
-        'share_second.html',
-        form = form,
-        share=share,
-        comments=comments
-    )
+            'share_second.html',
+            form = form,
+            share=share,
+            comments=comments
+            )
 
 
 @login_required
@@ -94,10 +94,10 @@ def add_share():
     form = ShareForm()
     if form.validate_on_submit():
         share = Share(
-            title = form.title.data,
-            share = form.share.data,
-            author_id = current_user.id
-        )
+                title = form.title.data,
+                share = form.share.data,
+                author_id = current_user.id
+                )
         db.session.add(share)
         db.session.commit()
         return redirect(url_for('.index', page = 1))
@@ -109,19 +109,20 @@ def add_share():
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id):
-	"""
-	用户可以修改自己的分享
-	"""
-	form = EditForm()
-	share = Share.query.filter_by(id=id).first()
-	if form.validate_on_submit():
-		share.title = form.title.data
-		share.share = form.share.data
-		db.session.add(share)
-		db.session.commit()
-		return redirect(url_for("share.index", page=1))
-	return render_template(
-			"edit-share.html",
-			share=share,
-			form=form
-			)
+    """
+    用户可以修改自己的分享
+    """
+    form = EditForm()
+    share = Share.query.filter_by(id=id).first()
+    if form.validate_on_submit():
+        share.title = form.title.data
+        share.share = form.share.data
+        db.session.add(share)
+        db.session.commit()
+        return redirect(url_for("share.index", page=1))
+    form.title.data = share.title
+    form.share.data = share.share
+    return render_template(
+            "edit-share.html",
+            form=form
+            )
