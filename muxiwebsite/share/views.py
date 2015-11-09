@@ -102,5 +102,3 @@ def add_share():
         return redirect(url_for('.index', page = 1))
 
     return render_template("share_send.html", form=form)
-
-

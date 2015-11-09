@@ -51,15 +51,15 @@
     </div>
     {% endfor %}
     <div class="pager">
-        
+
         <div class="pager_container prev_container">
         {% if shares.has_prev %}
             <a href="{{ url_for('share.index', page = shares.prev_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                 <i class="material-icons">arrow_back</i>
             </a>
              {% endif %}
-        </div>
-        
+		</div>
+
         <div class="pager_container forward_container">
         {% if shares.has_next %}
             <a href="{{ url_for('share.index', page = shares.next_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
@@ -67,7 +67,7 @@
             </a>
              {% endif %}
         </div>
-       
+
     </div>
 </section>
 <script src="/share/static/js/index.min.js"></script>

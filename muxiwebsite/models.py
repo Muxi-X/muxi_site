@@ -159,7 +159,7 @@ class Book(db.Model):
         return "%r :The instance of class Book" % self.name
 
 
-class User(db.Model, UserMixin):
+class User(UserMixin, db.Model):
     """用户类"""
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
@@ -296,6 +296,7 @@ class Comment(db.Model):
     def __repr__(self):
         return "<the instance of model Comment>"
 
+
 class Blog(db.Model):
     """博客类"""
     __tablename__ = 'blogs'
@@ -331,32 +332,6 @@ class Blog(db.Model):
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
-
-"""
-    def to_json(self):
-        #编写json字典
-        json_post = {
-            'url': url_for('api.get_blog', id=self.id, _external=True),
-            #url部分因为还不知道视图函数名 先编了一个
-            'body': self.body,
-            'body_html': self.body_html,
-            'timestamp': self.timestamp,
-            'author': url_for('api.get_user', id=self.author_id,
-                              _external=True),
-            'comments': url_for('api.get_blog_comments', id=self.id,
-                                _external=True),
-            'comment_count': self.comments.count()
-        }
-        return json_blog
-
-    @staticmethod
-    def from_json(json_post):
-        #该函数可以修改json字典的内容
-        body = json_blog.get('body')
-        if body is None or body == '':
-            raise ValidationError('post does not have a body')
-        return Blog(body=body)
-"""
 
 db.event.listen(Blog.body, 'set', Blog.on_changed_body)
 #用于监听markdown编辑器
