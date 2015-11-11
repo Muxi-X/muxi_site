@@ -68,7 +68,7 @@
 """
 
 from . import db, login_manager, app
-from flask import current_app
+from flask import current_app, request
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import AnonymousUserMixin
@@ -76,6 +76,7 @@ from datetime import datetime
 import sys
 import bleach
 import markdown
+import hashlib
 
 
 # python 3搜索的不兼容
@@ -160,12 +161,14 @@ class Book(db.Model):
 
 
 class User(db.Model, UserMixin):
-    """用户类"""
+    """户类"""
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(164))
     username = db.Column(db.String(164))
+    truename = db.Column(db.String(164))
+    avatar_hash = db.Column(db.String(32))
     password_hash = db.Column(db.String(164))
-    # avatar = db.String
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
@@ -181,6 +184,24 @@ class User(db.Model, UserMixin):
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
+
+	def gravatar(self, size=100, default='identicon', rating='g'):
+		# gravatar 网站、生成头像
+		# identicon: 图像生成器
+		# g: 图像级别
+		if request.is_secure:
+			url = "https://secure.gravatar.com/avatar"
+		else:
+			url = "http://www.gravatar.com/avatar"
+		hash = self.avatar_hash or hashlib.md5(self.email.encode('utf-8')).hexdigest()
+		return "{url}/{hash}?s={size}&d={default}&r={rating}".format(
+				url = url,
+				hash = hash,
+				size = size,
+				default = default,
+				rating = rating
+				)
+
 
     def can(self, permissions):
 	    """判断用户的权限"""
@@ -273,28 +294,9 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
-    """
-    @staticmethod
-    def generate_fake(count=10):
-        # 生成虚拟数据
-        from random import seed, randint
-        import forgery_py
-
-        seed()
-        user_count = User.query.count()
-        for i in range(count):
-            u = User.query.offset(randint(0, user_count - 1)).first()
-            c = Comment(
-                comment=forgery_py.lorem_ipsum.sentences(randint(1, 5)),
-                timestamp=forgery_py.date.date(True),
-                author_id=u.id
-            )
-            db.session.add(c)
-            db.session.commit()
-        """
-
     def __repr__(self):
         return "<the instance of model Comment>"
+
 
 class Blog(db.Model):
     """博客类"""
@@ -331,32 +333,6 @@ class Blog(db.Model):
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
-
-"""
-    def to_json(self):
-        #编写json字典
-        json_post = {
-            'url': url_for('api.get_blog', id=self.id, _external=True),
-            #url部分因为还不知道视图函数名 先编了一个
-            'body': self.body,
-            'body_html': self.body_html,
-            'timestamp': self.timestamp,
-            'author': url_for('api.get_user', id=self.author_id,
-                              _external=True),
-            'comments': url_for('api.get_blog_comments', id=self.id,
-                                _external=True),
-            'comment_count': self.comments.count()
-        }
-        return json_blog
-
-    @staticmethod
-    def from_json(json_post):
-        #该函数可以修改json字典的内容
-        body = json_blog.get('body')
-        if body is None or body == '':
-            raise ValidationError('post does not have a body')
-        return Blog(body=body)
-"""
 
 db.event.listen(Blog.body, 'set', Blog.on_changed_body)
 #用于监听markdown编辑器
