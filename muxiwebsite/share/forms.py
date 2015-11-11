@@ -24,3 +24,11 @@ class CommentForm(Form):
     """评论表单, 一般的表单"""
     comment = TextAreaField(validators=[Required()])
     submit = SubmitField('评论')
+
+
+class EditForm(Form):
+	"""编辑表单"""
+	title = StringField(validators=[Required()])
+	share = PageDownField(validators=[Required()])
+	submit = SubmitField('修改')
+

@@ -1,0 +1,29 @@
+{% extends "share_base.html" %} 
+{% block head %}
+{{ super() }}
+<script type="text/javascript" src="/share/static/js/Markdown.Converter.min.js"></script>
+<script type="text/javascript" src="/share/static/js/Markdown.Sanitizer.min.js"></script>
+{% endblock%}
+{% block title %}
+<title>木犀分享-编辑分享</title>
+{% endblock %}
+{% block content %}
+<section class="section_center">
+    <div class="send_card mdl-card mdl-shadow--2dp">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.title(class="send_title" ) }}
+            <div class="send_content mdl-grid mdl-grid--no-spacing">
+                {{ form.share}}
+            </div>
+
+            <div class="mdl-card__actions mdl-card--border">
+                <button  type="submit" class="send_submit_btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised">
+                    EDIT
+                </button>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}
