@@ -18,7 +18,7 @@
                            有情怀的flash提示
 """
 
-from . import book
+from . import books
 from .. import db
 # from ..auth._decorate import auth_login
 from werkzeug import secure_filename
@@ -52,7 +52,7 @@ def allowed_file(filename):
 
 
 # 对所有访客可见
-@book.route('/', methods=["POST", "GET"])
+@books.route('/', methods=["POST", "GET"])
 # @auth_login(redirect_url='user')
 def home():
     """
@@ -82,7 +82,7 @@ def home():
 
 
 # 对所有访客可见
-@book.route('/search', methods=["POST", "GET"])
+@books.route('/search', methods=["POST", "GET"])
 def search():
     """
     搜索视图函数
@@ -101,7 +101,7 @@ def search():
 
 
 # 对所有访客可见
-@book.route('/search_results/')
+@books.route('/search_results/')
 def search_results():
     """
     搜索结果页
@@ -130,7 +130,7 @@ def search_results():
 
 
 # 对所有访客可见，但只有登录用户可以借阅(html改动)
-@book.route('/info/<name>', methods=["POST", "GET"])
+@books.route('/info/<name>', methods=["POST", "GET"])
 def info(name):
     form = GetForm()
     book = Book.query.filter_by(name=name).first()
@@ -149,7 +149,7 @@ def info(name):
 
 
 # 只对管理员可见
-@book.route('/rter', methods=["POST", "GET"])
+@books.route('/rter', methods=["POST", "GET"])
 @login_required
 def rter():
     """用户注册接口"""
@@ -165,7 +165,7 @@ def rter():
 
 
 # 只对管理员可见
-@book.route('/bookin', methods=["POST", "GET"])
+@books.route('/bookin', methods=["POST", "GET"])
 @login_required
 def bookin():
     """
@@ -199,7 +199,7 @@ def bookin():
 
 
 # 对所有登录用户可见
-@book.route('/logout')
+@books.route('/logout')
 @login_required
 def logout():
     """退出视图函数"""
@@ -208,7 +208,7 @@ def logout():
 
 
 # 对登录用户可见
-@book.route('/user/<int:id>', methods=["POST", "GET"])
+@books.route('/user/<int:id>', methods=["POST", "GET"])
 def user(id):
     """
     用户个人信息页
@@ -255,7 +255,7 @@ def user(id):
                            session=session)
 
 
-@book.route('/upload', methods=["POST", "GET"])
+@books.route('/upload', methods=["POST", "GET"])
 @login_required
 def upload_file():
     """上传文件函数"""

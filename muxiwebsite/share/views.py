@@ -15,7 +15,7 @@
 """
 
 # models import
-from . import share
+from . import shares
 from .forms import ShareForm, CommentForm, EditForm
 from .. import  db, app
 from ..models import Share, Comment, User, Permission
@@ -26,8 +26,8 @@ from sqlalchemy import desc
 from ..decorators import permission_required
 
 
-@share.route('/')
-@share.route('/<int:page>')
+@shares.route('/')
+@shares.route('/<int:page>')
 def index(page = 1):
 	"""
     muxi_share 分享你的知识
@@ -53,7 +53,7 @@ def index(page = 1):
 	return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission)
 
 
-@share.route('/view/<int:id>', methods=["GET", "POST"])
+@shares.route('/view/<int:id>', methods=["GET", "POST"])
 def view_share(id):
     """显示特定id的分享，相关信息以及评论
        实现评论表单发表自己的评论"""
@@ -68,7 +68,7 @@ def view_share(id):
                 )
         db.session.add(comment)
         db.session.commit()
-        return redirect(url_for('share.view_share', id=id))
+        return redirect(url_for('shares.view_share', id=id))
 
     share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
     share.content = share.share
@@ -88,7 +88,7 @@ def view_share(id):
 
 
 @login_required
-@share.route('/send', methods=["GET", "POST"])
+@shares.route('/send', methods=["GET", "POST"])
 def add_share():
     """分享"""
     form = ShareForm()
@@ -105,7 +105,7 @@ def add_share():
     return render_template("share_send.html", form=form)
 
 
-@share.route('/edit-share/<int:id>', methods=["POST", "GET"])
+@shares.route('/edit-share/<int:id>', methods=["POST", "GET"])
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id):
@@ -119,7 +119,7 @@ def edit(id):
         share.share = form.share.data
         db.session.add(share)
         db.session.commit()
-        return redirect(url_for("share.index", page=1))
+        return redirect(url_for("shares.index", page=1))
     form.title.data = share.title
     form.share.data = share.share
     return render_template(

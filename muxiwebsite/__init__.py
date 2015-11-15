@@ -1,22 +1,25 @@
 # coding: utf-8
 """
-    muxiwebsite: 木犀团队的官网
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+	muxiwebsite: 木犀团队的官网
+	~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    木犀团队是华中师范大学自由的学生互联网团队，分为
+	木犀团队是华中师范大学自由的学生互联网团队，分为
 
-        web(前端、后台)，设计， 安卓 组
+		web(前端、后台)，设计， 安卓 组
 
-    木犀官网是木犀团队的官方网站:
-    功能模块:
+	木犀官网是木犀团队的官方网站:
+	功能模块:
 
-        1.muxi:   木犀官网   木犀的简介信息
-        2.blog:   木犀博客   木犀团队的博客
-        3.book:   木犀图书   木犀图书管理
-        4.share:  木犀分享   木犀内部的分享小站
+		1.muxi:   木犀官网   木犀的简介信息
+		2.blog:   木犀博客   木犀团队的博客
+		3.book:   木犀图书   木犀图书管理
+		4.share:  木犀分享   木犀内部的分享小站
 
-    我们在路上，
-        前方不会太远。
+	管理模块:
+		backend:  木犀统一管理后台
+
+	~我们在路上，
+		前方不会太远~。
 """
 
 from flask import Flask
@@ -26,6 +29,8 @@ from flask.ext.pagedown import PageDown
 from flask.ext.misaka import Misaka
 import os
 from basedir import basedir
+from flask.ext.admin import Admin
+from flask.ext.admin.contrib.sqla import ModelView
 
 
 # 实例创建＋蓝图注册
@@ -50,15 +55,29 @@ pagedown = PageDown(app)
 misaka = Misaka(app)
 
 
+from .views import MyAdminIndexView
+admin = Admin(
+		app, name="~木犀~", template_mode="bootstrap3",
+		index_view=MyAdminIndexView(),
+		base_template='my_master.html'
+		)
+from .models import User, Share, Blog, Book, Comment
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Book, db.session))
+admin.add_view(ModelView(Share, db.session))
+admin.add_view(ModelView(Comment, db.session))
+admin.add_view(ModelView(Blog, db.session))
+
+
 # 蓝图注册
-from .book import book
-app.register_blueprint(book, url_prefix='/book')
+from .book import books
+app.register_blueprint(books, url_prefix='/book')
 
 from .muxi import muxi
 app.register_blueprint(muxi, url_prefix='/muxi')
 
-from .share import share
-app.register_blueprint(share, url_prefix='/share')
+from .share import shares
+app.register_blueprint(shares, url_prefix='/share')
 
 from .auth import auth
 app.register_blueprint(auth, url_prefix='/auth')
