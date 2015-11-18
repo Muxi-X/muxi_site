@@ -14,8 +14,8 @@
 from flask import Blueprint
 
 
-book = Blueprint(
-    'book',
+books = Blueprint(
+    'books',
     __name__,
     template_folder = 'templates',
     static_folder = 'static'

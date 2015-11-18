@@ -9,8 +9,8 @@
 
 from flask import Blueprint
 
-share = Blueprint(
-    'share',
+shares = Blueprint(
+    'shares',
     __name__,
     template_folder = 'templates',
     static_folder = 'static'

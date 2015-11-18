@@ -161,7 +161,7 @@ class Book(db.Model):
 
 
 class User(db.Model, UserMixin):
-    """户类"""
+    """用户类"""
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
@@ -177,7 +177,6 @@ class User(db.Model, UserMixin):
 
     def __init__(self, **kwargs):
         """用户角色实现"""
-        # 超类构造器(简化参数调用,不受Column的限制)
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.username == current_app.config['MUXI_ADMIN']:
@@ -202,10 +201,13 @@ class User(db.Model, UserMixin):
 				rating = rating
 				)
 
-
     def can(self, permissions):
 	    """判断用户的权限"""
 	    return self.role is not None and (self.role.permissions & permissions) == permissions
+
+    def is_admin(self):
+		"""判断当前用户是否是管理员"""
+		return self.username == current_app.config["MUXI_ADMIN"]
 
     @property
     def password(self):
@@ -233,7 +235,7 @@ class AnonymousUser(AnonymousUserMixin):
 	def can(self, permissions):
 		return False
 
-	def is_administrator(self):
+	def is_admin(self):
 		return False
 
 

@@ -1,0 +1,54 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+{{ super() }}
+<!--div class="row-fluid">
+    <div>
+        {#% if current_user.is_authenticated %}
+			<h1>木犀</h1>
+			<p class="lead">
+				Authentication
+			</p>
+        {% else %}
+			<form method="post" action="">
+				{{ form.hidden_tag() }}
+				{{ form.username }}
+				{{ form.password }}
+				<button class="btn" type="submit">Submit</button>
+			</form>
+        {% endif %#}
+    </div>
+</div-->
+
+<div class="head" align="center">
+	<h1>木犀官网管理后台</h1>
+	<h4>😄 是可爱的后台哦😂 </h4>
+</div>
+<hr>
+<div class="info" align="center">
+	<p>
+	<font size="4.6" face="Verdana">
+	muxiwebsite: 木犀团队的官网<br>
+	~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+
+	木犀团队是华中师范大学自由的学生互联网团队，分为<br>
+
+	web(前端、后台)，设计， 安卓 组<br>
+
+	木犀官网是木犀团队的官方网站:<br>
+	功能模块:<br>
+
+	1.muxi:   木犀官网   木犀的简介信息<br>
+	2.blog:   木犀博客   木犀团队的博客<br>
+	3.book:   木犀图书   木犀图书管理<br>
+	4.share:  木犀分享   木犀内部的分享小站<br>
+
+	管理模块:<br>
+	backend:  木犀统一管理后台<br>
+
+	~我们在路上，<br>
+	前方不会太远~。<br>
+	</font>
+	</p>
+</div>
+{% endblock body %}

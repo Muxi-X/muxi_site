@@ -25,11 +25,9 @@
 
 import sys
 from muxiwebsite import app, db
-from muxiwebsite.models import Book, User, Share, Role, Comment
+from muxiwebsite.models import Book, User, Share, Role, Comment, Blog
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
-from flask.ext.admin import Admin
-from flask.ext.admin.contrib.sqla import ModelView
 
 
 """编码设置"""
@@ -39,7 +37,6 @@ sys.setdefaultencoding('utf-8')
 
 manager = Manager(app)
 migrate = Migrate(app, db)
-admin = Admin(app, name='MuxiBook')
 
 
 def make_shell_context():
@@ -51,15 +48,13 @@ def make_shell_context():
         User=User,
         Share=Share,
         Role=Role,
-        Comment=Comment
+        Comment=Comment,
+		Blog=Blog
     )
 
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
-# admin.add_view(ModelView(Book, db.session))
-# admin.add_view(ModelView(User, db.session))
-
 
 @manager.command
 def test():
