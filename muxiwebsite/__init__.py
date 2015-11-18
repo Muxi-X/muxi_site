@@ -24,12 +24,14 @@
 
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+import flask.ext.login as login
 from flask.ext.login import LoginManager
 from flask.ext.pagedown import PageDown
 from flask.ext.misaka import Misaka
 import os
 from basedir import basedir
-from flask.ext.admin import Admin
+import flask_admin as admin
+from flask.ext.admin import Admin, BaseView, expose
 from flask.ext.admin.contrib.sqla import ModelView
 
 
@@ -55,9 +57,18 @@ pagedown = PageDown(app)
 misaka = Misaka(app)
 
 
-from .views import MyAdminIndexView
+
+# from .views import MyAdminIndexView
+# class MyView(BaseView):
+
+class MyAdminIndexView(admin.AdminIndexView):
+	"""rewrite is_authenticated method"""
+	def is_accessible(self):
+		# return login.current_user.is_authenticated
+		return login.current_user.is_admin()
+
 admin = Admin(
-		app, name="~木犀~", template_mode="bootstrap3",
+		app, name="木muxi犀", template_mode="bootstrap3",
 		index_view=MyAdminIndexView(),
 		base_template='my_master.html'
 		)

@@ -2,6 +2,24 @@
 
 {% block body %}
 {{ super() }}
+<!--div class="row-fluid">
+    <div>
+        {#% if current_user.is_authenticated %}
+			<h1>木犀</h1>
+			<p class="lead">
+				Authentication
+			</p>
+        {% else %}
+			<form method="post" action="">
+				{{ form.hidden_tag() }}
+				{{ form.username }}
+				{{ form.password }}
+				<button class="btn" type="submit">Submit</button>
+			</form>
+        {% endif %#}
+    </div>
+</div-->
+
 <div class="head" align="center">
 	<h1>木犀官网管理后台</h1>
 	<h4>😄 是可爱的后台哦😂 </h4>
@@ -32,35 +50,5 @@
 	前方不会太远~。<br>
 	</font>
 	</p>
-</div>
-<div class="row-fluid">
-
-    <div>
-        {% if current_user.is_authenticated %}
-		<h1>木犀</h1>
-        <p class="lead">
-            Authentication
-        </p>
-        {% else %}
-        <form method="POST" action="">
-            {{ form.hidden_tag() if form.hidden_tag }}
-            {% for f in form if f.type != 'CSRFTokenField' %}
-            <div>
-            {{ f.label }}
-            {{ f }}
-            {% if f.errors %}
-            <ul>
-                {% for e in f.errors %}
-                <li>{{ e }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            </div>
-            {% endfor %}
-            <button class="btn" type="submit">Submit</button>
-        </form>
-        {{ link | safe }}
-        {% endif %}
-    </div>
 </div>
 {% endblock body %}

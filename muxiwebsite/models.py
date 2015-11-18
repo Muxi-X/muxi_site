@@ -205,6 +205,10 @@ class User(db.Model, UserMixin):
 	    """判断用户的权限"""
 	    return self.role is not None and (self.role.permissions & permissions) == permissions
 
+    def is_admin(self):
+		"""判断当前用户是否是管理员"""
+		return self.username == current_app.config["MUXI_ADMIN"]
+
     @property
     def password(self):
         """将密码方法设为User类的属性"""
@@ -231,7 +235,7 @@ class AnonymousUser(AnonymousUserMixin):
 	def can(self, permissions):
 		return False
 
-	def is_administrator(self):
+	def is_admin(self):
 		return False
 
 

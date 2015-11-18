@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                {{ share.content|markdown }}
+                {{ share.content[:100]|markdown }}
             </div>
         </div>
         <div class=" mdl-grid mdl-grid--no-spacing mdl-card__actions card_action">
@@ -49,14 +49,14 @@
 	<div class="pager">
         <div class="pager_container prev_container">
         {% if shares.has_prev %}
-            <a href="{{ url_for('share.index', page = shares.prev_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+            <a href="{{ url_for('shares.index', page = shares.prev_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                 <i class="material-icons">arrow_back</i>
             </a>
              {% endif %}
         </div>
         <div class="pager_container forward_container">
         {% if shares.has_next %}
-            <a href="{{ url_for('share.index', page = shares.next_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+            <a href="{{ url_for('shares.index', page = shares.next_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                 <i class="material-icons">arrow_forward</i>
             </a>
              {% endif %}
