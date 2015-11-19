@@ -184,7 +184,7 @@ class User(db.Model, UserMixin):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
-	def gravatar(self, size=100, default='identicon', rating='g'):
+    def gravatar(self, size=100, default='identicon', rating='g'):
 		# gravatar 网站、生成头像
 		# identicon: 图像生成器
 		# g: 图像级别
