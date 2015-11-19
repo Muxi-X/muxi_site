@@ -65,13 +65,13 @@ def test():
 
 
 @manager.command
-def adduser(username):
+def adduser(email, username):
     """添加用户"""
     from getpass import getpass
     password = getpass('password')
     confirm = getpass('confirm')
     if password == confirm:
-        user = User(username=username, password=password)
+        user = User(email=email, username=username, password=password)
         db.session.add(user)
         db.session.commit()
         return "user %s add in database !" % username
