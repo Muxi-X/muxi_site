@@ -166,7 +166,6 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
     username = db.Column(db.String(164))
-    truename = db.Column(db.String(164))
     avatar_hash = db.Column(db.String(32))
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
@@ -184,7 +183,7 @@ class User(db.Model, UserMixin):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
-	def gravatar(self, size=100, default='identicon', rating='g'):
+    def gravatar(self, size=100, default='identicon', rating='g'):
 		# gravatar 网站、生成头像
 		# identicon: 图像生成器
 		# g: 图像级别
@@ -291,6 +290,7 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
+    count = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))

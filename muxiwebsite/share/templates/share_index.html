@@ -12,12 +12,12 @@
         <a href="/hot" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
         <a href="/1" class="mdl-tabs__tab header_tabs">MINE</a>
     </div>
-    <a href="/share/1?sort=new" class="header_tab_links " style="display:none"></a>
-    <a href="/share/1?sort=hot" class="header_tab_links" style="display:none"></a>
-    <a href="/share/1" class="header_tab_links" style="display:none"></a>
+    <a href="/share/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
+    <a href="/share/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
+    <a href="/share/?page=1" class="header_tab_links" style="display:none"></a>
 </div>
 <section class="section_center">
-    {% for share in shares.items %}
+    {% for share in shares %}
     <div class="index_card mdl-card mdl-cell mdl-cell--12-col">
         <div class="card_inner mdl-grid mdl-grid--no-spacing">
             <div class="mdl-cell mdl-cell--12-col">
@@ -29,12 +29,12 @@
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                {{ share.content[:100]|markdown }}
+                {{ share.share[:100]|markdown }}
             </div>
         </div>
         <div class=" mdl-grid mdl-grid--no-spacing mdl-card__actions card_action">
             <div class="card_action_btn mdl-cell mdl-cell--2-col">
-                <i class="material-icons mdl-color-text--grey mdl-badge" data-badge={{ share.comments }}>message</i>
+                <i class="material-icons mdl-color-text--grey mdl-badge" data-badge={{ share.comment_count }}>message</i>
                 <i class="material-icons mdl-color-text--grey">favorite</i>
             </div>
             <div class="card_more mdl-cell mdl-cell--10-col">
@@ -48,20 +48,20 @@
     {% endfor %}
 	<div class="pager">
         <div class="pager_container prev_container">
-        {% if shares.has_prev %}
-            <a href="{{ url_for('shares.index', page = shares.prev_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+        {% if shares_pages.has_prev %}
+            <a href="{{ url_for('shares.index', page = shares_pages.prev_num, sort=request.args.get('sort')) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                 <i class="material-icons">arrow_back</i>
             </a>
              {% endif %}
         </div>
         <div class="pager_container forward_container">
-        {% if shares.has_next %}
-            <a href="{{ url_for('shares.index', page = shares.next_num) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+        {% if shares_pages.has_next %}
+            <a href="{{ url_for('shares.index', page = shares_pages.next_num, sort=request.args.get('sort')) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
                 <i class="material-icons">arrow_forward</i>
             </a>
              {% endif %}
 		</div>
-    </div>
+	</div>
 </section>
 <script src="/share/static/js/index.min.js"></script>
 {% endblock %}
