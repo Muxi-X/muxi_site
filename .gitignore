@@ -6,3 +6,4 @@ venv
 migrations
 search.db
 muxi_data.sqlite
+.idea
