@@ -1,0 +1,19 @@
+<div class="right_box_top">
+    <img src="../../../static/img/tag.png" alt="">
+    <h3 class="title">文章标签</h3>
+    <div class="tag">
+    {% for tag in article_tag %}
+        <span>{{ tag.value }}</span>
+    {% endfor %}
+    </div>
+</div>
+<div class="right_box_bottom">
+    <img src="../../../static/img/date.png" alt="">
+    <h3 class="title">文章归档</h3>
+    <div class="tag">
+    {% for date in article_date %}
+        <span>{{ date.value }}</span>
+    {% endfor %}
+    </div>
+</div>
+
