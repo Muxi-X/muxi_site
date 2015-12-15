@@ -2,14 +2,14 @@
 {% block title %}博客首页{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="../../static/css/reset.css">
-<link rel="stylesheet" type="text/css" href="../../static/css/index.css">
+<link rel="stylesheet" href="/blog/static/css/reset.css">
+<link rel="stylesheet" type="text/css" href="/blog/static/css/index.css">
 
 {% endblock %}
 {% block content %}
 <div class="right_content">
-    {% include 'components/home_page/blog.html' %}
-    {% include 'components/home_page/right_tag.html' %}
+    {% include "components/home_page/blog.html" %}
+    {% include "components/home_page/right_tag.html" %}
 </div>
 
 {% endblock %}
