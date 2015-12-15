@@ -1,10 +1,13 @@
 # coding: utf-8
 
 from . import blogs
-from flask import render_template, render_template_string
-from ..models import Blog
-from .. import muxi_root_path
-from jinja2 import FileSystemLoader
+from flask import render_template, render_template_string, redirect, url_for
+from flask_login import current_user, login_required
+from ..models import Blog, Comment
+from .forms import CommentForm
+# from .. import muxi_root_path
+# from jinja2 import FileSystemLoader
+from muxiwebsite import db, auth
 
 
 @blogs.route('/')
@@ -24,23 +27,41 @@ def index():
     blog_list = Blog.query.all()
     for blog in blog_list:
         blog.img_url = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
-        blog.name = "占位"
-        blog.date = 1
+        blog.date = blog.timestamp
         blog.like_number = 1
-        blog.comment_number = 1
-    # return render_template_string just like this name: return a string
-    # return render_template("%s/muxiwebsite/blog/templates/pages/index.html" % muxi_root_path,
-    #                             blog_list=blog_list)
-    # loader = FileSystemLoader('%s/muxiwebsite/blog/templates/pages/index.html' % muxi_root_path,
-    #                           {'blog_list':blog_list})
-    # return loader
-    # return render_template("pages.index.html")
+        # blog.comment_number = 1
+        blog.avatar = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
+        blog.content = blog.body
     return render_template("pages/index.html", blog_list=blog_list)
 
 
-@blogs.route('/post/<int:id>/')
+@blogs.route('/post/<int:id>/', methods=["POST", "GET"])
+@login_required
 def post(id):
     """
     博客文章页面
     """
-    return render_template("pages/post.html")
+    form = CommentForm()
+    blog = Blog.query.get_or_404(id)
+    blog.content = blog.body
+    if form.validate_on_submit():
+        # 提交评论
+        comment = Comment(
+            comment=form.comments.data,
+            # count=len(blog.)+1,
+            author_id=current_user.id,
+            blog_id=id
+        )
+        db.session.add(comment)
+        db.session.commit()
+
+        blog.comment_number += 1
+        db.session.add(blog)
+        db.session.commit()
+        return redirect(url_for('blogs.post', id=id))
+
+    comment_list =Comment.query.filter_by(blog_id=id).all()
+    for comment in comment_list:
+        comment.date = comment.timestamp
+        comment.content = comment.comment
+    return render_template("pages/post.html", blog=blog, form=form, comment_list=comment_list)
