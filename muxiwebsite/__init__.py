@@ -23,16 +23,20 @@
 """
 
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
-import flask.ext.login as login
-from flask.ext.login import LoginManager
-from flask.ext.pagedown import PageDown
-from flask.ext.misaka import Misaka
-import os
+from flask_sqlalchemy import SQLAlchemy
+import flask_login as login
+from flask_login import LoginManager
+from flask_pagedown import PageDown
+from flask_misaka import Misaka
 from basedir import basedir
 import flask_admin as admin
-from flask.ext.admin import Admin, BaseView, expose
-from flask.ext.admin.contrib.sqla import ModelView
+from flask_admin import Admin, BaseView, expose
+from flask_admin.contrib.sqla import ModelView
+import os
+
+# the root path of xueer
+# __filename__ 就是占位
+muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 
 
 # 实例创建＋蓝图注册
@@ -72,7 +76,7 @@ admin = Admin(
 		app, name="木muxi犀", template_mode="bootstrap3",
 		index_view=MyAdminIndexView(),
 		base_template='my_master.html'
-		)
+        )
 from .models import User, Share, Blog, Book, Comment
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
@@ -93,3 +97,6 @@ app.register_blueprint(shares, url_prefix='/share')
 
 from .auth import auth
 app.register_blueprint(auth, url_prefix='/auth')
+
+from .blog import blogs
+app.register_blueprint(blogs, url_prefix='/blog')
