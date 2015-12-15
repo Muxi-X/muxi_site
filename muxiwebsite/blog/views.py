@@ -31,10 +31,11 @@ def index():
     # return render_template_string just like this name: return a string
     # return render_template("%s/muxiwebsite/blog/templates/pages/index.html" % muxi_root_path,
     #                             blog_list=blog_list)
-    loader = FileSystemLoader('%s/muxiwebsite/blog/templates/pages/index.html' % muxi_root_path,
-                           {'blog_list':blog_list})
-    return loader
+    # loader = FileSystemLoader('%s/muxiwebsite/blog/templates/pages/index.html' % muxi_root_path,
+    #                           {'blog_list':blog_list})
+    # return loader
     # return render_template("pages.index.html")
+    return render_template("pages/index.html", blog_list=blog_list)
 
 
 @blogs.route('/post/<int:id>/')

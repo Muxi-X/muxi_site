@@ -5,9 +5,9 @@ from flask import Blueprint
 
 blogs = Blueprint(
     'blogs',
-    '__name__',
-    static_folder='static',
-    template_folder='template'
+    __name__,
+    template_folder='templates',
+    static_folder='static'
 )
 
 
