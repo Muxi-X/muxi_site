@@ -17,7 +17,7 @@ from flask import render_template, redirect, request, url_for, flash
 from flask.ext.login import login_user, login_required, logout_user, current_user
 
 
-@auth.route('/login', methods=["POST", "GET"])
+@auth.route('/login/', methods=["POST", "GET"])
 def login():
     """登录页面"""
     form = LoginForm()
@@ -32,7 +32,7 @@ def login():
 
 
 @login_required
-@auth.route('/logout')
+@auth.route('/logout/')
 def logout():
     """登出界面"""
     logout_user()

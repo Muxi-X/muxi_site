@@ -71,3 +71,13 @@ def post(id):
         comment.date = str(comment.timestamp)[:-6]
         comment.content = comment.comment
     return render_template("pages/post.html", blog=blog, form=form, comment_list=comment_list)
+
+
+@blogs.route('/post/<int:id>/like/')
+def like(id):
+    """
+    对特定id的文章点赞
+    :param id:
+    :return:
+    """
+    pass

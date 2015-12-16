@@ -298,7 +298,7 @@ class Blog(db.Model):
         属性函数, 判断当前用户是否点赞这门课
         :return:
         """
-        if current_user in self.users:
+        if current_user in self.liked_users:
             return True
         else:
             return False
