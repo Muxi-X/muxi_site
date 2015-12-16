@@ -68,10 +68,12 @@ def index():
 	return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
 
 
-@shares.route('/view/<int:id>', methods=["GET", "POST"])
+@shares.route('/view/<int:id>/', methods=["GET", "POST"])
 def view_share(id):
-    """显示特定id的分享，相关信息以及评论
-       实现评论表单发表自己的评论"""
+    """
+    显示特定id的分享，相关信息以及评论
+    实现评论表单发表自己的评论
+    """
     share = Share.query.get_or_404(id)
     comments = Comment.query.filter_by(share_id=share.id).all()
     form = CommentForm()
@@ -110,7 +112,7 @@ def view_share(id):
 
 
 @login_required
-@shares.route('/send', methods=["GET", "POST"])
+@shares.route('/send/', methods=["GET", "POST"])
 def add_share():
     """分享"""
     form = ShareForm()
@@ -127,7 +129,7 @@ def add_share():
     return render_template("share_send.html", form=form)
 
 
-@shares.route('/edit-share/<int:id>', methods=["POST", "GET"])
+@shares.route('/edit-share/<int:id>/', methods=["POST", "GET"])
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id):
