@@ -29,6 +29,14 @@ UBLike = db.Table(
 )
 
 
+BTMap = db.Table(
+    # 博客与标签的关联表
+    "blog_tag_maps",
+    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
+)
+
+
 # python 3搜索的不兼容
 if sys.version_info[0] == 3:
     enable_search = False
@@ -263,6 +271,8 @@ class Blog(db.Model):
     # body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # 文章分类: 一篇文章对应一个分类
+    type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
     comments = db.relationship('Comment', backref='blog', lazy='dynamic')
     likes_number = db.Column(db.Integer, default=0)
     comment_number = db.Column(db.Integer, default=0)
@@ -272,6 +282,13 @@ class Blog(db.Model):
         "User",
         secondary=UBLike,
         backref=db.backref("liked_blogs", lazy="dynamic"),
+        lazy="dynamic"
+    )
+    # 博客对应的标签
+    tags = db.relationship(
+        "Tag",
+        secondary=BTMap,
+        backref=db.backref("blogs", lazy='dynamic'),
         lazy="dynamic"
     )
 
@@ -314,3 +331,26 @@ class Blog(db.Model):
 #             tags=allowed_tags, strip=True))
 #
 #db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+class Type(db.Model):
+    """
+    博客文章的分类
+    """
+    __tablename__ = 'types'
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(64))
+    blogs = db.relationship('Blog', backref="types", lazy="dynamic")
+
+    def __repr__(self):
+        return "<type %d>" % id
+
+
+class Tag(db.Model):
+    """
+    博客文章的标签
+    """
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(64))
+
+    def __repr__(self):
+        return "<type %d>" % id

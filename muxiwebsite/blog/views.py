@@ -3,7 +3,8 @@
 from . import blogs
 from flask import render_template, render_template_string, redirect, url_for
 from flask_login import current_user, login_required
-from ..models import Blog, Comment
+from sqlalchemy import desc
+from ..models import Blog, Comment, Tag
 from .forms import CommentForm
 # from .. import muxi_root_path
 # from jinja2 import FileSystemLoader
@@ -24,15 +25,20 @@ def index():
     item.value
     blog.avatar
     """
-    blog_list = Blog.query.all()
+    article_tag = Tag.query.all()
+    blog_list = Blog.query.order_by('-id').all()
     for blog in blog_list:
         blog.img_url = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
-        blog.date = blog.timestamp
+        blog.date = str(blog.timestamp)[:-6]
         blog.like_number = 1
         # blog.comment_number = 1
         blog.avatar = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
         blog.content = blog.body
-    return render_template("pages/index.html", blog_list=blog_list)
+    article_date = []
+    for blog in blog_list:
+        article_date.append(str(blog.timestamp)[:-6])
+    return render_template("pages/index.html", blog_list=blog_list,
+                           article_tag=article_tag, article_date=article_date)
 
 
 @blogs.route('/post/<int:id>/', methods=["POST", "GET"])
@@ -62,6 +68,6 @@ def post(id):
 
     comment_list =Comment.query.filter_by(blog_id=id).all()
     for comment in comment_list:
-        comment.date = comment.timestamp
+        comment.date = str(comment.timestamp)[:-6]
         comment.content = comment.comment
     return render_template("pages/post.html", blog=blog, form=form, comment_list=comment_list)
