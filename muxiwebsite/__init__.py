@@ -100,3 +100,7 @@ app.register_blueprint(auth, url_prefix='/auth')
 
 from .blog import blogs
 app.register_blueprint(blogs, url_prefix='/blog')
+
+from profile import profile
+app.register_blueprint(profile, url_prefix="/profile")
+

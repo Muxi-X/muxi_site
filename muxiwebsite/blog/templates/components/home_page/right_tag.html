@@ -11,9 +11,8 @@
     <img src="/blog/static/img/date.png" alt="">
     <h3 class="title">文章归档</h3>
     <div class="tag">
-        {% for date in article_date %}
-        <span>{{ date }}</span>
+        {% for index in article_date %}
+            <a href="/blog/index/{{ index }}/" ><span>{{ index }}</span></a>
         {% endfor %}
     </div>
 </div>
-

@@ -123,6 +123,7 @@ class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
+    info = db.Column(db.Text)
     username = db.Column(db.String(164))
     avatar_hash = db.Column(db.String(32))
     password_hash = db.Column(db.String(164))
@@ -293,6 +294,16 @@ class Blog(db.Model):
     )
 
     @property
+    def index(self):
+        """
+        以年月的形式对文章进行归档
+        ex: 15年12月
+        :return:
+        """
+        return str(self.timestamp)[:4]+"年"+\
+            str(self.timestamp)[5:7]+"月"
+
+    @property
     def liked(self):
         """
         属性函数, 判断当前用户是否点赞这门课
@@ -334,6 +345,7 @@ class Blog(db.Model):
 class Type(db.Model):
     """
     博客文章的分类
+    ex: 前端，后台，安卓，设计...
     """
     __tablename__ = 'types'
     id = db.Column(db.Integer, primary_key=True)
@@ -347,6 +359,7 @@ class Type(db.Model):
 class Tag(db.Model):
     """
     博客文章的标签
+    ex: js, css, flask...
     """
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
