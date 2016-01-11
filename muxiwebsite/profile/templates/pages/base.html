@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
-	{% block head %}
-	<meta charset="utf-8" /> 
-	<meta name="description" content="木犀个人页" />
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-	<link rel="stylesheet" type="text/css" href="../../static/css/reset.css">
-    <title>{% block title %}{% endblock %}</title>
-    {% endblock %}
-</head>
-<body>
-{% block content %}{% endblock %}
-<script src="/static/js/main.js"></script>
-<!--<script src="//localhost:9091"></script> -->
-</body>
+    <head>
+        {% block head %}
+        <meta charset="utf-8" />
+        <meta name="description" content="木犀个人页" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+        <link rel="stylesheet" type="text/css" href="/profile/static/css/reset.css">
+        <title>{% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+        <script src="/profile/static/js/main.js"></script>
+        <!--<script src="//localhost:9091"></script> -->
+    </body>
 </html>

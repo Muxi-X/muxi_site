@@ -58,7 +58,6 @@ def ym(index):
     return render_template('placeholder.html', blog_list=blog_list)
 
 
-
 @blogs.route('/post/<int:id>/', methods=["POST", "GET"])
 @login_required
 def post(id):

@@ -1,21 +1,21 @@
 {% extends 'pages/base.html' %}
 {% block tittle %}个人页{% endblock %}
 {% block head %}
- 	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="../../static/css/user.css">
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/profile/static/css/user.css">
 {% endblock %}
 {% block content %}
-	<div class="fix-border">
-		{% include 'components/nav.html' %}
-		{% include 'components/info.html' %}
-		{% include 'components/list.html' %}
-		<div class="up bd-1"></div>
-		<div class="left bd-2"></div>
-		<div class="right bd-2"></div>
-		<div class="down bd-1">
-			<div class="footer margin_auto">
-				© 2015 <a href="http://muxistudio.com/" alt="木犀官网">MUXI STUDIO </a>保留所有权利 design by buhuan
-			</div>
-		</div>
-	</div>
+<div class="fix-border">
+    {% include 'components/nav.html' %}
+    {% include 'components/info.html' %}
+    {% include 'components/list.html' %}
+    <div class="up bd-1"></div>
+    <div class="left bd-2"></div>
+    <div class="right bd-2"></div>
+    <div class="down bd-1">
+        <div class="footer margin_auto">
+            © 2015 <a href="http://muxistudio.com/" alt="木犀官网">MUXI STUDIO </a>保留所有权利 design by buhuan
+        </div>
+    </div>
+</div>
 {% endblock %}
