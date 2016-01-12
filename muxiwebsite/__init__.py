@@ -82,7 +82,7 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
 admin.add_view(ModelView(Share, db.session))
 admin.add_view(ModelView(Comment, db.session))
-# admin.add_view(ModelView(Blog, db.session))
+admin.add_view(ModelView(Blog, db.session))
 
 
 # 蓝图注册
