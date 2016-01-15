@@ -104,3 +104,6 @@ app.register_blueprint(blogs, url_prefix='/blog')
 from profile import profile
 app.register_blueprint(profile, url_prefix="/profile")
 
+from api import api
+app.register_blueprint(api, url_prefix="/api")
+
