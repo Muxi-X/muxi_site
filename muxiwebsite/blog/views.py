@@ -98,3 +98,8 @@ def like(id):
     :return:
     """
     pass
+
+@blogs.route('/test')
+def test():
+    return render_template('pages/base2.html')
+

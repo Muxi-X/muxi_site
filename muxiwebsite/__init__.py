@@ -82,7 +82,7 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
 admin.add_view(ModelView(Share, db.session))
 admin.add_view(ModelView(Comment, db.session))
-# admin.add_view(ModelView(Blog, db.session))
+admin.add_view(ModelView(Blog, db.session))
 
 
 # 蓝图注册
@@ -103,4 +103,7 @@ app.register_blueprint(blogs, url_prefix='/blog')
 
 from profile import profile
 app.register_blueprint(profile, url_prefix="/profile")
+
+from api import api
+app.register_blueprint(api, url_prefix="/api")
 
