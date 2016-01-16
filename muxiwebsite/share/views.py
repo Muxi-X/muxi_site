@@ -16,56 +16,56 @@
 
 # models import
 from . import shares
+from jinja2 import Environment
 from .forms import ShareForm, CommentForm, EditForm
 from .. import  db, app
 from ..models import Share, Comment, User, Permission
-# from ..auth._decorate import auth_login, auth_logout
-from flask import url_for, render_template, redirect, request, current_app
-from flask.ext.login import current_user, login_required
+from flask import url_for, render_template, redirect, request, current_app, Markup
+from flask_login import current_user, login_required
 from ..decorators import permission_required
 from sqlalchemy import desc
 from sqlalchemy import func
+import markdown
 
 
 @shares.route('/')
 def index():
-	"""
-	muxi_share 分享你的知识
-
+    """
+    muxi_share 分享你的知识
 	主页，默认显示最新的分享
 	添加分页，默认显示第一页
 	"""
 
-	flag = 0
-	# 添加分页, share变为分页对象
-	page = int(request.args.get('page'))
-	shares_count = {}
-	if request.args.get('sort') == None:
-		shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
-		shares = shares_pages.items
-	elif request.args.get('sort') == "new":
-		flag = 0
-		shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
-		shares = shares_pages.items
-	elif request.args.get('sort') == "hot":
-		flag = 1
-		shares = []
-		# shares = Share.query.join(Share.comment).order_by(Comment.count)[:15]
-		for share in Share.query.all():
-			shares_count[share] = share.comment.count()
-		shares_count = sorted(shares_count.items(), lambda x, y: cmp(y[1], x[1]))
-		for share_tuple in shares_count:
-			shares.append(share_tuple[0])
-		shares = shares[:5]
-		# shares_pages = shares.paginate(page, app.config["SHARE_PER_PAGE"], False)
-		shares_pages = None
+    flag = 0
+    # 添加分页, share变为分页对象
+    page = int(request.args.get('page'))
+    shares_count = {}
+    if request.args.get('sort') == None:
+        shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
+        shares = shares_pages.items
+    elif request.args.get('sort') == "new":
+        flag = 0
+        shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
+        shares = shares_pages.items
+    elif request.args.get('sort') == "hot":
+        flag = 1
+        shares = []
+        # shares = Share.query.join(Share.comment).order_by(Comment.count)[:15]
+        for share in Share.query.all():
+            shares_count[share] = share.comment.count()
+        shares_count = sorted(shares_count.items(), lambda x, y: cmp(y[1], x[1]))
+        for share_tuple in shares_count:
+            shares.append(share_tuple[0])
+        shares = shares[:5]
+        # shares_pages = shares.paginate(page, app.config["SHARE_PER_PAGE"], False)
+        shares_pages = None
 
-	for share in shares:
-		share.content = share.share
-		share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
-		share.comment_count = share.comment.count()
-		share.author = User.query.filter_by(id=share.author_id).first().username
-	return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
+    for share in shares:
+        share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
+        share.comment_count = share.comment.count()
+        share.author = User.query.filter_by(id=share.author_id).first().username
+
+    return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
 
 
 @shares.route('/view/<int:id>/', methods=["GET", "POST"])

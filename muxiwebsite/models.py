@@ -241,6 +241,7 @@ class Share(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     share = db.Column(db.Text)
+    content = db.Column(db.Text)  # 存取markdown渲染以后的内容
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
