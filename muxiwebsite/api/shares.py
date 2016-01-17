@@ -50,13 +50,14 @@ def get_shares():
 @auth.login_required
 def new_share():
     """创建一个分享"""
+    data_dict = eval(request.data)
     if not hasattr(g.current_user, 'id'):
         return jsonify({
             'error' : 'please login first'
         }), 403
     share = Share(
-        title = request.args.get('title'),
-        share = request.args.get('share'),
+        title = data_dict.get('title'),
+        share = data_dict.get('share'),
         author_id = g.current_user.id
     )
     db.session.add(share)
