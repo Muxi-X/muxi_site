@@ -29,13 +29,14 @@ def get_shares_id_comments(id):
 @auth.login_required
 def new_shares_id_comments(id):
     """向特定分享发评论"""
+    data_dict = eval(request.data)
     share = Share.query.get_or_404(id)
     if not hasattr(g.current_user, 'id'):
         return jsonify({
             'error' : 'plase login first'
         }), 403
     comment = Comment(
-        comment = request.args.get('comment'),
+        comment = data_dict.get('comment'),
         author_id = g.current_user.id,
         share_id = share.id
         # date = request.args.get('date')

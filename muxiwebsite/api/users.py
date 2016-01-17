@@ -50,7 +50,8 @@ def new_user():
     """
     user = User(
         username = request.args.get('username'),
-        password = request.args.get('password')
+        password = request.args.get('password'),
+        email = request.args.get('email')
     )
     db.session.add(user)
     db.session.commit()

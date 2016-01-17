@@ -22,7 +22,7 @@
         前方不会太远~。
 """
 
-from flask import Flask, Markup
+from flask import Flask, Markup, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import flask_login as login
 from flask_login import LoginManager
@@ -68,6 +68,10 @@ class MyAdminIndexView(admin.AdminIndexView):
         # return login.current_user.is_authenticated
         return login.current_user.is_admin()
 
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('auth.login'))
+
+
 admin = Admin(
         app, name="木muxi犀", template_mode="bootstrap3",
         index_view=MyAdminIndexView(),
@@ -85,6 +89,7 @@ admin.add_view(ModelView(Blog, db.session))
 @app.template_filter('neomarkdown')
 def neomarkdown(markdown_content):
     """
+    jinja2 markdown filter
     :param markdown_content: markdown
     :return: text
     """

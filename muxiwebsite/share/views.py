@@ -38,7 +38,7 @@ def index():
 
     flag = 0
     # 添加分页, share变为分页对象
-    page = int(request.args.get('page'))
+    page = int(request.args.get('page') or 1)
     shares_count = {}
     if request.args.get('sort') == None:
         shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
