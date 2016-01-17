@@ -89,6 +89,7 @@
                 {{ form.username }}
                 {{ form.password }}
                 {{ form.submit }}
+                <input type=hidden value="{{ next or '' }}" name=next>
             </form>
         </div>
     </div>
