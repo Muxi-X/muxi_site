@@ -26,7 +26,7 @@ def login():
         if user is not None and user.verify_password:
             login_user(user)
             # use next to redirect
-            return redirect(url_for('shares.index', page = 1))
+            return redirect(url_for('profile.user_profile', id=current_user.id))
         flash("用户名或密码不存在")
     return render_template("muxi_login.html", form=form)
 
