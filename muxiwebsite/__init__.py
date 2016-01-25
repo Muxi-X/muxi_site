@@ -2,16 +2,22 @@
 """
     muxiwebsite: 木犀团队的官网
     ~~~~~~~~~~~~~~~~~~~~~~~~~
+
     木犀团队是华中师范大学自由的学生互联网团队，分为
+
         web(前端、后台)，设计， 安卓 组
+
     木犀官网是木犀团队的官方网站:
     功能模块:
+
         1.muxi:   木犀官网   木犀的简介信息
         2.blog:   木犀博客   木犀团队的博客
         3.book:   木犀图书   木犀图书管理
         4.share:  木犀分享   木犀内部的分享小站
+
     管理模块:
         backend:  木犀统一管理后台
+
     ~我们在路上，
         前方不会太远~。
 """
@@ -112,3 +118,4 @@ app.register_blueprint(profile, url_prefix="/profile")
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")
+
