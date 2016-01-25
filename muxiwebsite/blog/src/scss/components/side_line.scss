@@ -1,0 +1,57 @@
+.left_box {
+    width: 200px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: $white;
+    .logo {
+        margin: 15px 44px;
+    }
+    p {
+        height: 70px;
+        text-align: left;
+        font-size: 16px;
+        position: relative;
+        color: $title_gray;
+    }
+    .home_img {
+        top: 9px;
+        left: 7px;
+        width: 39px;
+    }
+    .blog_img {
+        top: 10px;
+        left: 6px;
+        width: 41px;
+    }
+    .about_img {
+        top: 19px;
+        left: 11px;
+        width: 31px;
+        height: 31px;
+    }
+    p svg {
+        float: left;
+        position: absolute;
+        fill: currentColor;
+    }
+    p .tag {
+        display: inline-block;
+        line-height: 70px;
+        color: inherit;
+        margin: 2px 74px 0 53px;
+    }
+    p:hover {
+        background: $light_blue;
+        color: $white;
+    }
+    .search {
+        margin: 100px 70px;
+        height: 40px;
+        width: 40px;
+        fill: #999;
+    }
+    .search:hover{
+        fill: #272727;
+    }
+}
