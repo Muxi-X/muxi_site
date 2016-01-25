@@ -27,7 +27,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import flask.ext.login as login
 from flask.ext.login import LoginManager
 from flask.ext.pagedown import PageDown
-from flask.ext.misaka import Misaka
+# from flask.ext.misaka import Misaka
 import os
 from basedir import basedir
 import flask_admin as admin
@@ -55,7 +55,7 @@ login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
-misaka = Misaka(app)
+# misaka = Misaka(app)
 
 
 
