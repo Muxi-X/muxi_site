@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <meta charset="UTF-8">
+        <meta name="keywords" content="博客 华中师范大学 木犀团队">
+        <meta name="discription" content="华中师范大学木犀团队">
+        <link rel="icon" type="image/png" size="96*96" href="/blog/static/img/logo.png">
+        <link rel="stylesheet" href="/blog/static/css/reset.css">
+        <title>{% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+
+    {% include "components/register.html" %}
+    {% include "components/sideline.html" %}
+
+    {% block content %}
+    {% endblock %}
+
+    </body>
+</html>

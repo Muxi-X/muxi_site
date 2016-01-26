@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                {{ share.share[:100]|markdown }}
+                {{ share.share[:100]|neomarkdown }}
             </div>
         </div>
         <div class=" mdl-grid mdl-grid--no-spacing mdl-card__actions card_action">
@@ -40,7 +40,7 @@
             <div class="card_more mdl-cell mdl-cell--10-col">
                 <a href="/share/view/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
 				{% if share.author_id == current_user.id %}
-					<a href="/share/edit-share/{{share.id}}" class="mdl-button mdl-js-button  mdl-js-ripple-effect"">edit</a>
+					<a href="/share/edit-share/{{share.id}}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
 				{% endif %}
             </div>
         </div>

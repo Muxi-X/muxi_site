@@ -23,12 +23,11 @@
                 python manage.py db upgrade         执行数据库更新
 """
 
-import sys
 from muxiwebsite import app, db
 from muxiwebsite.models import Book, User, Share, Role, Comment, Blog
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
-
+import sys
 
 """编码设置"""
 reload(sys)

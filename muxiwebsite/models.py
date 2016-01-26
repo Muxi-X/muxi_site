@@ -1,82 +1,42 @@
 # coding: utf-8
 
 """
-    models.py
-    ~~~~~~~~~
+models.py
 
-        数据库文件
-
-                 图书数据库列表
-                                                        books
-
-                 id                         Integer, primary_key                           主键
-                 url                        String url                                     对应豆瓣API的get url
-                 name                       String                                         书名
-                 summary                    String(编码) resp['summary']返回值             概要，豆瓣API获取
-                 image                      String(编码) resp['image']返回值 url           封面图，API获取
-                 user_id                    Integer，ForeignKey 外键 与users表的id相关联   与借阅者关联
-                 end                        String,                                        书籍到期时间
-                 status                     Boolean,                                       书籍的借阅状态，如果为True则被借阅
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 用户数据库列表
-                                                        users
-
-                 id                         Integer, primary_key                           主键
-                 username                   String                                         用户名
-                 password                   password_hash                                  密码散列值
-                 book                       relationship                                   借阅的书籍
-                 comment                    relationship                                   发表的评论
-                 share                      relationship                                   发布的分享
-                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 分享数据库列表
-                                                        shares
-
-                 id                         Integer, primary_key                           主键
-                 title                      String                                         分享的标题
-                 share                      String                                         分享的内容
-                                                                (采用markdown编辑器，数据库中存储的是markdown代码，前端进行html渲染)
-                 author_id                  Integer, ForeignKey                            外键，分享的作者
-                 comment                    relationship                                   分享对应的评论
-                 timestamp                  datetime                                       时间戳
-                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 评论数据库列表
-
-                                                        comments
-                 id                         Integer, primary_key                           主键
-                 comment                    String                                         评论的内容，这里就是一般的纯文本
-                 timestamp                  datetime                                       时间戳
-                 share_id                   Integer, ForeignKey                            对应的分享的id
-                 author_id                  Integer, ForeignKey                            对应的作者的id
-                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 用户角色数据库列表
-
-                                                        roles
-                 id                         Integer, primary_key                           主键
-                 name                       String                                         用户角色的名称
-                 default                    Boolean                                        用户角色是否是默认值
-                 permissions                Integer(base 16)                               用户角色对应的权限
-                 users                      relationship                                   拥有该角色的用户列表
-                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                                         blogs
-                 id                         Integer, primary_key                           主键
-                 body                       Text                                           博客的内容
-                 body_html                  Text                                           博客内容的html格式
-                 timestamp                  datetime                                       时间戳
-                 author.id                  Integer, ForeignKey                            博客对应作者的id
-                 comments                   relationship                                   该博客下的评论
-
+    数据库模型
 """
 
 from . import db, login_manager, app
-from flask import current_app, request
-from flask.ext.login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from random import seed
+from flask import current_app, request, url_for
+from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask.ext.login import AnonymousUserMixin
+from flask_login import AnonymousUserMixin
 from datetime import datetime
 import sys
 import bleach
 import markdown
 import hashlib
+import base64
+
+
+# secondary table
+# 多对多关系
+UBLike = db.Table(
+    # 用户和博客的关联表
+    "user_blog_likes",
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id'))
+)
+
+
+BTMap = db.Table(
+    # 博客与标签的关联表
+    "blog_tag_maps",
+    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
+)
 
 
 # python 3搜索的不兼容
@@ -165,13 +125,15 @@ class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
-    username = db.Column(db.String(164))
-    avatar_hash = db.Column(db.String(32))
+    info = db.Column(db.Text)
+    username = db.Column(db.String(164), unique=True)
+    avatar_url = db.Column(db.String(32))
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    # 用户发布的博客
     blogs = db.relationship('Blog', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
@@ -183,30 +145,13 @@ class User(db.Model, UserMixin):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
-    def gravatar(self, size=100, default='identicon', rating='g'):
-		# gravatar 网站、生成头像
-		# identicon: 图像生成器
-		# g: 图像级别
-		if request.is_secure:
-			url = "https://secure.gravatar.com/avatar"
-		else:
-			url = "http://www.gravatar.com/avatar"
-		hash = self.avatar_hash or hashlib.md5(self.email.encode('utf-8')).hexdigest()
-		return "{url}/{hash}?s={size}&d={default}&r={rating}".format(
-				url = url,
-				hash = hash,
-				size = size,
-				default = default,
-				rating = rating
-				)
-
     def can(self, permissions):
-	    """判断用户的权限"""
-	    return self.role is not None and (self.role.permissions & permissions) == permissions
+        """判断用户的权限"""
+        return self.role is not None and (self.role.permissions & permissions) == permissions
 
     def is_admin(self):
-		"""判断当前用户是否是管理员"""
-		return self.username == current_app.config["MUXI_ADMIN"]
+        """判断当前用户是否是管理员"""
+        return self.username == current_app.config["MUXI_ADMIN"]
 
     @property
     def password(self):
@@ -216,26 +161,64 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         """设置密码散列值"""
+        password = base64.b64decode(password)
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
         """验证密码散列值"""
         return check_password_hash(self.password_hash, password)
 
+    def generate_auth_token(self, expiration):
+        """generate a token"""
+        s = Serializer(
+            current_app.config['SECRET_KEY'],
+            expiration
+        )
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        """verify the user with token"""
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        # get id
+        return User.query.get_or_404(data['id'])
+
+    def to_json(self):
+        json_user = {
+            'id' : self.id,
+            'username' : self.username,
+            'email' : self.email
+            # 'share' : null  # => 待share api编写完成
+        }
+
+    @staticmethod
+    def from_json(json_user):
+        u = User(
+            username = json_user.get('username'),
+            password = json_user.get('password'),
+            email = json_user.get('email')
+        )
+        return u
+
     def __repr__(self):
         return "%r :The instance of class User" % self.username
 
 
 class AnonymousUser(AnonymousUserMixin):
-	"""
+    """
 	匿名用户类
 	谁叫你匿名，什么权限都没有
 	"""
-	def can(self, permissions):
-		return False
 
-	def is_admin(self):
-		return False
+    def can(self, permissions):
+        return False
+
+    def is_admin(self):
+        return False
 
 
 login_manager.anonymous_user = AnonymousUser
@@ -243,9 +226,9 @@ login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
-	"""flask-login要求实现的用户加载回调函数
+    """flask-login要求实现的用户加载回调函数
 		依据用户的unicode字符串的id加载用户"""
-	return User.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 
 if enable_search:
@@ -258,6 +241,7 @@ class Share(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     share = db.Column(db.Text)
+    content = db.Column(db.Text)  # 存取markdown渲染以后的内容
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
@@ -281,6 +265,35 @@ class Share(db.Model):
             db.session.add(p)
             db.session.commit()
 
+    def to_json(self):
+        json_share = {
+            'id' : self.id,
+            'title' : self.title,
+            'share' : self.share,
+            'date' : self.timestamp,
+            'username' : User.query.filter_by(id=self.author_id).first().username,
+            'comment' : url_for('api.get_shares_id_comments', id=self.id)
+        }
+        return json_share
+
+    def to_json2(self):
+        json_share = {
+            'id' : self.id,
+            'title' : self.title,
+            'share' : self.share,
+            'date' : self.timestamp,
+        }
+        return json_share
+
+    @staticmethod
+    def from_json(json_share):
+        share = Share(
+            title = json_share.get('title'),
+            share = json_share.get('share'),
+            author_id = current_user.id
+        )
+        return share
+
     def __repr__(self):
         return "%r is instance of class Share" % self.title
 
@@ -296,6 +309,14 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
+    def to_json(self):
+        json_comment = {
+            'date' : self.timestamp,
+            'comment' : self.comment,
+            'username' : User.query.filter_by(id=self.author_id).first().username
+        }
+        return json_comment
+
     def __repr__(self):
         return "<the instance of model Comment>"
 
@@ -304,11 +325,55 @@ class Blog(db.Model):
     """博客类"""
     __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(164))
+    # body 直接存markdown，在服务器端渲染
+    title = db.Column(db.Text)
     body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
+    img_url = db.Column(db.String(164))
+    # body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # 文章分类: 一篇文章对应一个分类
+    type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
     comments = db.relationship('Comment', backref='blog', lazy='dynamic')
+    likes_number = db.Column(db.Integer, default=0)
+    comment_number = db.Column(db.Integer, default=0)
+    # 喜欢这篇博客的用户列表
+    # this is a relationship so we call User
+    liked_users = db.relationship(
+        "User",
+        secondary=UBLike,
+        backref=db.backref("liked_blogs", lazy="dynamic"),
+        lazy="dynamic"
+    )
+    # 博客对应的标签
+    tags = db.relationship(
+        "Tag",
+        secondary=BTMap,
+        backref=db.backref("blogs", lazy='dynamic'),
+        lazy="dynamic"
+    )
+
+    @property
+    def index(self):
+        """
+        以年月的形式对文章进行归档
+        ex: 15年12月
+        :return:
+        """
+        return str(self.timestamp)[:4]+"年"+\
+            str(self.timestamp)[5:7]+"月"
+
+    @property
+    def liked(self):
+        """
+        属性函数, 判断当前用户是否点赞这门课
+        :return:
+        """
+        if current_user in self.liked_users:
+            return True
+        else:
+            return False
 
     @staticmethod
     def generate_fake(count=100):
@@ -323,18 +388,43 @@ class Blog(db.Model):
             b = Blog(
                 body = forgery_py.lorem_ipsum.sentences(randint(1, 5)),
                 timestamp =forgery_py.date.date(True),
-                author = u)
+                author = u
+            )
             db.session.add(b)
             db.session.commit()
 
-    @staticmethod
-    def on_changed_body(target, value, oldvalue, initiator):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-                        'h1', 'h2', 'h3', 'p']
-        target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'),
-            tags=allowed_tags, strip=True))
+#     @staticmethod
+#     def on_changed_body(target, value, oldvalue, initiator):
+#         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+#                         'h1', 'h2', 'h3', 'p']
+#         target.body_html = bleach.linkify(bleach.clean(
+#             markdown(value, output_format='html'),
+#             tags=allowed_tags, strip=True))
+#
+#db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+class Type(db.Model):
+    """
+    博客文章的分类
+    ex: 前端，后台，安卓，设计...
+    """
+    __tablename__ = 'types'
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(64))
+    blogs = db.relationship('Blog', backref="types", lazy="dynamic")
 
-db.event.listen(Blog.body, 'set', Blog.on_changed_body)
-#用于监听markdown编辑器
+    def __repr__(self):
+        return "<type %d>" % id
+
+
+class Tag(db.Model):
+    """
+    博客文章的标签
+    ex: js, css, flask...
+    """
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(64))
+
+    def __repr__(self):
+        return "<type %d>" % id
