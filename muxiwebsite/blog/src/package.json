@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "sass --watch --no-cache scss/pages/:../static/css/",
-    "watch:css":"watch 'npm run build:css' scss/*",
-    "build":"npm run build:css",
-    "watch":"npm run watch:css && npm run livereload",
-    "livereload":"live-reload --port 5050 ./"
+    "watch:css": "watch 'npm run build:css' scss/*",
+    "build": "npm run build:css",
+    "watch": "npm run watch:css && npm run livereload",
+    "livereload": "live-reload --port 5050 ./"
   },
   "author": "",
   "license": "ISC",
@@ -18,5 +18,9 @@
     "mockjs": "^0.1.10",
     "sass": "^0.5.0",
     "watch": "^0.16.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-imagemin": "^1.0.0"
   }
 }
