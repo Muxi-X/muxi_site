@@ -1,0 +1,41 @@
+.register {
+    height: 30px;
+    font-size: 14px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+
+}
+
+.register button {
+	height: 30px;
+    width: 50px;
+    color: $registe_font_gray;
+    background: $registe_back_gray;
+    margin: 0px -2px;
+}
+
+.register button a {
+    font-weight: bold;
+    line-height: 30px;
+    text-align: center;
+    color: inherit;
+}
+
+.register button:hover {
+    color: $white;
+    background: $deep_orange;
+}
+
+.top {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    height: 56px;
+    width: 56px;
+    background: $span_back_gray;
+    img {
+        vertical-align: middle;
+        text-align: center;
+    }
+}

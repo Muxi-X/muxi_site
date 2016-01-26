@@ -1,0 +1,39 @@
+.right_box_top, .right_box_bottom{
+	float: right;
+	width:185px;
+	overflow: hidden;
+	background: $white;
+	    padding: 15px;
+	    
+	img{
+		float: left;
+		margin-right: 8px; 
+	}
+	.title{
+		font-size: 14px;
+		    line-height: 41px;
+	}
+	span{
+		
+		    margin: 6px 2px;
+    line-height: 20px;
+    padding: 2px;
+	}
+}
+.right_box_top{
+	
+	span{
+		font-size: 12px;
+		display: inline-block;
+		background: $span_back_gray;
+		color: $white;
+	}
+}
+.right_box_bottom{
+	margin-top: 30px;
+	span{
+		font-size: 14px;
+		display: block;
+		padding: 6px 15px;
+	}
+}

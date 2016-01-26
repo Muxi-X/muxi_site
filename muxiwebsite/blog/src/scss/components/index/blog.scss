@@ -1,0 +1,124 @@
+    .middle_box {
+        width: 600px;
+        float: left;
+        .blog {
+            background: $white;
+            width: 600px;
+            height: 209px;
+            margin: 0px 0px 45px 0;
+            position: relative;
+            .conte {
+                width: 390px;
+                padding: 15px 22px 15px 0px;
+                .des {
+                    height: 45px;
+                    width: 100%;
+                    position: relative;
+                    img {
+                        height: 40px;
+                        width: 40px;
+                        float: left;
+                        position: relative;
+                    }
+                }
+                .title {
+                    padding: 0 10px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+                .title a {
+                    line-height: 22px;
+                    font-size: 20px;
+                    color: $title_gray;
+                }
+                .title a:hover {
+                    color: $deep_orange;
+                }
+                .name,
+                .date {
+                    color: $article_gray;
+                    line-height: 23px;
+                    font-size: 12px;
+                    padding: 0px 10px;
+                }
+                .side_line {
+                    width: 40px;
+                    float: left;
+                }
+                .side_line svg {
+                    height: 20px;
+                    width: 20px;
+                    margin: 9px 10px;
+                    fill: #aaa;
+                    cursor: pointer;
+                }
+                .side_line svg:visited{
+                    fill: $light_red;
+                }
+                .side_line svg:hover{
+                    fill: #666;
+
+                }
+                .side_line p {
+                    text-align: center;
+                    font-size: 10px;
+                }
+                .content {
+                    font-size: 12px;
+                    line-height: 22px;
+                    color: #68696b;
+                    padding: 0px 26px 8px 8px;
+                    overflow: hidden;
+                    height: 100px;
+                }
+                .foot_tag {
+                    margin-left: 40px;
+                }
+                .foot_tag span {
+                    background: $deep_orange;
+                    color: $white;
+                    font-size: 12px;
+                    margin: 10px 20px 0px 0px;
+                    line-height: 16px;
+                    display: inline-block;
+                    border-radius: 2px;
+                    padding: 0 5px;
+                }
+            }
+            .side {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 210px;
+                height: 209px;
+            }
+        }
+        .blog:hover {
+            box-shadow: 2px 2px 1px $deep_orange;
+        }
+        .footer {
+            .title {
+                margin: 10px auto;
+                text-align: center;
+                color: $side_title_gray;
+                font-size: 14px;
+            }
+            .pages {
+                margin: 10px auto;
+                text-align: center;
+                a {
+                    height: 23px;
+                    display: inline-block;
+                    width: 23px;
+                    margin: 20px 10px;
+                    line-height: 23px;
+                    background-color: $registe_back_gray;
+                    color: $white;
+                }
+                a:hover {
+                    background-color: $light_orange;
+                }
+            }
+        }
+    }
