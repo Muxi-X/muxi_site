@@ -1,19 +1,13 @@
-{% extends "pages/base2.html" %}
-{% block title %}博客首页{% endblock %}
+{% extends "pages/blog_base.html" %}
+{% block title %}木犀博客{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="/blog/static/css/reset.css">
 <link rel="stylesheet" type="text/css" href="/blog/static/css/index.css">
-
 {% endblock %}
-
-
 
 {% block content %}
 <div class="right_content">
     {% include "components/home_page/blog.html" %}
     {% include "components/home_page/right_tag.html" %}
 </div>
-
 {% endblock %}
-

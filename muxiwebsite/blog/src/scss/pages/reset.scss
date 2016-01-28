@@ -1,12 +1,14 @@
 /***
- blog reset.scss
- authored by
+ reset.scss
+ authored by sunly
 ***/
 html{
 	font-size: 12px;
+	height:100%;
 }
 body{
-	font-family: "Mircosoft YaHei","sans-serif","Arial","youyuan";
+	font-family: "Arial","Mircosoft YaHei","sans-serif";
+	height:100%;
 }
 body,button, form , textarea, input, p, h1,h2,h3,h4,h5,h6{
 	margin: 0;
