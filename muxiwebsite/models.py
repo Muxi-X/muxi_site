@@ -7,8 +7,9 @@ models.py
 """
 
 from . import db, login_manager, app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from random import seed
-from flask import current_app, request
+from flask import current_app, request, url_for
 from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import AnonymousUserMixin
@@ -17,6 +18,7 @@ import sys
 import bleach
 import markdown
 import hashlib
+import base64
 
 
 # secondary table
@@ -123,8 +125,9 @@ class User(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
-    username = db.Column(db.String(164))
-    avatar_hash = db.Column(db.String(32))
+    info = db.Column(db.Text)
+    username = db.Column(db.String(164), unique=True)
+    avatar_url = db.Column(db.String(32))
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
@@ -142,23 +145,6 @@ class User(db.Model, UserMixin):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
-    # def gravatar(self, size=100, default='identicon', rating='g'):
-    #     # gravatar 网站、生成头像
-	# 	# identicon: 图像生成器
-	# 	# g: 图像级别
-	# 	if request.is_secure:
-    #         url = "https://secure.gravatar.com/avatar"
-    #     else:
-    #         url = "http://www.gravatar.com/avatar"
-    #     hash = self.avatar_hash or hashlib.md5(self.email.encode('utf-8')).hexdigest()
-	# 	return "{url}/{hash}?s={size}&d={default}&r={rating}".format(
-	# 			url = url,
-	# 			hash = hash,
-	# 			size = size,
-	# 			default = default,
-	# 			rating = rating
-	# 			)
-
     def can(self, permissions):
         """判断用户的权限"""
         return self.role is not None and (self.role.permissions & permissions) == permissions
@@ -175,11 +161,48 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         """设置密码散列值"""
+        password = base64.b64decode(password)
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
         """验证密码散列值"""
         return check_password_hash(self.password_hash, password)
+
+    def generate_auth_token(self, expiration):
+        """generate a token"""
+        s = Serializer(
+            current_app.config['SECRET_KEY'],
+            expiration
+        )
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        """verify the user with token"""
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        # get id
+        return User.query.get_or_404(data['id'])
+
+    def to_json(self):
+        json_user = {
+            'id' : self.id,
+            'username' : self.username,
+            'email' : self.email
+            # 'share' : null  # => 待share api编写完成
+        }
+
+    @staticmethod
+    def from_json(json_user):
+        u = User(
+            username = json_user.get('username'),
+            password = json_user.get('password'),
+            email = json_user.get('email')
+        )
+        return u
 
     def __repr__(self):
         return "%r :The instance of class User" % self.username
@@ -190,6 +213,7 @@ class AnonymousUser(AnonymousUserMixin):
 	匿名用户类
 	谁叫你匿名，什么权限都没有
 	"""
+
     def can(self, permissions):
         return False
 
@@ -217,6 +241,7 @@ class Share(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     share = db.Column(db.Text)
+    content = db.Column(db.Text)  # 存取markdown渲染以后的内容
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
@@ -240,6 +265,35 @@ class Share(db.Model):
             db.session.add(p)
             db.session.commit()
 
+    def to_json(self):
+        json_share = {
+            'id' : self.id,
+            'title' : self.title,
+            'share' : self.share,
+            'date' : self.timestamp,
+            'username' : User.query.filter_by(id=self.author_id).first().username,
+            'comment' : url_for('api.get_shares_id_comments', id=self.id)
+        }
+        return json_share
+
+    def to_json2(self):
+        json_share = {
+            'id' : self.id,
+            'title' : self.title,
+            'share' : self.share,
+            'date' : self.timestamp,
+        }
+        return json_share
+
+    @staticmethod
+    def from_json(json_share):
+        share = Share(
+            title = json_share.get('title'),
+            share = json_share.get('share'),
+            author_id = current_user.id
+        )
+        return share
+
     def __repr__(self):
         return "%r is instance of class Share" % self.title
 
@@ -254,6 +308,14 @@ class Comment(db.Model):
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+
+    def to_json(self):
+        json_comment = {
+            'date' : self.timestamp,
+            'comment' : self.comment,
+            'username' : User.query.filter_by(id=self.author_id).first().username
+        }
+        return json_comment
 
     def __repr__(self):
         return "<the instance of model Comment>"
@@ -291,6 +353,16 @@ class Blog(db.Model):
         backref=db.backref("blogs", lazy='dynamic'),
         lazy="dynamic"
     )
+
+    @property
+    def index(self):
+        """
+        以年月的形式对文章进行归档
+        ex: 15年12月
+        :return:
+        """
+        return str(self.timestamp)[:4]+"年"+\
+            str(self.timestamp)[5:7]+"月"
 
     @property
     def liked(self):
@@ -334,6 +406,7 @@ class Blog(db.Model):
 class Type(db.Model):
     """
     博客文章的分类
+    ex: 前端，后台，安卓，设计...
     """
     __tablename__ = 'types'
     id = db.Column(db.Integer, primary_key=True)
@@ -347,6 +420,7 @@ class Type(db.Model):
 class Tag(db.Model):
     """
     博客文章的标签
+    ex: js, css, flask...
     """
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)

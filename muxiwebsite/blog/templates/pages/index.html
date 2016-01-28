@@ -1,4 +1,4 @@
-{% extends "pages/base.html" %}
+{% extends "pages/base2.html" %}
 {% block title %}博客首页{% endblock %}
 {% block head %}
 {{ super() }}
@@ -6,6 +6,9 @@
 <link rel="stylesheet" type="text/css" href="/blog/static/css/index.css">
 
 {% endblock %}
+
+
+
 {% block content %}
 <div class="right_content">
     {% include "components/home_page/blog.html" %}

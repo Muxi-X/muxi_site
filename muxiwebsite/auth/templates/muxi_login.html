@@ -86,9 +86,10 @@
         <div class="login_box">
             <form method="post">
                 {{ form.hidden_tag() }}
-                {{ form.username }}
-                {{ form.password }}
+                {{ form.username(placeholder="用户名") }}
+                {{ form.password(placeholder="密码")}}
                 {{ form.submit }}
+                <input type=hidden value="{{ next or '' }}" name=next>
             </form>
         </div>
     </div>

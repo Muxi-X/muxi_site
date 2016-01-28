@@ -1,10 +1,15 @@
-# ! /bin/bash
+#/usr/bin/env bash
 
-echo "--------create test database file--------"
+printf "=========== create database ============\n"
+printf "create migration files\n"
 python manage.py db init
-python manage.py db migrate -m "init"
+printf "create database\n"
+python manage.py db migrate
+printf "upgrade database\n"
 python manage.py db upgrade
-
+printf "create roles\n"
 python manage.py shell
-# type Role.insert_roles()
-echo "--------create database file done--------"
+printf "add user\n"
+python manage.py adduser neo1218@yeah.net neo1218
+printf "database setup done!"
+

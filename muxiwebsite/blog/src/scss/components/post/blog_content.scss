@@ -1,0 +1,57 @@
+.blog_content {
+    margin-bottom: 50px;
+    .describe {
+        position: relative;
+    }
+    .describe .photo {
+        position: absolute;
+        left: -80px;
+        width: 58px;
+        height: 58px;
+        top: 5px;
+        cursor: pointer;
+    }
+    .describe .title {
+        line-height: 34px;
+        font-size: 24px;
+        color: $title_gray;
+        height: 70px;
+    }
+    .describe p span {
+        display: inline-block;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .name {
+        color: $deep_orange;
+        margin-right: 30px;
+    }
+    .like {
+        float: right;
+        fill: #aaa;
+        margin-top: 9px;
+        display: inline-block;
+        color: $date_gray;
+        height: 23px;
+        width: 23px;
+         cursor: pointer;
+    }
+    .like:hover,
+    .like:active{
+        fill: $light_red;
+    }
+    .content {
+        text-indent: 2em;
+        font-size: 14px;
+        line-height: 28px;
+        color: $date_gray;
+        padding: 20px 36px 50px 0px;
+    }
+    .tag {
+        span {
+            display: inline-block;
+            margin-right: 10px;
+            color: $deep_orange;
+        }
+    }
+}

@@ -35,10 +35,27 @@ def index():
         blog.avatar = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
         blog.content = blog.body
     article_date = []
+
     for blog in blog_list:
-        article_date.append(str(blog.timestamp)[:-6])
+        if blog.index not in article_date:
+            article_date.append(blog.index)
+
     return render_template("pages/index.html", blog_list=blog_list,
                            article_tag=article_tag, article_date=article_date)
+
+
+@blogs.route('/index/<index>/', methods=["GET"])
+def ym(index):
+    """
+    博客归档页面
+    :return:
+    """
+    # blog_list = Blog.query.filter_by(index=index).all()
+    blog_list = []
+    for blog in Blog.query.all():
+        if blog.index == index:
+            blog_list.append(blog)
+    return render_template('placeholder.html', blog_list=blog_list)
 
 
 @blogs.route('/post/<int:id>/', methods=["POST", "GET"])
@@ -81,3 +98,8 @@ def like(id):
     :return:
     """
     pass
+
+@blogs.route('/test')
+def test():
+    return render_template('pages/base2.html')
+
