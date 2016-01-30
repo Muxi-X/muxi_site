@@ -1,26 +1,23 @@
 {
-  "name": "muxi_blog",
+  "name": "Muxi_blog",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "sass --watch --no-cache ./src/scss/pages/:./static/css/",
+    "build:css": "sass --no-cache ./src/scss/pages/index.scss:./static/css/index.css",
     "watch:css": "watch 'npm run build:css' ./src/scss/*",
     "build": "npm run build:css",
     "watch": "npm run watch:css && npm run livereload",
     "livereload": "live-reload --port 5050 ./"
   },
-  "author": "",
+  "author": "Muxi FE Team",
   "license": "ISC",
   "dependencies": {
-    "live-reload": "^1.1.0",
-    "mockjs": "^0.1.10",
-    "sass": "^0.5.0",
-    "watch": "^0.16.0"
+    
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-imagemin": "^1.0.0"
+    "live-reload": "^1.1.0",
+    "sass": "^0.5.0",
+    "watch": "^0.16.0"
   }
 }
