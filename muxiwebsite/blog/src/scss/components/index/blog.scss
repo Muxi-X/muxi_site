@@ -53,11 +53,12 @@
                     fill: #aaa;
                     cursor: pointer;
                 }
-                .side_line svg:visited {
+                .side_line svg:visited{
                     fill: $light_red;
                 }
-                .side_line svg:hover {
+                .side_line svg:hover{
                     fill: #666;
+
                 }
                 .side_line p {
                     text-align: center;
