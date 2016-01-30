@@ -1,48 +1,53 @@
 <div class="list margin_auto">
-    <div class="left">
-        <div class="book topic">
-            <span>木犀图书</span>
-        </div>
-        {% for book in books %}
-        <div class="td">
-            <div class="title">
-                <a href="#" class="title-link">
-                    《{{ book.title }} 》
-                </a>
-            </div>
-            <div class="date">归还日：{{ book.date }}</div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="middle">
-        <div class="share margin_auto topic">
-            <span>木犀分享</span>
-        </div>
-        {% for share in shares %}
-        <div class="title">
-            <a href="#" class="title-link">
-                {{ share.topic }}
-            </a>
-        </div>
-        <div class="comments">
-            <div class="comments_lists">
-                {{ share.author }}//{{ share.contents }}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="right">
-        <div class="blog topic">
-            <span>博客链接</span>
-        </div>
-        <ol class="lists">
-            {% for blog in blogs %}
-            <li>
-                <a href={{ blog.address }} class="address-link">
-                    {{ blog.address }}
-                </a>
-            </li>
-            {% endfor %}
-        </ol>
-    </div>
+	<div class="left">
+		<div class="book topic">
+			<span>木犀图书</span>
+		</div>
+		{% for lists in books%}
+		<div class="td">
+			<div class="title">
+				<a href="#" class="title-link">
+					《{{ lists.title }}》
+				</a>
+			</div>
+			<div class="date">归还日：{{ lists.date }}</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="middle">
+		<div class="share margin_auto topic">
+			<span>分享评论</span>
+		</div>
+		{% for comments in comments %}
+			<div class="title">
+				<a href="#" class="title-link">					{{ comments.topic }}
+				</a>
+			</div>
+			<div class="comments">
+				<div class="comments_lists">
+					{{ comments.author }}//{{ comments.contents }}
+				</div>
+				<div class="comments_lists">
+					{{ comments.author }}//{{ comments.contents }}
+				</div>
+				<div class="comments_lists">
+					{{ comments.author }}//{{ comments.contents }}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<div class="right">
+		<div class="blog topic">
+			<span>博客链接</span>
+		</div>
+		<ol class="lists">
+			{% for blogs in blogs %}
+			<li>
+				<a href="{{ blogs.address }}" class="address-link">
+					{{ blogs.address }}
+				</a>
+			</li>
+			{% endfor %}
+		</ol>
+	</div>
 </div>
