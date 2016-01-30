@@ -15,32 +15,23 @@
         position: relative;
         color: $title_gray;
     }
-    .home_img {
-        top: 9px;
-        left: 7px;
-        width: 39px;
-    }
-    .blog_img {
-        top: 10px;
-        left: 6px;
-        width: 41px;
-    }
     .about_img {
-        top: 19px;
-        left: 11px;
-        width: 31px;
+        
+        
         height: 31px;
     }
     p svg {
-        float: left;
-        position: absolute;
+        display: inline-block;
+        width: 39px;
         fill: currentColor;
+        margin: 0px 15px;
+        vertical-align: middle;
     }
     p .tag {
         display: inline-block;
         line-height: 70px;
         color: inherit;
-        margin: 2px 74px 0 53px;
+        vertical-align: middle;
     }
     p:hover {
         background: $light_blue;
@@ -52,7 +43,7 @@
         width: 40px;
         fill: #999;
     }
-    .search:hover{
+    .search:hover {
         fill: #272727;
     }
 }
