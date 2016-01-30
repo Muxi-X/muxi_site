@@ -1,17 +1,15 @@
-{% extends "pages/base.html" %}
+{% extends "pages/blog_base.html" %}
 {% block title %}博客{% endblock %}
 {% block head %}
-	{{ super() }}
-	<link rel="stylesheet" href="../../static/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="../../static/css/post.css">
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/blog/static/css/index.css">
 {% endblock %}
+
 {% block content %}
 <div class="right_blog">
-	<div class="post_conte">
-		{% include 'components/post/blog_content.html' %}
-		{% include 'components/post/comment.html' %}
-	</div>
+    <div class="post_conte">
+        {% include "components/post/blog_content.html" %}
+        {% include "components/post/comment.html" %}
+    </div>
 </div>
-	
-	
 {% endblock %}
