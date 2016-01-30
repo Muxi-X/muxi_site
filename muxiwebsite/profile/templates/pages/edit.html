@@ -1,0 +1,48 @@
+{% extends 'pages/base.html' %}
+{% block tittle %}个人编辑页{% endblock %}
+{% block head %}
+ 	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="../../static/css/edit.css">
+{% endblock %}
+{% block content %}
+		<div class="edit-container margin_auto">
+			<h1>修改个人资料</h1>
+			<p>Hi,你可以在这里修改自己的个人资料哦～</p>
+			<!-- 个人资料表单提交 -->
+			<form method="post"> 
+				<div class="form-group">
+					<label for="username">用户名</label>
+					<input type="text" class="form-input" id="username" autofocus required />
+				</div>
+				<div class="form-group">
+					<label for="pic">头像</label>
+					<input type="text" class="form-input" id="pic" placeholder="图片链接" required／> 
+				</div>
+				<div class="form-group">
+					<label for="introduce">个人介绍</label>
+					<textarea class="form-textarea" id="text"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="person-page">个人主页</label>
+					<input type="text" class="form-input" id="pic" placeholder="http://" required／>
+				</div>
+				<div class="form-group">
+					<label for="person-page">Github</label>
+					<input type="text" class="form-input" id="pic" placeholder="http://"／>
+				</div>
+				<div class="form-group">
+					<label for="person-page">Flickr</label>
+					<input type="text" class="form-input" id="pic" placeholder="http://"／>
+				</div>	
+				<div class="form-group">
+					<label for="person-page">新浪微博</label>
+					<input type="text" class="form-input" id="pic" placeholder="http://"／>
+				</div>
+				<div class="form-group">
+					<label for="person-page">知乎</label>
+					<input type="text" class="form-input" id="pic" placeholder="http://"／>
+				</div>
+				<input type="submit" class="form-submit" value="确定">				  
+			</form>
+		</div>
+{% endblock %}
