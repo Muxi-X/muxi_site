@@ -151,7 +151,7 @@ class User(db.Model, UserMixin):
 
     def is_admin(self):
         """判断当前用户是否是管理员"""
-        return self.username == current_app.config["MUXI_ADMIN"]
+        return self.can(Permission.ADMINISTER)
 
     @property
     def password(self):

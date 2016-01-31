@@ -65,7 +65,7 @@ pagedown = PageDown(app)
 class MyAdminIndexView(admin.AdminIndexView):
     """rewrite is_authenticated method"""
     def is_accessible(self):
-        # return login.current_user.is_authenticated
+        # admin required
         return login.current_user.is_admin()
 
     def inaccessible_callback(self, name, **kwargs):
@@ -77,12 +77,14 @@ admin = Admin(
         index_view=MyAdminIndexView(),
         base_template='my_master.html'
         )
-from .models import User, Share, Blog, Book, Comment
+from .models import User, Share, Blog, Book, Comment, Type, Tag
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
 admin.add_view(ModelView(Share, db.session))
 admin.add_view(ModelView(Comment, db.session))
 admin.add_view(ModelView(Blog, db.session))
+admin.add_view(ModelView(Type, db.session))
+admin.add_view(ModelView(Tag, db.session))
 
 
 # jinja2 filters
