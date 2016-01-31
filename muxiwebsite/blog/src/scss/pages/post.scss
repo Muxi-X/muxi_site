@@ -7,12 +7,14 @@
 @import "../components/side_line.scss";
 @import "../components/post/blog_content.scss";
 @import "../components/post/comment.scss";
-.right_blog {
-    margin-left: 200px;
+body{
+	background-color: $body_back_gray;
 }
-
-.post_conte {
-    width: 605px;
+.right_blog{
+	margin-left:200px;
+}
+.post_conte{
+	width: 605px;
     margin: 100px auto;
     padding: 25px 76px 90px 119px;
     background-color: #fff;
