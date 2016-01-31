@@ -1,6 +1,7 @@
     .middle_box {
         width: 600px;
         float: left;
+        padding-top: 2px;
         .blog {
             background: $white;
             width: 600px;
@@ -95,7 +96,8 @@
             }
         }
         .blog:hover {
-            box-shadow: 2px 2px 1px $deep_orange;
+            box-shadow: 0px 0px 0px 2px $deep_orange;
+            border-radius: 2px;
         }
         .footer {
             .title {

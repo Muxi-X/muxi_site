@@ -5,41 +5,54 @@
     left: 0px;
     top: 0px;
     background: $white;
+    overflow: hidden;
     .logo {
-        margin: 15px 44px;
+        margin: 22px auto;
+        display:block;
+        width:70px;
+        height:auto;
     }
-    p {
+    a {
         height: 70px;
         text-align: left;
         font-size: 16px;
         position: relative;
-        color: $title_gray;
+        color: #535353;
+        display:block;
+        border-bottom: 1px #d9dcdc solid;
+    }
+    .nav_link_first{
+        border-top: 1px #d9dcdc solid;
     }
     .about_img {
         height: 31px;
     }
-    p svg {
+    a svg {
         display: inline-block;
-        width: 39px;
-        fill: currentColor;
-        margin: 0px 15px;
+        width: 39px; 
+        fill:#d9dcdc;
+        margin-left: 30px;
+        margin-right: 15px;
         vertical-align: middle;
     }
-    p .tag {
+    a .tag {
         display: inline-block;
         line-height: 70px;
-        color: inherit;
         vertical-align: middle;
     }
-    p:hover {
+    a:hover {
         background: $light_blue;
         color: $white;
     }
+    a:hover svg{
+        fill:#fff;
+    }
     .search {
-        margin: 100px 70px;
+        margin: 0px 70px;
+        margin-top: 90px;
         height: 40px;
         width: 40px;
-        fill: #999;
+        fill: #d9dcdc;
     }
     .search:hover {
         fill: #272727;

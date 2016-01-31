@@ -1,7 +1,7 @@
 *.pyc
 -1
 **/*.pyc
-
+*.log.*
 venv
 migrations
 search.db
