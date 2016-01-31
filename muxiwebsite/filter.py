@@ -11,12 +11,11 @@
 from muxiwebsite import app
 from muxiwebsite.share import share
 from flask import Markup
-import markdown
+import markdown2
 
 
 # markdown装饰器
-# @app.template_filter('neomarkdown')
 @share.template_filter('neomarkdown')
 def neomarkdown(markdown_content):
-    content = Markup(markdown.markdowm(markdown_content))
+    content = Markup(markdown2.markdown(markdown_content, extras=["tables"]))
     return content

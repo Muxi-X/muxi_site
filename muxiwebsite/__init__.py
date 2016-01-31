@@ -31,7 +31,7 @@ from basedir import basedir
 import flask_admin as admin
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
-import markdown
+import markdown2
 import os
 
 # the root path of xueer
@@ -95,7 +95,8 @@ def neomarkdown(markdown_content):
     :param markdown_content: markdown
     :return: text
     """
-    content = Markup(markdown.markdown(markdown_content))
+    content = Markup(markdown2.markdown(markdown_content, extras=[
+        'tables', 'pyshell', 'fenced-code-blocks']))
     return content
 
 
