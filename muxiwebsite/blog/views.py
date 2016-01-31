@@ -28,7 +28,6 @@ def index():
     article_tag = Tag.query.all()
     blog_list = Blog.query.order_by('-id').all()
     for blog in blog_list:
-        blog.img_url = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
         blog.date = str(blog.timestamp)[:-6]
         blog.like_number = 1
         # blog.comment_number = 1
