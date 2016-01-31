@@ -12,7 +12,7 @@
 
 	</div>
 	<div class="content">
-		{{ blog.content }}
+		{{ blog.content | neomarkdown}}
 	</div>
 	<div class="tag">
 		{% for tag in blog.tag_list %}

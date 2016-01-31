@@ -3,7 +3,7 @@
     <div class="blog">
         <div class="conte">
             <div class="des">
-                <img src="{{ blog.img_url }}" alt="img" >
+                <img src="{{  blog.avatar }}" alt="img" >
                 <p class="title"><a href="/blog/post/{{ blog.id }}">{{ blog.title }}</a></p>
                 <span class="name">{{ blog.name }}</span>
                 <span class="date">{{ blog.date }}</span>
@@ -22,14 +22,14 @@
 
                 <p class="commen">{{ blog.comment_number }}</p>
             </div>
-            <div class="content">{{ blog.content }}</div>
+            <div class="content">{{ blog.content | neomarkdown }}</div>
             <div class="foot_tag">
                 {% for item in tag %}
                 <span>{{ item.value }}</span>
                 {% endfor %}
             </div>
         </div>
-        <img class="side" src="{{ blog.avatar }}" alt="">
+        <img class="side" src="{{ blog.img_url }}" alt="">
     </div>
     {% endfor %}
     <div class="footer">
