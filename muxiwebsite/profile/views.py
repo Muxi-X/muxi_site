@@ -8,8 +8,10 @@
 """
 
 from . import profile
-from flask import render_template, url_for
+from flask import render_template, url_for, redirect
 from ..models import User
+from .forms import EditForm
+from muxiwebsite import db
 
 
 @profile.route('/<int:id>/')
@@ -43,18 +45,25 @@ def user_profile(id):
         shares=shares
     )
 
-# @profile.route('/<int:id>/blogs/')
-# def blogs(id):
-#     user = User.query.get_or_404(id)
-#     blogs = user.blogs
-#     return render_template('components/list.html', blogs=blogs)
-# 
-# 
-# @profile.route('/<int:id>/comments/')
-# def comments(id):
-#     pass
-# 
-# 
-# @profile.route('/<int:id>/books/')
-# def books(id):
-#     pass
+
+@profile.route('/<int:id>/edit/', methods=['GET', 'POST'])
+def edit(id):
+    """
+    编辑个人页
+    """
+    user = User.query.filter_by(id=id).first()
+    form = EditForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.avatar_url = form.avatar_url.data
+        user.info = form.info.data
+        user.personal_blog = form.personal_blog.data
+        user.github = form.github.data
+        user.flickr = form.flickr.data
+        user.weibo = form.weibo.data
+        user.zhihu = form.zhihu.data
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('.user_profile', id=id))
+    return render_template('/pages/edit.html', form=form)
+
