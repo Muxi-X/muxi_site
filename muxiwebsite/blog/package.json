@@ -6,7 +6,7 @@
   "scripts": {
     "build:css": "sass --no-cache ./src/scss/pages/index.scss:./static/css/index.css",
     "watch:css": "watch 'npm run build:css' ./src/scss/*",
-    "build": "npm run build:css",
+    "build": "rm -rf ./static/css && mkdir ./static/css && npm run build:css",
     "watch": "npm run watch:css && npm run livereload",
     "livereload": "live-reload --port 5050 ./"
   },
