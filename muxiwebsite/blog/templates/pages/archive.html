@@ -1,0 +1,16 @@
+{% extends "pages/blog_base.html" %}
+{% block title %}博客归档{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/blog/static/css/index.css">
+{% endblock %}
+
+{% block content %}
+<div class="right_content">
+    <div class='index'>
+        <h1>{{ index }}</h1>
+    </div>
+    {% include "components/home_page/blog.html" %}
+    {% include "components/home_page/right_tag.html" %}
+</div>
+{% endblock %}

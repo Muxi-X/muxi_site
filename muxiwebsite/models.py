@@ -127,7 +127,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(164))
     info = db.Column(db.Text)
     username = db.Column(db.String(164), unique=True)
-    avatar_url = db.Column(db.String(32))
+    avatar_url = db.Column(db.String(164))
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
@@ -135,6 +135,12 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     # 用户发布的博客
     blogs = db.relationship('Blog', backref='author', lazy='dynamic')
+    # 个人信息(选填)
+    personal_blog = db.Column(db.String(164))
+    github = db.Column(db.String(164))
+    flickr = db.Column(db.String(164))
+    weibo = db.Column(db.String(164))
+    zhihu = db.Column(db.String(164))
 
     def __init__(self, **kwargs):
         """用户角色实现"""
@@ -151,7 +157,7 @@ class User(db.Model, UserMixin):
 
     def is_admin(self):
         """判断当前用户是否是管理员"""
-        return self.username == current_app.config["MUXI_ADMIN"]
+        return self.can(Permission.ADMINISTER)
 
     @property
     def password(self):

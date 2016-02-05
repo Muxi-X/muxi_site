@@ -43,7 +43,7 @@ def index():
                            article_tag=article_tag, article_date=article_date)
 
 
-@blogs.route('/index/<index>/', methods=["GET"])
+@blogs.route('/index/<string:index>/', methods=["GET"])
 def ym(index):
     """
     博客归档页面
@@ -54,7 +54,13 @@ def ym(index):
     for blog in Blog.query.all():
         if blog.index == index:
             blog_list.append(blog)
-    return render_template('placeholder.html', blog_list=blog_list)
+    for blog in blog_list:
+        blog.date = str(blog.timestamp)[:-6]
+        blog.like_number = 1
+        # blog.comment_number = 1
+        blog.avatar = "http://7xj431.com1.z0.glb.clouddn.com/1-140G2160520962.jpg"
+        blog.content = blog.body
+    return render_template('pages/archive.html', blog_list=blog_list, index=index)
 
 
 @blogs.route('/post/<int:id>/', methods=["POST", "GET"])
