@@ -420,7 +420,7 @@ class Type(db.Model):
     blogs = db.relationship('Blog', backref="types", lazy="dynamic")
 
     def __repr__(self):
-        return "<type %d>" % id
+        return "<type %d>" % self.id
 
 
 class Tag(db.Model):
