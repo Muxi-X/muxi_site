@@ -433,4 +433,4 @@ class Tag(db.Model):
     value = db.Column(db.String(64))
 
     def __repr__(self):
-        return "<type %d>" % id
+        return "<type %d>" % self.id
