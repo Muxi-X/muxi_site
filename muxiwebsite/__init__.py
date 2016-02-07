@@ -52,7 +52,7 @@ app.config["SHARE_PER_PAGE"] = 5
 app.config["MUXI_SHARES_PER_PAGE"] = 10
 app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
-app.config['BLOG_PER_PAGE'] = 2
+app.config['BLOG_PER_PAGE'] = 10
 
 
 # 初始化扩展(app全局属性)

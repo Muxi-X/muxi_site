@@ -24,9 +24,11 @@
             </div>
             <div class="content">{{ blog.content | neomarkdown }}</div>
             <div class="foot_tag">
-                {% for item in tag %}
-                <span>{{ item.value }}</span>
-                {% endfor %}
+                {% if blog.tags.count() != 0 %}
+                    {% for tag in blog.tags.all() %}
+                        <span>{{ tag.value }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <img class="side" src="{{ blog.img_url }}" alt="">
