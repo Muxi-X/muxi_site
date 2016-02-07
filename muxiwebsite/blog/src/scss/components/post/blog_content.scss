@@ -35,10 +35,10 @@
         color: $date_gray;
         height: 23px;
         width: 23px;
-         cursor: pointer;
+        cursor: pointer;
     }
     .like:hover,
-    .like:active{
+    .like:active {
         fill: $light_red;
     }
     .content {
@@ -55,9 +55,30 @@
             color: $deep_orange;
         }
     }
-    .content img{
-        max-width:100%;
-        height:auto;
-        margin:0 auto;
+    .content img {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+    .content table {
+        border: 1px solid #BDBDBD;
+        border-collapse:collapse;
+    }
+    tr{
+        border-bottom:1px solid #BDBDBD;
+    }
+    thead tr{
+        background-color: #EFEFEF;
+    }
+    tr:nth-child(2){
+        background-color: #EFEFEF;
+    }
+    th,td{
+        padding:0;
+        border-right: 1px solid #BDBDBD;
+        text-align: center;
+    }
+    th:last-child,td:last-child{
+        border-right: none;
     }
 }
