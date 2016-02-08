@@ -22,7 +22,7 @@
 
                 <p class="commen">{{ blog.comment_number }}</p>
             </div>
-            <div class="content">{{ blog.content | neomarkdown }}</div>
+            <div class="content">{{ blog.intro }}</div>
             <div class="foot_tag">
                 {% for item in tag %}
                 <span>{{ item.value }}</span>
