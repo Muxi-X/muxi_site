@@ -21,7 +21,7 @@
                 </svg>
                 <p class="commen">{{ blog.comment_number }}</p>
             </div>
-            <div class="content">{{ blog.content | neomarkdown }}</div>
+            <div class="content">{{ blog.intro }}</div>
             <div class="foot_tag">
                 {% if blog.tags.count() != 0 %} {% for tag in blog.tags.all() %}
                 <span>{{ tag.value }}</span> {% endfor %} {% endif %}
