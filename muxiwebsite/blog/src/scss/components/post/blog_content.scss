@@ -21,11 +21,13 @@
         display: inline-block;
         line-height: 40px;
         font-size: 14px;
-        color: $input;
     }
     .name {
         color: $deep_orange;
         margin-right: 30px;
+    }
+    .time{
+        color: $input;
     }
     .like {
         float: right;
