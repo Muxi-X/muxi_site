@@ -26,7 +26,6 @@
                     padding: 0 10px;
                     white-space: nowrap;
                     text-overflow: ellipsis;
-                    overflow: hidden;
                 }
                 .title a {
                     line-height: 22px;
@@ -36,21 +35,27 @@
                 .title a:hover {
                     color: $deep_orange;
                 }
+                .title,.info{
+                    margin-left: 40px; 
+                }
+                .info{
+                    margin-top: 5px;
+                }
                 .name,
                 .date {
                     color: $article_gray;
-                    line-height: 23px;
                     font-size: 12px;
                     padding: 0px 10px;
                 }
                 .side_line {
-                    width: 40px;
+                    width: 28px;
                     float: left;
+                    margin-top: 15px;
                 }
                 .side_line svg {
                     height: 20px;
                     width: 20px;
-                    margin: 9px 10px;
+                    margin: 9px 4px;
                     fill: #aaa;
                     cursor: pointer;
                 }
@@ -67,11 +72,12 @@
                 }
                 .content {
                     font-size: 12px;
-                    line-height: 22px;
+                    line-height: 24px;
                     color: #68696b;
-                    padding: 0px 26px 8px 8px;
+                    padding: 15px 23px 0px 0px;
                     overflow: hidden;
-                    height: 100px;  
+                    height: 100px; 
+                    margin-left: 40px; 
                 }
                 .content table{
                     border: 1px solid #000; 

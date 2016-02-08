@@ -1,7 +1,7 @@
 <div class="comment">
 	{% for comment in comment_list %}
 	<div class="each_comment">
-		<!--h3 class="name">{{ comment.name }}</h3-->
+		<h3 class="name">{{ comment.author.username }}</h3>
 		<span class="date">{{ comment.date }}</span>
 		<p>{{ comment.content }}</p>
 	</div>
