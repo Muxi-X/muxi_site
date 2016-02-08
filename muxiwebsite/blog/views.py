@@ -56,7 +56,6 @@ def ym(index):
 
 
 @blogs.route('/post/<int:id>/', methods=["POST", "GET"])
-@login_required
 def post(id):
     """
     博客文章页面
@@ -69,9 +68,16 @@ def post(id):
             blog.timestamp.minute)
     if form.validate_on_submit():
         # 提交评论
+        if current_user.is_authenticated:
+            name = current_user.username
+            uid = current_user.id
+        else:
+            name = form.username.data
+            uid = 0
         comment = Comment(
             comment=form.comments.data,
-            author_id=current_user.id,
+            author_id= uid,
+            author_name = name,
             blog_id=id
         )
         db.session.add(comment)

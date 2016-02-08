@@ -131,7 +131,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
-    comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    # comments = db.relationship('Comment', backref='author', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     # 用户发布的博客
     blogs = db.relationship('Blog', backref='author', lazy='dynamic')
@@ -313,6 +313,7 @@ class Comment(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_name = db.Column(db.String(164))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
     def to_json(self):
@@ -400,16 +401,7 @@ class Blog(db.Model):
             db.session.add(b)
             db.session.commit()
 
-#     @staticmethod
-#     def on_changed_body(target, value, oldvalue, initiator):
-#         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-#                         'h1', 'h2', 'h3', 'p']
-#         target.body_html = bleach.linkify(bleach.clean(
-#             markdown(value, output_format='html'),
-#             tags=allowed_tags, strip=True))
-#
-#db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+
 class Type(db.Model):
     """
     博客文章的分类
