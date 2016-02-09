@@ -20,7 +20,7 @@ def index():
     blog_all = Blog.query.order_by('-id').all()
     blog_list = Blog.query.order_by('-id').paginate(page, current_app.config['BLOG_PER_PAGE'], False)
     for blog in blog_all:
-        blog.date = str(blog.timestamp)[:-3]
+        blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
         blog.avatar = User.query.filter_by(id = blog.author_id).first().avatar_url
         blog.content = blog.body
     article_date = []
@@ -44,7 +44,7 @@ def ym(index):
         if blog.index == index:
             blog_list.append(blog)
     for blog in blog_list:
-        blog.date = str(blog.timestamp)[:-3]
+        blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
         blog.avatar = User.query.filter_by(id=blog.author_id).first().avatar_url
         blog.content = blog.body
     article_date = []
@@ -56,7 +56,6 @@ def ym(index):
 
 
 @blogs.route('/post/<int:id>/', methods=["POST", "GET"])
-@login_required
 def post(id):
     """
     博客文章页面
@@ -64,12 +63,21 @@ def post(id):
     form = CommentForm()
     blog = Blog.query.get_or_404(id)
     blog.content = blog.body
+    blog.date = "%d年%d月%d日 %d:%d" % (blog.timestamp.year,
+            blog.timestamp.month, blog.timestamp.day, blog.timestamp.hour,
+            blog.timestamp.minute)
     if form.validate_on_submit():
         # 提交评论
+        if current_user.is_authenticated:
+            name = current_user.username
+            uid = current_user.id
+        else:
+            name = form.username.data
+            uid = 0
         comment = Comment(
             comment=form.comments.data,
-            # count=len(blog.)+1,
-            author_id=current_user.id,
+            author_id= uid,
+            author_name = name,
             blog_id=id
         )
         db.session.add(comment)
@@ -82,7 +90,7 @@ def post(id):
 
     comment_list =Comment.query.filter_by(blog_id=id).all()
     for comment in comment_list:
-        comment.date = str(comment.timestamp)[:-3]
+        comment.date = str(comment.timestamp)[:-10]
         comment.content = comment.comment
     return render_template("pages/post.html", blog=blog, form=form, comment_list=comment_list)
 
@@ -98,7 +106,7 @@ def types(type):
     type_item = Type.query.filter_by(value=type).first()
     blog_list = Blog.query.filter_by(type_id=type_item.id).paginate(page, current_app.config['BLOG_PER_PAGE'], False)
     for blog in blog_all:
-        blog.date = str(blog.timestamp)[:-3]
+        blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
         blog.avatar = User.query.filter_by(id=blog.author_id).first().avatar_url
         blog.content = blog.body
 

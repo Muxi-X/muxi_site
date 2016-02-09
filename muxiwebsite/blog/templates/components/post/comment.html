@@ -1,7 +1,7 @@
 <div class="comment">
 	{% for comment in comment_list %}
 	<div class="each_comment">
-		<h3 class="name">{{ comment.author.username }}</h3>
+		<h3 class="name">{{ comment.author_name }}</h3>
 		<span class="date">{{ comment.date }}</span>
 		<p>{{ comment.content }}</p>
 	</div>
@@ -9,6 +9,9 @@
 	<form method="post">
 	    <!--input class="text" type="text" value="昵称" /-->
         {{ form.hidden_tag() }}
+        {% if not current_user.is_authenticated %}
+            {{ form.username }}
+        {% endif %}
         {{ form.comments(class="textarea", rows="4", cols="50", type="textarea") }}
 	    <!--textarea  class="textarea" rows="4" cols="50" type="textarea">你的看法？</textarea-->
         {{ form.submit(class="button", value="评论") }}

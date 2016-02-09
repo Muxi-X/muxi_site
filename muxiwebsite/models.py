@@ -131,7 +131,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
-    comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    # comments = db.relationship('Comment', backref='author', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     # 用户发布的博客
     blogs = db.relationship('Blog', backref='author', lazy='dynamic')
@@ -248,7 +248,7 @@ class Share(db.Model):
     title = db.Column(db.Text)
     share = db.Column(db.Text)
     content = db.Column(db.Text)  # 存取markdown渲染以后的内容
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
 
@@ -310,9 +310,10 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
     count = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_name = db.Column(db.String(164))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
     def to_json(self):
@@ -338,7 +339,7 @@ class Blog(db.Model):
     body = db.Column(db.Text)
     img_url = db.Column(db.String(164))
     # body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章分类: 一篇文章对应一个分类
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
@@ -400,16 +401,7 @@ class Blog(db.Model):
             db.session.add(b)
             db.session.commit()
 
-#     @staticmethod
-#     def on_changed_body(target, value, oldvalue, initiator):
-#         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-#                         'h1', 'h2', 'h3', 'p']
-#         target.body_html = bleach.linkify(bleach.clean(
-#             markdown(value, output_format='html'),
-#             tags=allowed_tags, strip=True))
-#
-#db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+
 class Type(db.Model):
     """
     博客文章的分类
