@@ -7,14 +7,11 @@
 	</div>
 	{% endfor %}
 	<form method="post">
-	    <!--input class="text" type="text" value="昵称" /-->
         {{ form.hidden_tag() }}
         {% if not current_user.is_authenticated %}
-            {{ form.username }}
+            {{ form.username(class="text", placeholder="昵称") }}
         {% endif %}
-        {{ form.comments(class="textarea", rows="4", cols="50", type="textarea") }}
-	    <!--textarea  class="textarea" rows="4" cols="50" type="textarea">你的看法？</textarea-->
+        {{ form.comments(class="textarea", rows="4", cols="50", type="textarea", placeholder="你的看法？") }}
         {{ form.submit(class="button", value="评论") }}
-	    <!--input class="button" type="button" value="评论"-->
     </form>
 </div>
