@@ -39,6 +39,9 @@
         width: 23px;
         cursor: pointer;
     }
+    .clicked .like{
+        fill: $light_red;
+    }
     .like:hover,
     .like:active {
         fill: $light_red;
