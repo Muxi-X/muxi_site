@@ -43,7 +43,8 @@ muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://test:test@115.28.152.113/muxi_data"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['WHOOSH_BASE'] = "search.db"
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索最多加载5个搜索结果
