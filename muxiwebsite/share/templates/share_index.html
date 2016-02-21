@@ -9,8 +9,12 @@
     {% endif %}
     <div class="mdl-tabs__tab-bar" id="header_tab_bar">
         <a href="/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
-        <a href="/hot" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
-        <a href="/1" class="mdl-tabs__tab header_tabs">MINE</a>
+        <a href="/hot/" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
+        {% if current_user.is_authenticated %}
+            <a href="/profile/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
+        {% else %}
+            <a href="/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
+        {% endif %}
     </div>
     <a href="/share/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
     <a href="/share/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>

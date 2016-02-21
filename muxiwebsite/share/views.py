@@ -61,7 +61,7 @@ def index():
         shares_pages = None
 
     for share in shares:
-        share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
+        share.avatar = User.query.filter_by(id=share.author_id).first().avatar_url
         share.comment_count = share.comment.count()
         share.author = User.query.filter_by(id=share.author_id).first().username
 
@@ -95,11 +95,12 @@ def view_share(id):
         return redirect(url_for('shares.view_share', id=id))
 
     # share.avatar = User.query.filter_by(share=share.id).first().avatar_hash
-    share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
+    # share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
+    share.avatar =  User.query.filter_by(id=share.author_id).first().avatar_url
     share.comments = len(Comment.query.filter_by(share_id=share.id).all())
 
     for comment in comments:
-        comment.avatar = "http://7xj431.com1.z0.glb.clouddn.com/download.jpeg"
+        comment.avatar = User.query.filter_by(id=comment.author_id).first().avatar_url
         comment.username = User.query.filter_by(id=comment.author_id).first().username
         comment.content = comment.comment
     return render_template(
