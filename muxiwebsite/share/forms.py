@@ -15,7 +15,8 @@ from flask.ext.pagedown.fields import PageDownField
 
 class ShareForm(Form):
     """分享表单 markdown编辑器"""
-    title = StringField(validators=[Required()])
+    # title = StringField(validators=[Required()])
+    title = TextAreaField(validators=[Required()])
     share = PageDownField(validators=[Required()])
     submit = SubmitField('分享')
 

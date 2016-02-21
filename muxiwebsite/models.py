@@ -61,6 +61,7 @@ class Role(db.Model):
     """
     用户角色定义
     """
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
@@ -103,6 +104,7 @@ class Role(db.Model):
 class Book(db.Model):
     """图书类"""
     __searchable__ = ['name', 'tag', 'summary']
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key = True)
     url = db.Column(db.String(164))
@@ -122,6 +124,7 @@ class Book(db.Model):
 
 class User(db.Model, UserMixin):
     """用户类"""
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
@@ -243,6 +246,7 @@ if enable_search:
 
 class Share(db.Model):
     """分享类"""
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = "shares"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
@@ -306,6 +310,7 @@ class Share(db.Model):
 
 class Comment(db.Model):
     """评论类"""
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
@@ -330,6 +335,7 @@ class Comment(db.Model):
 
 class Blog(db.Model):
     """博客类"""
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(164))
@@ -407,6 +413,7 @@ class Type(db.Model):
     博客文章的分类
     ex: 前端，后台，安卓，设计...
     """
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'types'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(64))
@@ -421,6 +428,7 @@ class Tag(db.Model):
     博客文章的标签
     ex: js, css, flask...
     """
+    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(64))
