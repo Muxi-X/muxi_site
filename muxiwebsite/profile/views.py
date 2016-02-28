@@ -21,7 +21,7 @@ def user_profile(id):
     木犀个人页
     """
     user = User.query.get_or_404(id)
-    user.avatar = "http://7xj431.com1.z0.glb.clouddn.com/20150629_182823.jpg"
+    user.avatar = user.avatar_url
     blogs = user.blogs
     for blog in blogs:
         blog.address = url_for('blogs.post', id=blog.id)

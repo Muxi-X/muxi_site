@@ -1,7 +1,10 @@
 <div class="register">
-	<button><a href="">注册</a></button>
-	<button><a href="">登录</a></button>
+    {% if current_user.is_authenticated %}
+        <button><a href={{ url_for("auth.login") }}>登录</a></button>
+    {% else %}
+        <button><a href={{ url_for("auth.logout") }}>登出</a></button>
+    {% endif %}
 </div>
 <div class="top">
-    <a href="#"><img src="/blog/static/img/to_top.png" alt=""></a>
+    <a href={{ url_for("auth.login") }}><img src="/blog/static/img/to_top.png" alt=""></a>
 </div>
