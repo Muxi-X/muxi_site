@@ -12,14 +12,13 @@
 
 {% block page_content %}
 {% include 'header.html' %}
-
 <div class="bar" id="bar">
 	<div class="progress"></div>
 </div>
-
 <div class="container">
 	<div class="left">
         <div class="content">新增图书
+<<<<<<< HEAD
             <div id="next" class="btn"></div>
             <div id="prev" class="btn"></div>
         </div>
@@ -51,6 +50,39 @@
         </div>
     </div>
     <div class="right">
+=======
+	   		<div id="next" class="btn"></div>
+            <div id="prev" class="btn"></div>
+        </div>
+		<div class="showbox">
+		   <ul class="slide">
+           {% for i in range_book_count %}
+		   <li class="box">
+               {% for book in new_book_list[i*6:(i+1)*6] %}
+		       <div class="new_book">
+                   <a href="/book/info/{{ book.id }}/"><img src={{ book.image }} alt="" class="book"></a>
+                   <div class="book_information">
+                      <a href="/book/info/{{ book.id }}/">
+		               <p class="title">{{ book.name}}</p>
+		               <p class="author">{{ book.author }}</p>
+                       </a>
+                   </div>
+                   <div class="book_tags">
+    	               <p>
+                       类别：{{ book.tag }}<br/>
+                       <br/>
+                       {{ book.summary[:100] }}...
+                       </p>
+                   </div>
+               </div>
+               {% endfor %}
+           </li>
+           {% endfor %}
+		  </ul>
+	    </div>
+	</div>
+	<div class="right">
+>>>>>>> 89b01d3afe7c6a196333f36d608b6a27a02ec9cd
         <span class="content content_right">最近借阅</span>
         {% for book in get_book_list %}
         <div class="new_book">
