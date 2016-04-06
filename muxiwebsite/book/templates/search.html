@@ -2,18 +2,18 @@
 {% block title %}<title>木犀搜索</title>{% endblock %}
 
 {% block css_file %}
-  <link href="/book/static/css/First.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/book/static/css/First.css" rel="stylesheet" type="text/css" />
+    <link href="/book/static/css/reset.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block page_content %}
 <div class="search">
     <form method="post">
-      {{ form.hidden_tag() }}
-      {{ form.search }}
-      {{ form.status1.label }}{{ form.status1 }}
-      {{ form.status2.label }}{{ form.status2 }}
-      {{ form.submit }}
+        {{ form.hidden_tag() }}
+        {{ form.search }}
+        {{ form.status1.label }}{{ form.status1 }}
+        {{ form.status2.label }}{{ form.status2 }}
+        {{ form.submit }}
     </form>
     <hr/>
     <p>
@@ -24,6 +24,6 @@
 {% endblock %}
 
 {% block script_file %}
-  <script type="text/javascript" src="/book/static/js/jquery-1.3.2.min.js"></script>
-  <script type="text/javascript" src="/book/static/js/shouye.js"></script>
+    <script type="text/javascript" src="/book/static/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="/book/static/js/shouye.js"></script>
 {% endblock %}
