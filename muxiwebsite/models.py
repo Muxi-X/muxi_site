@@ -106,6 +106,7 @@ class Book(db.Model):
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key = True)
     url = db.Column(db.String(164))
+    bid = db.Column(db.String(164))
     name = db.Column(db.Text)
     author = db.Column(db.Text)
     tag = db.Column(db.String(164))
