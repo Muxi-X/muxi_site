@@ -31,7 +31,7 @@ from basedir import basedir
 import flask_admin as admin
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
-from flaskext.mysql import MySQL
+#from flaskext.mysql import MySQL
 import markdown
 import os
 
@@ -56,8 +56,8 @@ app.config['MUXI_USERS_PER_PAGE'] = 10
 
 
 # 初始化扩展(app全局属性)
-mysql = MySQL()
-mysql.init_app(app)
+#mysql = MySQL()
+#mysql.init_app(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'

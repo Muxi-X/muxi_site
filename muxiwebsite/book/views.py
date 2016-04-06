@@ -130,10 +130,10 @@ def search_results():
 
 
 # 对所有访客可见，但只有登录用户可以借阅(html改动)
-@books.route('/info/<name>/', methods=["POST", "GET"])
-def info(name):
+@books.route('/info/<int:id>/', methods=["POST", "GET"])
+def info(id):
     form = GetForm()
-    book = Book.query.filter_by(name=name).first()
+    book = Book.query.get_or_404(id)
     if form.validate_on_submit():
         day = form.day.data
         if int(day) >= 0:

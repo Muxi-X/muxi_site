@@ -36,9 +36,9 @@
 		  	<li class="box">
 			   {% for book in new_book_list[i*6:(i+1)*6] %}
 				     <div class="new_book">
-					          <a href="/info/{{ book.name }}"><img src={{ book.image }} alt="" class="book"></a>
+					          <a href="/book/info/{{ book.id }}/"><img src={{ book.image }} alt="" class="book"></a>
                     <div class="book_information">
-							      <a href="/info/{{ book.name }}">
+							      <a href="/book/info/{{ book.id }}/">
 						                <p class="title">{{ book.name}}</p>
 						 	              <p class="author">{{ book.author }}</p>
 						        </a>
