@@ -25,7 +25,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user is not None and user.verify_password:
+        if user is not None and user.verify_password(form.data.password):
             login_user(user)
             return redirect_back('profile.user_profile', id=current_user.id)
         flash("用户名或密码不存在!")
