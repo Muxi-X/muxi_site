@@ -21,7 +21,6 @@
 from . import books
 from .. import db, app
 # from ..auth._decorate import auth_login
-from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug import secure_filename
 from muxiwebsite.models import User, Book
 from forms import BookForm, GetForm, LoginForm, RterForm
