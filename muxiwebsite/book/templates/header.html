@@ -1,77 +1,62 @@
-
- 	<div class="header">
-
-				<div class="nav_image">
-					<img src="/book/static/image/logo.png">
-				</div>
-		   		<ul class="menu">
-					<li class="nav home"><a href="/">HOME</a></li>
-					<li class="nav search"><a href="javascript:void(0)" onclick="showBorder()">SEARCH</a></li>
-					<!--弹出框-->
-						<a href="javascript:void(0)" onclick="hideBorder()"><div class="close" id="close"></div></a>
-					<!--关闭 -->
-
-						<div id="content" class="light_content">
-						<div class="search_word">搜索</div>
-						<form action="/search_results/" >
-							<div class="search_ipt">
-								<input type="text" class="ipt" placeholder="书名、关键词" name="search">
-								<input type="submit" class="search_logo" alt="search" value="">
-	    				</div>
-				
-							<ul class="tags">
-								<li><a href="/book/search_results/?search=前端&range=all">前端</a></li>
-								<li><a href="/book/search_results/?search=后台&range=all">后台</a></li>
-								<li><a href="/book/search_results/?search=设计&range=all">设计</a></li>
-								<li><a href="/book/search_results/?search=互联网&range=all">互联网</a></li>
-								<li><a href="/book/search_results/?search=其他&range=all">其他</a></li>
-							</ul>
-	 					</form>
-						</div>
-
-
-				{% if current_user.is_authenticated %}
-					<li class="nav user"><a href="/user/{{ current_user.id }}">Hi!{{ current_user.username }}</a></li>
-					<li class="nav log"><a href="/logout">LOG OUT</a></li>
-				{% else %}
-					<li class="nav log"><a href="javascript:;" onclick="showBorderLog()">LOG ON</a></li>
-						<div id="content_log" class="light_content users">
-				 {% block form_content %}
-<div class="dengLu">登录</div>
-  <form method="post">
-	   <div class="logOn_input">
-				<label class="logo name" for="name"></label>
-				<div class="logOn_input_text">
-        {{ form.hidden_tag() }}
-        {{ form.username }}
-       </div>
-				<span class="logOn_text">姓名</span>
-			</div>
-			<div class="logOn_input">
-				<label class="logo code" for="code"></label>
-				<!--input type="password" class="logOn_input_text"-->
-        <div class="logOn_input_text">
-          {{ form.password }}
-        </div>
-				<span class="logOn_text">密码</span>
-			</div>
-				<input type="submit" class="btn go" value="登录">
-
-	 </form>
-
-	 <div class="btn cancel"><a href="javascript:void(0)" onclick="hideBorderLog()">取消</a>
-</div>
-
-{% endblock %}
-						</div>
-
-				{% endif %}
-				
-
-			</ul>
-
+<div class="header">
+	<div class="nav_image">
+		<img src="/book/static/image/logo.png">
 	</div>
-	<div id="fade" class="black_overlay"></div>
-				<div id="fade_log" class="black_overlay"></div>
-
-
+	<ul class="menu">
+		<li class="nav home"><a href="/book/">HOME</a></li>
+		<li class="nav search"><a href="javascript:void(0)" onclick="showBorder()">SEARCH</a></li>
+		<!--弹出框-->
+		<a href="javascript:void(0)" onclick="hideBorder()"><div class="close" id="close"></div></a>
+		<!--关闭 -->
+		<div id="content" class="light_content">
+            <div class="search_word">搜索</div>
+            <form action="/book/search_results/" >
+                <div class="search_ipt">
+                    <input type="text" class="ipt" placeholder="书名、关键词" name="search">
+                    <input type="submit" class="search_logo" alt="search" value="">
+                </div>
+                <ul class="tags">
+                    <li><a href="/book/search_results/?search=前端&range=all">前端</a></li>
+                    <li><a href="/book/search_results/?search=后台&range=all">后台</a></li>
+                    <li><a href="/book/search_results/?search=设计&range=all">设计</a></li>
+                    <li><a href="/book/search_results/?search=互联网&range=all">互联网</a></li>
+                    <li><a href="/book/search_results/?search=其他&range=all">其他</a></li>
+                </ul>
+            </form>
+        </div>
+        {% if current_user.is_authenticated %}
+        <li class="nav user"><a href="/profile/{{ current_user.id }}/">Hi! {{ current_user.username }}</a></li>
+        <li class="nav log"><a href="/auth/logout/">LOG OUT</a></li>
+        {% else %}
+        <li class="nav log"><a href="javascript:;" onclick="showBorderLog()">LOG ON</a></li>
+        <div id="content_log" class="light_content users">
+            {% block form_content %}
+            <div class="dengLu">登录</div>
+            <form method="post">
+                <div class="logOn_input">
+                    <label class="logo name" for="name"></label>
+                    <div class="logOn_input_text">
+                        {{ form.hidden_tag() }}
+                        {{ form.username }}
+                    </div>
+                    <span class="logOn_text">姓名</span>
+                </div>
+                <div class="logOn_input">
+                    <label class="logo code" for="code"></label>
+                    <!--input type="password" class="logOn_input_text"-->
+                    <div class="logOn_input_text">
+                        {{ form.password }}
+                    </div>
+                    <span class="logOn_text">密码</span>
+                </div>
+                <input type="submit" class="btn go" value="登录">
+            </form>
+            <div class="btn cancel"><a href="javascript:void(0)" onclick="hideBorderLog()">取消</a>
+            </div>
+            {% endblock %}
+        </div>
+        {% endif %}
+    </ul>
+</div>
+<div id="fade" class="black_overlay"></div>
+<div id="fade_log" class="black_overlay"></div>

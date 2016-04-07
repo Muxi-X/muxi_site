@@ -61,7 +61,6 @@ class Role(db.Model):
     """
     用户角色定义
     """
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
@@ -104,10 +103,10 @@ class Role(db.Model):
 class Book(db.Model):
     """图书类"""
     __searchable__ = ['name', 'tag', 'summary']
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key = True)
     url = db.Column(db.String(164))
+    bid = db.Column(db.String(164))
     name = db.Column(db.Text)
     author = db.Column(db.Text)
     tag = db.Column(db.String(164))
@@ -124,26 +123,19 @@ class Book(db.Model):
 
 class User(db.Model, UserMixin):
     """用户类"""
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(164))
     info = db.Column(db.Text)
     username = db.Column(db.String(164), unique=True)
-    avatar_url = db.Column(db.String(164))
+    avatar_url = db.Column(db.String(32))
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
-    # comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     # 用户发布的博客
     blogs = db.relationship('Blog', backref='author', lazy='dynamic')
-    # 个人信息(选填)
-    personal_blog = db.Column(db.String(164))
-    github = db.Column(db.String(164))
-    flickr = db.Column(db.String(164))
-    weibo = db.Column(db.String(164))
-    zhihu = db.Column(db.String(164))
 
     def __init__(self, **kwargs):
         """用户角色实现"""
@@ -160,7 +152,8 @@ class User(db.Model, UserMixin):
 
     def is_admin(self):
         """判断当前用户是否是管理员"""
-        return self.can(Permission.ADMINISTER)
+        # return self.username == current_app.config["MUXI_ADMIN"]
+        return self.role_id == 2
 
     @property
     def password(self):
@@ -246,13 +239,12 @@ if enable_search:
 
 class Share(db.Model):
     """分享类"""
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = "shares"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     share = db.Column(db.Text)
     content = db.Column(db.Text)  # 存取markdown渲染以后的内容
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
 
@@ -310,15 +302,13 @@ class Share(db.Model):
 
 class Comment(db.Model):
     """评论类"""
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
     count = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    author_name = db.Column(db.String(164))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
     def to_json(self):
@@ -335,17 +325,15 @@ class Comment(db.Model):
 
 class Blog(db.Model):
     """博客类"""
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(164))
     # body 直接存markdown，在服务器端渲染
     title = db.Column(db.Text)
-    intro = db.Column(db.Text)
     body = db.Column(db.Text)
     img_url = db.Column(db.String(164))
     # body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章分类: 一篇文章对应一个分类
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
@@ -407,20 +395,28 @@ class Blog(db.Model):
             db.session.add(b)
             db.session.commit()
 
-
+#     @staticmethod
+#     def on_changed_body(target, value, oldvalue, initiator):
+#         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+#                         'h1', 'h2', 'h3', 'p']
+#         target.body_html = bleach.linkify(bleach.clean(
+#             markdown(value, output_format='html'),
+#             tags=allowed_tags, strip=True))
+#
+#db.event.listen(Blog.body, 'set', Blog.on_changed_body)
 class Type(db.Model):
     """
     博客文章的分类
     ex: 前端，后台，安卓，设计...
     """
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'types'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(64))
     blogs = db.relationship('Blog', backref="types", lazy="dynamic")
 
     def __repr__(self):
-        return "<type %d>" % self.id
+        return "<type %d>" % id
 
 
 class Tag(db.Model):
@@ -428,10 +424,9 @@ class Tag(db.Model):
     博客文章的标签
     ex: js, css, flask...
     """
-    __table_args__ = {'mysql_charset': 'utf8'}
     __tablename__ = 'tags'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(64))
 
     def __repr__(self):
-        return "<tag %d>" % self.id
+        return "<type %d>" % id

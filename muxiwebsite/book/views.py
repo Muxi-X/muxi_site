@@ -19,7 +19,7 @@
 """
 
 from . import books
-from .. import db
+from .. import db, app
 # from ..auth._decorate import auth_login
 from werkzeug import secure_filename
 from muxiwebsite.models import User, Book
@@ -70,10 +70,9 @@ def home():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
-           login_user(user)
-           return redirect(url_for('user', id=current_user.id))
+            login_user(user)
+            return redirect(url_for('books.home', id=current_user.id))
         flash('用户名或密码错误!')
-
     range_book_count = range(len(new_book_list)/6 + 1)
 
     return render_template('home.html', new_book_list=new_book_list,
@@ -130,10 +129,10 @@ def search_results():
 
 
 # 对所有访客可见，但只有登录用户可以借阅(html改动)
-@books.route('/info/<name>/', methods=["POST", "GET"])
-def info(name):
+@books.route('/info/<int:id>/', methods=["POST", "GET"])
+def info(id):
     form = GetForm()
-    book = Book.query.filter_by(name=name).first()
+    book = Book.query.get_or_404(id)
     if form.validate_on_submit():
         day = form.day.data
         if int(day) >= 0:
@@ -142,7 +141,7 @@ def info(name):
             book.user_id = current_user.id
             book.status = True  # 已被借
             book.end = (start + datetime.timedelta(day)).strftime("%Y-%m-%d %H:%M:%S")
-            return redirect(url_for('user', id=current_user.id))
+            return redirect(url_for('books.user', id=current_user.id))
         else:
             flash('光阴似箭、岁月如梭,时间－你不能篡改她，更不能逆转她!')
     return render_template('info.html', book=book, form=form)
@@ -153,7 +152,7 @@ def info(name):
 @login_required
 def rter():
     """用户注册接口"""
-    if current_user.username == 'neo1218':
+    if current_user.role_id == 2:
         form = RterForm()
         if form.validate_on_submit():
             u = User(username=form.username.data, password=form.password.data)
@@ -161,7 +160,7 @@ def rter():
             db.session.commit()
         return render_template('r.html', form=form)
     else:
-        return redirect(url_for('home'))
+        return redirect(url_for('books.home'))
 
 
 # 只对管理员可见
@@ -175,7 +174,7 @@ def bookin():
 
             书名， 封面， 简介 录入数据库
     """
-    if current_user.username == 'neo1218':
+    if current_user.role_id == 2:
         form = BookForm()
 
         if form.validate_on_submit():
@@ -192,10 +191,10 @@ def bookin():
             db.session.add(book)
             db.session.commit()
             flash('书籍已录入！')
-            return redirect(url_for('bookin'))
+            return redirect(url_for('books.bookin'))
         return render_template('bookin.html', form=form)
     else:
-        return redirect(url_for('home'))
+        return redirect(url_for('books.home'))
 
 
 # 对所有登录用户可见

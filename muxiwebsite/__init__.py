@@ -31,7 +31,7 @@ from basedir import basedir
 import flask_admin as admin
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
-import markdown2
+import markdown
 import os
 
 # the root path of xueer
@@ -43,9 +43,7 @@ muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
-# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://test:test@115.28.152.113/muxi_data"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['WHOOSH_BASE'] = "search.db"
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索最多加载5个搜索结果
@@ -54,7 +52,6 @@ app.config["SHARE_PER_PAGE"] = 5
 app.config["MUXI_SHARES_PER_PAGE"] = 10
 app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
-app.config['BLOG_PER_PAGE'] = 10
 
 
 # 初始化扩展(app全局属性)
@@ -68,7 +65,7 @@ pagedown = PageDown(app)
 class MyAdminIndexView(admin.AdminIndexView):
     """rewrite is_authenticated method"""
     def is_accessible(self):
-        # admin required
+        # return login.current_user.is_authenticated
         return login.current_user.is_admin()
 
     def inaccessible_callback(self, name, **kwargs):
@@ -80,14 +77,14 @@ admin = Admin(
         index_view=MyAdminIndexView(),
         base_template='my_master.html'
         )
-from .models import User, Share, Blog, Book, Comment, Type, Tag
+
+
+from .models import User, Share, Blog, Book, Comment
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
 admin.add_view(ModelView(Share, db.session))
 admin.add_view(ModelView(Comment, db.session))
 admin.add_view(ModelView(Blog, db.session))
-admin.add_view(ModelView(Type, db.session))
-admin.add_view(ModelView(Tag, db.session))
 
 
 # jinja2 filters
@@ -98,8 +95,7 @@ def neomarkdown(markdown_content):
     :param markdown_content: markdown
     :return: text
     """
-    content = Markup(markdown2.markdown(markdown_content, extras=[
-        'tables', 'pyshell', 'fenced-code-blocks']))
+    content = Markup(markdown.markdown(markdown_content))
     return content
 
 
@@ -124,4 +120,3 @@ app.register_blueprint(profile, url_prefix="/profile")
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")
-
