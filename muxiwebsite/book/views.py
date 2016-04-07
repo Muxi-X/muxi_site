@@ -232,7 +232,7 @@ def user(id):
 
     if request.method == "POST":
         """在前端input标签的重定向页面进行处理"""
-        return redirect(url_for('book.user', id=current_user.id))
+        return redirect(url_for('books.user', id=current_user.id))
 
     books = Book.query.filter_by(name=request.args.get('back'), user_id=current_user.id).all()
     for book in books:
@@ -241,7 +241,7 @@ def user(id):
         book.end = None
         book.user_id = None
         flash('%s 已归还!' % book.name)
-        return redirect(url_for('book.user', id=current_user.id))
+        return redirect(url_for('books.user', id=current_user.id))
 
     range_book_count = range(len(book_list)/3 + 1)
     range_timedonebook_count = range(len(time_done_book)/3 + 1)

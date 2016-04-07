@@ -25,7 +25,7 @@
             </form>
         </div>
         {% if current_user.is_authenticated %}
-        <li class="nav user"><a href="/profile/{{ current_user.id }}/">Hi! {{ current_user.username }}</a></li>
+        <li class="nav user"><a href="/book/user/{{ current_user.id }}/">Hi! {{ current_user.username }}</a></li>
         <li class="nav log"><a href="/auth/logout/">LOG OUT</a></li>
         {% else %}
         <li class="nav log"><a href="javascript:;" onclick="showBorderLog()">LOG ON</a></li>
