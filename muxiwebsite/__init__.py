@@ -31,7 +31,6 @@ from basedir import basedir
 import flask_admin as admin
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
-#from flaskext.mysql import MySQL
 import markdown
 import os
 
@@ -56,8 +55,6 @@ app.config['MUXI_USERS_PER_PAGE'] = 10
 
 
 # 初始化扩展(app全局属性)
-#mysql = MySQL()
-#mysql.init_app(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
@@ -80,6 +77,8 @@ admin = Admin(
         index_view=MyAdminIndexView(),
         base_template='my_master.html'
         )
+
+
 from .models import User, Share, Blog, Book, Comment
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
@@ -121,4 +120,3 @@ app.register_blueprint(profile, url_prefix="/profile")
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")
-

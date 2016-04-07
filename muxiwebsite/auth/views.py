@@ -37,5 +37,4 @@ def login():
 def logout():
     """登出界面"""
     logout_user()
-    return redirect(url_for('shares.index', page = 1))
-
+    return redirect('http://muxistudio.com/')

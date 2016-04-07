@@ -17,7 +17,7 @@
         <div class="left">
           <h4>书名：{{ book.name }}</h4>
           <p><strong>类别:</strong> {{ book.tag }}</p>
-          <p>{{ book.summary[:100] }}...<a href="/info/{{ book.name }}"><span>详情</span></a></p>
+          <p>{{ book.summary[:100] }}...<a href="/book/info/{{ book.id }}"><span>详情</span></a></p>
         </div>
       {% if book.status %}
         <span class="result_borrow">已借</span>
@@ -29,7 +29,7 @@
           <a href="/info/{{ book.name }}">
             <img src={{ book.image }} alt="" class="book">
             <div class="result_book_content">
-              <p class="title_hid">{{ book.name}}</p>
+              <p class="title_hid">{{ book.name }}</p>
               <p class="author">{{ book.author }}</p>
             </div>
           </a>
