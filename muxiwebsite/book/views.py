@@ -230,9 +230,9 @@ def user(id):
         if delta <= 0:
             time_dead_book.append(book)
 
-    if request.method == "POST":
-        """在前端input标签的重定向页面进行处理"""
-        return redirect(url_for('books.user', id=current_user.id))
+    # if request.method == "POST":
+    #     """在前端input标签的重定向页面进行处理"""
+    #     return redirect(url_for('books.user', id=current_user.id))
 
     books = Book.query.filter_by(name=request.args.get('back'), user_id=current_user.id).all()
     for book in books:
@@ -253,11 +253,11 @@ def user(id):
                            range_timedonebook_count=range_timedonebook_count,
                            session=session)
 
-
+"""
 @books.route('/upload/', methods=["POST", "GET"])
 @login_required
 def upload_file():
-    """上传文件函数"""
+    \"\"\"上传文件函数\"\"\"
     session['fileurl'] = 'http://127.0.0.1:5000/static/image/logo.png'
     if request.method == 'POST':
         file = request.files['file']
@@ -267,3 +267,4 @@ def upload_file():
             session['fileurl'] = 'http://121.0.0.1:5000/static/image/%s' % filename
             return redirect(url_for('user', username=current_user.username))
     return render_template('upload.html')
+"""

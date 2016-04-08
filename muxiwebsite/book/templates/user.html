@@ -33,13 +33,13 @@
                                 <p>到期时间：{{ book.end }}</p>
                                 <form action="/book/user/{{ current_user.id }}">
                                     <p class="book_back">还书</p>
-                                    <input type="submit" name="back" value={{ book.name }}>
+                                    <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
                                 <form action="/book/user/{{ current_user.id }}">
                                     <p class="book_back">还书</p>
-                                    <input type="submit" name="back" value={{ book.name }}>
+                                    <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% endif %}
                             </div>
@@ -69,15 +69,15 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="/book/user/{{ current_user.id }}">
+                                <form action="/book/user/{{ current_user.id }}" method="POST">
                                     <p class="book_back">还书</p>
-                                    <input type="submit" name="back" value={{ book.name }}>
+                                    <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="/book/user/{{ current_user.id }}">
+                                <form action="/book/user/{{ current_user.id }}" method="POST">
                                     <p class="book_back">还书</p>
-                                    <input type="submit" name="back" value={{ book.name }}>
+                                    <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% endif %}
                             </div>
