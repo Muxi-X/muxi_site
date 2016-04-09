@@ -128,7 +128,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(164))
     info = db.Column(db.Text)
     username = db.Column(db.String(164), unique=True)
-    avatar_url = db.Column(db.String(32))
+    avatar_url = db.Column(db.Text)
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
