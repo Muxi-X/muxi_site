@@ -5,6 +5,7 @@ from flask import Blueprint
 profile = Blueprint(
     'profile',
     __name__,
+    subdomain='profile',
     template_folder = 'templates',
     static_folder = 'static'
 )

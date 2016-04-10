@@ -65,9 +65,9 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
 
-@app.route('/')
-def index():
-    return "index"
+# @app.route('/')
+# def index():
+#     return "index"
 
 # from . import views
 
@@ -113,19 +113,19 @@ from .book import books
 app.register_blueprint(books)
 
 from .muxi import muxi
-app.register_blueprint(muxi, url_prefix='/muxi')
+app.register_blueprint(muxi, url_prefix='/')
 
 from .share import shares
-app.register_blueprint(shares, url_prefix='/share')
+app.register_blueprint(shares)
 
 from .auth import auth
 app.register_blueprint(auth, url_prefix='/auth')
 
 from .blog import blogs
-app.register_blueprint(blogs, url_prefix='/blog')
+app.register_blueprint(blogs)
 
 from profile import profile
-app.register_blueprint(profile, url_prefix="/profile")
+app.register_blueprint(profile)
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")

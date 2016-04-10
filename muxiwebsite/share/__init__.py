@@ -12,6 +12,7 @@ from flask import Blueprint
 shares = Blueprint(
     'shares',
     __name__,
+    subdomain='share',
     template_folder = 'templates',
     static_folder = 'static'
 )
