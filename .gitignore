@@ -7,3 +7,4 @@ migrations
 search.db
 muxi_data.sqlite
 .idea
+.DS_Store
