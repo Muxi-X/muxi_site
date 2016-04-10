@@ -13,3 +13,4 @@ from . import muxi
 @muxi.route('/')
 def muxi_index():
     return render_template('index_d.html')
+

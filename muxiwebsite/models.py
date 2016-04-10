@@ -128,7 +128,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(164))
     info = db.Column(db.Text)
     username = db.Column(db.String(164), unique=True)
-    avatar_url = db.Column(db.String(32))
+    avatar_url = db.Column(db.Text)
     password_hash = db.Column(db.String(164))
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
@@ -310,6 +310,7 @@ class Comment(db.Model):
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+    author_name = db.Column(db.String(30))
 
     def to_json(self):
         json_comment = {
@@ -416,7 +417,7 @@ class Type(db.Model):
     blogs = db.relationship('Blog', backref="types", lazy="dynamic")
 
     def __repr__(self):
-        return "<type %d>" % id
+        return "<type %d>" % self.id
 
 
 class Tag(db.Model):
@@ -429,4 +430,4 @@ class Tag(db.Model):
     value = db.Column(db.String(64))
 
     def __repr__(self):
-        return "<type %d>" % id
+        return "<type %d>" % self.id

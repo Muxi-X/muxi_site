@@ -15,10 +15,11 @@ from flask import Blueprint
 
 
 books = Blueprint(
-    'books',
+    'subdomain',
     __name__,
     template_folder = 'templates',
-    static_folder = 'static'
+    static_folder = 'static',
+    subdomain = 'books'
 )
 
 
