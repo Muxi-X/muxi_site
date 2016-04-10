@@ -3,11 +3,11 @@
 {% block title %}<title>木犀图书</title>{% endblock %}
 
 {% block css_file %}
-  <link href="/book/static/css/First.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/css/reset.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/css/new_First.css" rel="stylesheet", type="text/css" />
-  <link href="/book/static/header/css/header.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/footer/css/footer.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/css/First.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/css/new_First.css" rel="stylesheet", type="text/css" />
+  <link href="http://book.muxistudio.com/static/header/css/header.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/footer/css/footer.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block page_content %}
@@ -27,9 +27,9 @@
 		    <li class="box">
                 {% for book in new_book_list[i*6:(i+1)*6] %}
 		        <div class="new_book">
-                    <a href="/book/info/{{ book.id }}/"><img src={{ book.image }} alt="" class="book"></a>
+                    <a href="http://book.muxistudio.com/info/{{ book.id }}/"><img src={{ book.image }} alt="" class="book"></a>
                     <div class="book_information">
-                        <a href="/book/info/{{ book.id }}/">
+                        <a href="http://book.muxistudio.com/info/{{ book.id }}/">
 		                <p class="title">{{ book.name }}</p>
 		                <p class="author">{{ book.author }}</p>
                         </a>
@@ -59,7 +59,7 @@
                     <p class="author">{{ book.author }}</p>
                 </a>
                 <div class="book_tags">
-                    <a href="/user/{{ book.user.id }}"><p>借阅者：{{ book.user.username}}</p></a>
+                    <a href="http://book.muxistudio.com/user/{{ book.user.id }}"><p>借阅者：{{ book.user.username}}</p></a>
                     <p>到期时间：{{ book.end }}</p>
                 </div>
             </div>
@@ -72,7 +72,7 @@
 {% endblock %}
 
 {% block script_file %}
-    <script type="text/javascript" src="/book/static/header/js/header.js"></script>
-    <script type="text/javascript" src="/book/static/js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="/book/static/js/shouye.js"></script>
+    <script type="text/javascript" src="http://book.muxistudio.com/static/header/js/header.js"></script>
+    <script type="text/javascript" src="http://book.muxistudio.com/static/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="http://book.muxistudio.com/static/js/shouye.js"></script>
 {% endblock %}

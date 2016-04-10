@@ -125,7 +125,7 @@ from .blog import blogs
 app.register_blueprint(blogs)
 
 from profile import profile
-app.register_blueprint(profile)
+app.register_blueprint(profile, url_prefix="/profile")
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")

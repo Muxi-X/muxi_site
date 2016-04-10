@@ -2,13 +2,13 @@
 {% block title %}博客归档{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" type="text/css" href="/blog/static/css/index.css">
+<link rel="stylesheet" type="text/css" href="blog.muxistudio.com/static/css/index.css">
 {% endblock %}
 
 {% block content %}
 <div class="right_content">
     <div class='index'>
-        <h1><a href="/blog">首页</a>-{{ index }}</h1>
+        <h1><a href="blog.muxistudio.com">首页</a>-{{ index }}</h1>
     </div>
     {% include "components/home_page/blog_archive.html" %}
     {% include "components/home_page/right_tag.html" %}

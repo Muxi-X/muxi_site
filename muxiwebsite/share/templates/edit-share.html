@@ -1,8 +1,8 @@
 {% extends "share_base.html" %} 
 {% block head %}
 {{ super() }}
-<script type="text/javascript" src="/share/static/js/Markdown.Converter.min.js"></script>
-<script type="text/javascript" src="/share/static/js/Markdown.Sanitizer.min.js"></script>
+<script type="text/javascript" src="http://share.muxistudio.com/static/js/Markdown.Converter.min.js"></script>
+<script type="text/javascript" src="http://share.muxistudio.com/static/js/Markdown.Sanitizer.min.js"></script>
 {% endblock%}
 {% block title %}
 <title>木犀分享-编辑分享</title>
@@ -14,7 +14,7 @@
             {{ form.hidden_tag() }}
             {{ form.title(class="send_title" ) }}
             <div class="send_content mdl-grid mdl-grid--no-spacing">
-                {{ form.share}}
+                {{ form.share }}
             </div>
 
             <div class="mdl-card__actions mdl-card--border">

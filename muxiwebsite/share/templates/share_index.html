@@ -3,22 +3,22 @@
 {% endblock %} {% block content %}
 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect tab_bar">
     {% if current_user.is_authenticated %}
-    <a href="/share/send" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored btn_add">
+    <a href="http://share.muxistudio.com/send" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored btn_add">
         <i class="material-icons">add</i>
     </a>
     {% endif %}
     <div class="mdl-tabs__tab-bar" id="header_tab_bar">
-        <a href="/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
-        <a href="/hot/" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
+        <a href="http://share.muxistudio.com/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
+        <a href="http://share.muxistudio.com/hot/" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
         {% if current_user.is_authenticated %}
-            <a href="/profile/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
+            <a href="profile.muxistudio.com/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
         {% else %}
-            <a href="/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
+            <a href="muxistudio.com/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
         {% endif %}
     </div>
-    <a href="/share/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
-    <a href="/share/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
-    <a href="/share/?page=1" class="header_tab_links" style="display:none"></a>
+    <a href="http://share.muxistudio.com/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
+    <a href="http://share.muxistudio.com/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
+    <a href="http://share.muxistudio.com/?page=1" class="header_tab_links" style="display:none"></a>
 </div>
 <section class="section_center">
     {% for share in shares %}
@@ -42,9 +42,9 @@
                 <i class="material-icons mdl-color-text--grey">favorite</i>
             </div>
             <div class="card_more mdl-cell mdl-cell--10-col">
-                <a href="/share/view/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
+                <a href="share.muxistudio.com/view/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
 				{% if share.author_id == current_user.id %}
-					<a href="/share/edit-share/{{share.id}}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
+					<a href="http://share.muxistudio.com/edit-share/{{share.id}}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
 				{% endif %}
             </div>
         </div>
@@ -67,5 +67,5 @@
 		</div>
 	</div>
 </section>
-<script src="/share/static/js/index.min.js"></script>
+<script src="http://share.muxistudio.com/static/js/index.min.js"></script>
 {% endblock %}

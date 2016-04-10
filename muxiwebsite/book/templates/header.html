@@ -1,32 +1,32 @@
 <div class="header">
 	<div class="nav_image">
-		<img src="/book/static/image/logo.png">
+		<img src="http://book.muxistudio.com/static/image/logo.png">
 	</div>
 	<ul class="menu">
-		<li class="nav home"><a href="/book/">HOME</a></li>
+		<li class="nav home"><a href="http://book.muxistudio.com/">HOME</a></li>
 		<li class="nav search"><a href="javascript:void(0)" onclick="showBorder()">SEARCH</a></li>
 		<!--弹出框-->
 		<a href="javascript:void(0)" onclick="hideBorder()"><div class="close" id="close"></div></a>
 		<!--关闭 -->
 		<div id="content" class="light_content">
             <div class="search_word">搜索</div>
-            <form action="/book/search_results/" >
+            <form action="http://book.muxistudio.com/search_results/" >
                 <div class="search_ipt">
                     <input type="text" class="ipt" placeholder="书名、关键词" name="search">
                     <input type="submit" class="search_logo" alt="search" value="">
                 </div>
                 <ul class="tags">
-                    <li><a href="/book/search_results/?search=前端&range=all">前端</a></li>
-                    <li><a href="/book/search_results/?search=后台&range=all">后台</a></li>
-                    <li><a href="/book/search_results/?search=设计&range=all">设计</a></li>
-                    <li><a href="/book/search_results/?search=互联网&range=all">互联网</a></li>
-                    <li><a href="/book/search_results/?search=其他&range=all">其他</a></li>
+                    <li><a href="http://book.muxistudio.com/search_results/?search=前端&range=all">前端</a></li>
+                    <li><a href="http://book.muxistudio.com/search_results/?search=后台&range=all">后台</a></li>
+                    <li><a href="http://book.muxistudio.com/search_results/?search=设计&range=all">设计</a></li>
+                    <li><a href="http://book.muxistudio.com/search_results/?search=互联网&range=all">互联网</a></li>
+                    <li><a href="http://book.muxistudio.com/search_results/?search=其他&range=all">其他</a></li>
                 </ul>
             </form>
         </div>
         {% if current_user.is_authenticated %}
-        <li class="nav user"><a href="/book/user/{{ current_user.id }}/">Hi! {{ current_user.username }}</a></li>
-        <li class="nav log"><a href="/auth/logout/">LOG OUT</a></li>
+        <li class="nav user"><a href="http://book.muxistudio.com/user/{{ current_user.id }}/">Hi! {{ current_user.username }}</a></li>
+        <li class="nav log"><a href="http://muxistudio.com/auth/logout/">LOG OUT</a></li>
         {% else %}
         <li class="nav log"><a href="javascript:;" onclick="showBorderLog()">LOG ON</a></li>
         <div id="content_log" class="light_content users">

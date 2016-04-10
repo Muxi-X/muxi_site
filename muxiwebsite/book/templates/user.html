@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}<title>用户主页</title>{% endblock %}
 {% block css_file %}
-  <link href="/book/static/css/First.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/css/reset.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/css/new_First.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/header/css/header.css" rel="stylesheet" type="text/css" />
-  <link href="/book/static/footer/css/footer.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/css/First.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/css/new_First.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/header/css/header.css" rel="stylesheet" type="text/css" />
+  <link href="http://book.muxistudio.com/static/footer/css/footer.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block page_content %}
@@ -31,13 +31,13 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="/book/user/{{ current_user.id }}">
+                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="/book/user/{{ current_user.id }}">
+                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
@@ -69,13 +69,13 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="/book/user/{{ current_user.id }}" method="POST">
+                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}" method="POST">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="/book/user/{{ current_user.id }}" method="POST">
+                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}" method="POST">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
@@ -99,14 +99,14 @@
         </div>
     </div-->
     <div id="avanter_iframe">
-        <iframe src="/upload"></iframe>
+        <iframe src="http://book.muxistudio.com/upload"></iframe>
     </div>
 </div>
 {% include 'footer.html' %}
 {% endblock %}
 
 {% block script_file %}
-  <script type="text/javascript" src="/book/static/js/jquery-1.3.2.min.js"></script>
-  <script type="text/javascript" src="/book/static/js/shouye.js"></script>
-     <script type="text/javascript" src="/book/static/header/js/header.js"></script>
+  <script type="text/javascript" src="http://book.muxistudio.com/static/js/jquery-1.3.2.min.js"></script>
+  <script type="text/javascript" src="http://book.muxistudio.com/static/js/shouye.js"></script>
+  <script type="text/javascript" src="http://book.muxistudio.com/static/header/js/header.js"></script>
 {% endblock %}
