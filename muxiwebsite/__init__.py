@@ -22,7 +22,7 @@
         前方不会太远~。
 """
 
-from flask import Flask, Markup, redirect, url_for
+from flask import Flask, Markup, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
 import flask_login as login
 from flask_login import LoginManager
@@ -65,9 +65,9 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
 
-# @app.route('/')
-# def index():
-#     return "index"
+@app.route('/')
+def index():
+     return render_template('index_d.html')
 
 # from . import views
 
@@ -112,8 +112,8 @@ def neomarkdown(markdown_content):
 from .book import books
 app.register_blueprint(books)
 
-from .muxi import muxi
-app.register_blueprint(muxi, url_prefix='/')
+#from .muxi import muxi
+#app.register_blueprint(muxi, url_prefix='/')
 
 from .share import shares
 app.register_blueprint(shares)
