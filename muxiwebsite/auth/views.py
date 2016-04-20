@@ -28,7 +28,8 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
-            return redirect_back('profile.user_profile', id=current_user.id)
+            #return redirect_back('profile.user_profile', id=current_user.id)
+            return redirect(url_for("share.index"))
         flash("用户名或密码不存在!")
     return render_template("muxi_login.html", form=form)#, next=next)
 
