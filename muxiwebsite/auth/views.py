@@ -22,7 +22,7 @@ import base64
 @auth.route('/login/', methods=["POST", "GET"])
 def login():
     """登录页面"""
-    next = get_redirect_target()
+    #next = get_redirect_target()
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -30,7 +30,7 @@ def login():
             login_user(user)
             return redirect_back('profile.user_profile', id=current_user.id)
         flash("用户名或密码不存在!")
-    return render_template("muxi_login.html", form=form, next=next)
+    return render_template("muxi_login.html", form=form)#, next=next)
 
 
 @auth.route('/register/', methods=["POST", "GET"])
