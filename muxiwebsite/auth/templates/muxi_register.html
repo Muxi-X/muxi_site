@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}木犀X-注册{% endblock %}
+    <head>注册</head>
+    {% block body %}
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.username(placeholder="用户名") }}
+            {{ form.email(placeholder="邮箱") }}
+            {{ form.password(placeholder="密码")}}
+            {{ form.passwordconfirm(placeholder="确认密码") }}
+            {{ form.submit }}
+            <input type=hidden value="{{ next or '' }}" name=next>
+        </form>
+    {% endblock %}
