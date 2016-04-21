@@ -11,14 +11,14 @@
         <a href="http://share.muxistudio.com/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
         <a href="http://share.muxistudio.com/hot/" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
         {% if current_user.is_authenticated %}
-            <a href="profile.muxistudio.com/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
+            <a href="http://muxistudio.com/profile/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
         {% else %}
-            <a href="muxistudio.com/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
+            <a href="http://muxistudio.com/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
         {% endif %}
     </div>
     <a href="http://share.muxistudio.com/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
     <a href="http://share.muxistudio.com/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
-    <a href="http://share.muxistudio.com/?page=1" class="header_tab_links" style="display:none"></a>
+    <a href="http://muxistudio.com/profile/{{ current_user.id }}/" class="header_tab_links" style="display:none"></a>
 </div>
 <section class="section_center">
     {% for share in shares %}
