@@ -51,7 +51,8 @@ def register():
                     username=form.username.data,
                     email=form.email.data,
                     password=base64.b64encode(form.password.data),
-                    role_id=2
+                    avatar_url='http://7xrvvt.com1.z0.glb.clouddn.com/logo.png',
+                    role_id=3
                     )
             db.session.add(user)
             db.session.commit()

@@ -65,5 +65,13 @@ def edit(id):
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('.user_profile', id=id))
+    form.username.data = user.username
+    form.avatar_url.data = user.avatar_url
+    form.info.data = user.info
+    form.personal_blog.data = user.personal_blog
+    form.github.data = user.github
+    form.flickr.data = user.flickr
+    form.weibo.data = user.weibo
+    form.zhihu.data = user.zhihu
     return render_template('/pages/edit.html', form=form)
 
