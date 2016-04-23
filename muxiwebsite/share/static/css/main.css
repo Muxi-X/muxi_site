@@ -103,7 +103,7 @@
 
 /*** header ***/
 .demo-layout-transparent {
-  background: url("../images/transparent.jpg") center/cover; }
+  background: url("http://7xtb8m.com2.z0.glb.clouddn.com/transparent.jpg") center/cover; }
 
 .demo-layout-transparent .mdl-layout__header,
 .demo-layout-transparent .mdl-layout__drawer-button {
@@ -187,6 +187,7 @@
 /*** markdown style ***/
 .card_text h1,.card_text h2,.card_text h3,.card_text h4{
   margin: 0;
+  font-size: 100%;
 }
 .card_text img{
   max-width: 100%;
@@ -235,4 +236,3 @@ margin-left: 20px;
 .padding_t_30{
   padding-top: 30px;
 }
-/*# sourceMappingURL=main.css.map */
