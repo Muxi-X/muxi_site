@@ -10,15 +10,15 @@
     <div class="mdl-tabs__tab-bar" id="header_tab_bar">
         <a href="http://share.muxistudio.com/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
         <a href="http://share.muxistudio.com/hot/" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
-        {% if current_user.is_authenticated %}
-            <a href="http://muxistudio.com/profile/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
-        {% else %}
-            <a href="http://muxistudio.com/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
-        {% endif %}
+        <a href="#" class="mdl-tabs__tab header_tabs">MINE</a>
     </div>
     <a href="http://share.muxistudio.com/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
     <a href="http://share.muxistudio.com/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
-    <a href="http://muxistudio.com/profile/{{ current_user.id }}/" class="header_tab_links" style="display:none"></a>
+     {% if current_user.is_authenticated %}
+        <a href="http://muxistudio.com/profile/{{ current_user.id }}/" class="header_tab_links" style="display:none"></a>
+    {% else %}
+        <a href="http://muxistudio.com/auth/login/" class="header_tab_links" style="display:none"></a>
+    {% endif %}
 </div>
 <section class="section_center">
     {% for share in shares %}
@@ -28,8 +28,12 @@
                 <h2 class="card_title">{{ share.title }}</h2>
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                <div class="card_circle mdl-color--primary">
-                    <img src={{ share.avatar }} alt="avatar" title="{{ share.author }}">
+                <div class="card_circle mdl-color--primary" 
+                id={{'share_' + loop.index|string()}}>
+                    <img src={{ share.avatar }} alt="avatar">
+                </div>
+                <div class="mdl-tooltip" for={{'share_' + loop.index|string()}}>
+                    {{ share.author }}
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
