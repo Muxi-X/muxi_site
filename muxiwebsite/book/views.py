@@ -134,9 +134,11 @@ def info(id):
     form = GetForm()
     book = Book.query.get_or_404(id)
     if form.validate_on_submit():
-        day = form.day.data
-        if int(day) >= 0:
-            start = datetime.datetime.now()
+        formday = form.day.data
+        day = formday[0:4] + formday[5:7] + formday[8:10]
+        start = datetime.date.today().strftime('%Y%m%d')
+        dminuss = day - start
+        if int(dminuss) >= 0:
             book.start = start
             book.user_id = current_user.id
             book.status = True  # 已被借
