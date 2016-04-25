@@ -140,27 +140,11 @@ def info(id):
             book.start = start
             book.user_id = current_user.id
             book.status = True  # 已被借
-            book.end = (start + datetime.timedelta(day)).strftime("%Y-%m-%d %H:%M:%S")
+            book.end = day
             return redirect(url_for('books.user', id=current_user.id))
         else:
             flash('光阴似箭、岁月如梭,时间－你不能篡改她，更不能逆转她!')
     return render_template('/pages/info.html', book=book, form=form)
-
-
-# 只对管理员可见
-@books.route('/rter/', methods=["POST", "GET"])
-@login_required
-def rter():
-    """用户注册接口"""
-    if current_user.role_id == 2:
-        form = RterForm()
-        if form.validate_on_submit():
-            u = User(username=form.username.data, password=form.password.data)
-            db.session.add(u)
-            db.session.commit()
-        return render_template('r.html', form=form)
-    else:
-        return redirect(url_for('books.home'))
 
 
 # 只对管理员可见
@@ -230,9 +214,9 @@ def user(id):
         if delta <= 0:
             time_dead_book.append(book)
 
-    # if request.method == "POST":
-    #     """在前端input标签的重定向页面进行处理"""
-    #     return redirect(url_for('books.user', id=current_user.id))
+    if request.method == "POST":
+        """在前端input标签的重定向页面进行处理"""
+        return redirect(url_for('books.user', id=current_user.id))
 
     books = Book.query.filter_by(name=request.args.get('back'), user_id=current_user.id).all()
     for book in books:
@@ -247,6 +231,7 @@ def user(id):
     range_timedonebook_count = range(len(time_done_book)/3 + 1)
 
     return render_template('/pages/user.html',
+                           user=user,
                            time_done_book=time_done_book[:2],
                            book_list=book_list,
                            range_book_count=range_book_count,

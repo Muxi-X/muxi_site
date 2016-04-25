@@ -64,7 +64,7 @@ def edit(id):
         user.zhihu = form.zhihu.data
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('.user_profile', id=id))
+        return redirect(url_for('profile.user_profile', id=id))
     form.username.data = user.username
     form.avatar_url.data = user.avatar_url
     form.info.data = user.info

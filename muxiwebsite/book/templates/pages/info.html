@@ -13,7 +13,7 @@
           <div class="info_left">
                 <div class="title">{{ book.name }}</div>
                 <div class="author">{{ book.author }}</div>
-                <div class="info_summary">{{ book.summary}}</div>
+                <div class="info_summary">{{ book.summary }}</div>
           </div>
           <div class="info_right">
                 <div class="info_book">
@@ -23,10 +23,9 @@
                   {% if book.status == False %}
                       <form method="post">
                             <div class="info_b">
-                                <div class="info_input"> 
+                                <div class="info_input">
                                 {{ form.day(id="calendar",placeholder="截止日期") }}
                                 {{ form.hidden_tag() }}
-                               
                                 </div>
                                 <label id="info_logo"></label>
                                 <input type="submit" class="result_sub" value="BORROW">
@@ -43,7 +42,6 @@
                     <div style="margin: 40px;">Sorry,请先<a href="{{ url_for('auth.login') }}">登录</a>!</div>
                 {% endif %}
           </div>
-
     </div>
 </div>
  {% include '/components/footer.html' %}
@@ -53,5 +51,3 @@
    } ;
  </script>
 {% endblock %}
-
-

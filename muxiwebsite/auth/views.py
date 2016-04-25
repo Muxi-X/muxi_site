@@ -22,18 +22,18 @@ import base64
 @auth.route('/login/', methods=["POST", "GET"])
 def login():
     """登录页面"""
-    #next = get_redirect_target()
+    next = get_redirect_target()
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user)
-            #return redirect_back('profile.user_profile', id=current_user.id)
-            return redirect(url_for("shares.index"))
+            return redirect_back('profile.user_profile', id=current_user.id)
+            #return redirect(url_for("shares.index"))
         else:
             flash("用户名或密码不存在!")
             return redirect(url_for("auth.login"))
-    return render_template("muxi_login.html", form=form) #, next=next)
+    return render_template("muxi_login.html", form=form, next=next)
 
 
 @auth.route('/register/', methods=["POST", "GET"])
@@ -67,4 +67,4 @@ def register():
 def logout():
     """登出界面"""
     logout_user()
-    return redirect('http://muxistudio.com/')
+    return redirect(url_for('index'))

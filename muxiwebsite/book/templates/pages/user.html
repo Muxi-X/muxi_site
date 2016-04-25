@@ -1,8 +1,8 @@
 {% extends '/pages/book-base.html' %}
 {% block title %}<title>用户主页</title>{% endblock %}
 {% block css_file %}
-{{super()}}
-<link rel="stylesheet" type="text/css" href="/book/static/css/main.css">
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for("books.home") }}static/css/main.css">
 {% endblock %}
 
 {% block page_content %}
@@ -28,13 +28,13 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}">
+                                <form action="{{ url_for("books.user", id=current_user.id) }}">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}">
+                                <form action="{{ url_for("books.user", id=current_user.id) }}">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
@@ -66,13 +66,13 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}" method="POST">
+                                <form action="{{ url_for("books.user", id=current_user.id) }}" method="POST">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}" method="POST">
+                                <form action="{{ url_for("books.user", current_user.id) }}" method="POST">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
@@ -86,8 +86,6 @@
             </ul>
         </div>
     </div>
-
 </div>
 {% include '/components/footer.html' %}
 {% endblock %}
-
