@@ -75,7 +75,7 @@ def home():
         flash('用户名或密码错误!')
     range_book_count = range(len(new_book_list)/6 + 1)
 
-    return render_template('home.html', new_book_list=new_book_list,
+    return render_template('/pages/home.html', new_book_list=new_book_list,
                            get_book_list=get_book_list, form=form,
                            range_book_count=range_book_count)
 
@@ -123,7 +123,7 @@ def search_results():
         """
         get_book_list.append(book)
 
-    return render_template('search_results.html',
+    return render_template('/pages/search_results.html',
                            get_book_list=get_book_list,
                            search=search)
 
@@ -144,7 +144,7 @@ def info(id):
             return redirect(url_for('books.user', id=current_user.id))
         else:
             flash('光阴似箭、岁月如梭,时间－你不能篡改她，更不能逆转她!')
-    return render_template('info.html', book=book, form=form)
+    return render_template('/pages/info.html', book=book, form=form)
 
 
 # 只对管理员可见
@@ -192,7 +192,7 @@ def bookin():
             db.session.commit()
             flash('书籍已录入！')
             return redirect(url_for('books.bookin'))
-        return render_template('bookin.html', form=form)
+        return render_template('/pages/bookin.html', form=form)
     else:
         return redirect(url_for('books.home'))
 
@@ -246,25 +246,10 @@ def user(id):
     range_book_count = range(len(book_list)/3 + 1)
     range_timedonebook_count = range(len(time_done_book)/3 + 1)
 
-    return render_template('user.html',
+    return render_template('/pages/user.html',
                            time_done_book=time_done_book[:2],
                            book_list=book_list,
                            range_book_count=range_book_count,
                            range_timedonebook_count=range_timedonebook_count,
                            session=session)
 
-"""
-@books.route('/upload/', methods=["POST", "GET"])
-@login_required
-def upload_file():
-    \"\"\"上传文件函数\"\"\"
-    session['fileurl'] = 'http://127.0.0.1:5000/static/image/logo.png'
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            session['fileurl'] = 'http://121.0.0.1:5000/static/image/%s' % filename
-            return redirect(url_for('user', username=current_user.username))
-    return render_template('upload.html')
-"""

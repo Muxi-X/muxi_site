@@ -1,0 +1,23 @@
+//footer.scss
+//
+.footer{
+	width: 960px;
+	position:absolute;
+	text-align: center;
+	background-color:  #332a1c;
+
+	.footer_word a:hover{
+			color: #fff843;
+
+	}
+	.word_first a{
+		color: #eee;
+		font-size: 15px;
+		line-height: 30px;
+	}
+	.word_second a{
+		color: #eee;
+		font-size: 12px;
+		line-height: 20px;
+	}
+}

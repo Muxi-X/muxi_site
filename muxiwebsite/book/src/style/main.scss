@@ -1,0 +1,24 @@
+@import "/components/class";
+@import "/components/normalize";
+@import "/components/variable";
+@import "/components/header";
+@import "/components/footer";
+@import "/pages/home.scss";
+@import "/pages/info.scss";
+@import "/pages/search-results.scss";
+
+.container{
+	width: 960px;
+	margin-top:-10px;
+	background:#eee;
+	font-family:"Microsoft Yahei","微软雅黑","heiti","Adobe 黑体 Std R";
+}
+ul{
+	padding:0;
+}
+li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}

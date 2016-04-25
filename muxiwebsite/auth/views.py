@@ -30,8 +30,10 @@ def login():
             login_user(user)
             #return redirect_back('profile.user_profile', id=current_user.id)
             return redirect(url_for("shares.index"))
-        flash("用户名或密码不存在!")
-    return render_template("muxi_login.html", form=form)#, next=next)
+        else:
+            flash("用户名或密码不存在!")
+            return redirect(url_for("auth.login"))
+    return render_template("muxi_login.html", form=form) #, next=next)
 
 
 @auth.route('/register/', methods=["POST", "GET"])
@@ -51,7 +53,7 @@ def register():
                     username=form.username.data,
                     email=form.email.data,
                     password=base64.b64encode(form.password.data),
-                    avatar_url='http://7xrvvt.com1.z0.glb.clouddn.com/logo.png',
+                    avatar_url='http://7xrvvt.com1.z0.glb.clouddn.com/shakedog.gif',
                     role_id=3
                     )
             db.session.add(user)

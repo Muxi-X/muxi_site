@@ -1,0 +1,36 @@
+{
+  "name": "book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --devtool eval --progress --hot --colors --content-base app",
+    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js"
+  },
+  "author": "muxi",
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "jquery": "^2.2.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.5.2",
+    "babel-loader": "^6.2.3",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "express": "^4.13.4",
+    "file-loader": "^0.8.5",
+    "node-sass": "^3.4.2",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.13",
+    "open-browser-webpack-plugin": "^0.0.2",
+    "webpack-dev-server": "^1.14.1",
+    "extract-text-webpack-plugin": "^1.0.1"
+  },
+  "license": "ISC"
+}

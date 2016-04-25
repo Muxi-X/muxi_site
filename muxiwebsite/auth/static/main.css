@@ -1,0 +1,134 @@
+/* muxi login and register*/
+
+/* reset */
+html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","PingFang SC","STHeiti","sans-serif";line-height:1;height:100%;}html,body,button,form,textarea,input,p,h1,h2,h3,h4,h5,h6{margin:0;padding:0}h1,h2,h3,h4,h5,h6{font-size:1rem}input,button,textarea{border:0;outline:0;box-sizing:content-box}button{cursor:pointer}html{font-size:12px}a{color:#fff;text-decoration:none}textarea{display:block}
+
+/* login */
+@media (min-width: 768px) {
+	.cover{
+		background: url("pc.jpg") no-repeat left fixed;
+		background-size: cover;
+		height: 100%;
+	}
+	#register_box{
+		height: 450px;
+	}
+	.login_box{
+		width: 315px;
+		height: 300px;
+		border: #eee 1px solid;
+		border-radius: 5px ;
+		background-color: rgba(0,0,0,0.1);
+		transform:translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+		-moz-transform: translate(-50%,-50%);
+		top: 50%;
+		left: 50%;
+		text-align: center;
+		position: fixed;
+		box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+	}
+	.login_box input{
+		width: 205px;
+		height: 35px;
+		background-color: rgba(255,255,255,0.8);
+		border:1px solid #eee;
+		border-radius: 3px;
+		line-height: 35px;
+		color: #000;
+		padding: 0 15px;
+		margin-top:30px;
+		box-shadow: 0 0 5px rgba(0,0,0,0.5)
+		
+	}
+	.login_box input:focus{
+		box-shadow: 0 0 20px rgba(0,0,0,0.5);
+		border: rgba(0,0,0,0.1) transparent;
+	}
+	.login_box .btn{
+		border: 1px solid #eee;
+		box-shadow: 0 2px 1px rgba(0,0,0,0.2);
+		cursor: pointer;
+		color: #eee;
+		background-color: transparent;
+		font-size: 20px;
+		width: 50px;
+		height: 40px;
+		transition: all .5s;
+	}
+	.login_box .btn:hover{
+		background-color: rgba(0,0,0,0.4);
+		color: rgba(255,255,255,0.9);
+	}
+	
+}
+.head{
+		border-bottom: 2px solid rgba(0,0,0,0.2);
+		line-height: 50px;
+		font-size:20px;
+		color: #eee;
+	}
+
+@media (max-width: 767px){
+	.cover{
+		background:url("phone.jpg") no-repeat left fixed;
+		background-size: cover;
+		height: 100%;
+	}
+	.login_box{
+		width: 90%;
+		height: 60%;
+		border: #eee 1px solid;
+		border-radius: 5px ;
+		background-color: rgba(0,0,0,0.1);
+		transform:translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+		-moz-transform: translate(-50%,-50%);
+		top: 50%;
+		left: 50%;
+		text-align: center;
+		position: fixed;
+		box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+	}
+	.login_box input{
+		width: 70%;
+		height: 35px;
+		background-color: rgba(255,255,255,0.8);
+		border:1px solid #eee;
+		border-radius: 3px;
+		line-height: 35px;
+		color: #000;
+		padding: 0 15px;
+		margin-top:20px;
+		box-shadow: 0 0 5px rgba(0,0,0,0.5)
+		
+	}
+	.login_box input:focus{
+		box-shadow: 0 0 20px rgba(0,0,0,0.5);
+		border: rgba(0,0,0,0.1) transparent;
+	}
+	.login_box .btn{
+		border: 1px solid #eee;
+		box-shadow: 0 2px 1px rgba(0,0,0,0.2);
+		cursor: pointer;
+		color: #eee;
+		background-color: transparent;
+		font-size: 15px;
+		width: 50px;
+		height: 30px;
+		transition: all .5s;
+	}
+	.login_box .btn:hover{
+		background-color: rgba(0,0,0,0.4);
+		}
+	}
+.flashes{
+	line-height: 30px;
+	font-size: 15px;
+	color: red;
+	list-style: none;
+	text-align: center;
+	font-weight: 900;
+	padding-left: 0; 
+
+}
