@@ -26,7 +26,10 @@ def login1():
     user = User.query.filter_by(username=form.username.data).first()
     if user is not None and user.verify_password(form.password.data):
         login_user(user)
-        return redirect(session['refer'])
+        if session['refer']:
+            return redirect(session['refer'])
+        else:
+            return redirect(url_for('profile.user_profile', id=current_user.id))
     else:
         flash("用户名或密码不存在!")
         return redirect(url_for("auth.login"))
