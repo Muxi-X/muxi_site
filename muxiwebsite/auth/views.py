@@ -13,27 +13,32 @@ from . import auth
 from .. import db
 from ..models import User
 from .forms import LoginForm, RegisterForm
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, session
 from flask.ext.login import login_user, login_required, logout_user, current_user
 from ..redirect_urls import is_safe_url, get_redirect_target, redirect_back
 import base64
 
 
-@auth.route('/login/', methods=["POST", "GET"])
-def login():
+@auth.route('/login/', methods=["POST"])
+def login1():
     """登录页面"""
-    next = get_redirect_target()
+    form = LoginForm()
+    user = User.query.filter_by(username=form.username.data).first()
+    if user is not None and user.verify_password(form.password.data):
+        login_user(user)
+        return redirect(session['refer'])
+    else:
+        flash("用户名或密码不存在!")
+        return redirect(url_for("auth.login"))
+
+
+@auth.route('/login/', methods=["GET"])
+def login():
+    session['refer'] = request.referrer
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is not None and user.verify_password(form.password.data):
-            login_user(user)
-            return redirect_back('profile.user_profile', id=current_user.id)
-            #return redirect(url_for("shares.index"))
-        else:
-            flash("用户名或密码不存在!")
-            return redirect(url_for("auth.login"))
-    return render_template("muxi_login.html", form=form, next=next)
+        return redirect(url_for('auth.login1'))
+    return render_template("muxi_login.html", form=form)
 
 
 @auth.route('/register/', methods=["POST", "GET"])
