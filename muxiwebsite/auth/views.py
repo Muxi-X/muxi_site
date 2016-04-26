@@ -34,7 +34,8 @@ def login1():
 
 @auth.route('/login/', methods=["GET"])
 def login():
-    session['refer'] = request.referrer
+    if not request.referrer == url_for('auth.login', _external=True):
+        session['refer'] = request.referrer
     form = LoginForm()
     if form.validate_on_submit():
         return redirect(url_for('auth.login1'))
