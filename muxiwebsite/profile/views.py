@@ -8,8 +8,9 @@
 """
 
 from . import profile
-from flask import render_template, url_for, redirect, request
-from ..models import User
+from flask import render_template, url_for, redirect, request, flash
+from flask.ext.login import current_user
+from ..models import User, Book
 from .forms import EditForm
 from muxiwebsite import db
 
@@ -27,6 +28,7 @@ def user_profile(id):
         blog.address = url_for('blogs.post', id=blog.id)
 
     books = user.book
+    #return render_template("test.html", books=books)
     for book in books:
         book.title = book.name
         book.date = book.end
@@ -38,7 +40,13 @@ def user_profile(id):
         share.contents = share.share[:10]
 
     if request.method == 'POST':
-        return str(book.id)
+        book = Book.query.get_or_404(book.id)
+        book.status = False
+        book.start = None
+        book.end = None
+        book.user_id = None
+        flash('《%s》已归还' % book.name)
+        return redirect(url_for('profile.user_profile', id=current_user.id))
 
     return render_template(
         "pages/user.html",
