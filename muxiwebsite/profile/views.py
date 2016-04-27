@@ -45,7 +45,6 @@ def user_profile(id):
         book.start = None
         book.end = None
         book.user_id = None
-        flash('《%s》已归还' % book.name)
         return redirect(url_for('profile.user_profile', id=current_user.id))
 
     return render_template(
