@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5a1fc2a732f27fe928f7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5387656d4a201957ffc0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -861,7 +861,7 @@
 	        var year = document.getElementById(calendarBox.selYearId).value;
 	        var moth = document.getElementById(calendarBox.selMonthId).value;
 	        var day = target.innerHTML;
-	        var date = year + "-" + moth + "-" + day;
+	        var date = year + "-" + fix(moth) + "-" + day;
 	        var inputBox = document.getElementById(calendar.targetInputBoxId);
 	        if (calendar.targetInputBoxId) {
 	            inputBox.value = date;
@@ -878,8 +878,8 @@
 	    calendar.preMonthEvent = function () {
 	        var year = +document.getElementById(calendarBox.selYearId).value;
 	        //注意这里是减2，因为new Date里面的month比实际小1，减去1是当前选择的月份，减去2后new出来才是前一个月
-	        var month = +document.getElementById(calendarBox.selMonthId).value - 2;
-	        displayDate(new Date(year, month, 1));
+	        var moth = +document.getElementById(calendarBox.selMonthId).value - 2;
+	        displayDate(new Date(year, moth, 1));
 	    };
 	    //下一个月
 	    calendar.nextMonthEvent = function () {
@@ -949,13 +949,16 @@
 	        }
 	        return left;
 	    };
-
+	    //格式化月份为两位数
+	    var fix = function fix(month) {
+	        return ("" + month).length < 2 ? "0" + month : "" + month;
+	    };
 	    //样式
 	    var calendarStyle = "" + '<style type="text/css">' + '   .calendar-box{ position:absolute; width:250px; padding:5px; border:1px solid #332a1c; font-size:12px; display:none;line-height:1;background:#fff843}' + '   .calendar-box .select-head{height:20px; line-height:20px; padding:5px; background:#332a1c;}' + '   .calendar-box .select-head a{ float:left; height:20px; width:20px; line-height:20px; background:#FFFFFF; color: #332a1c; text-decoration:none; text-align:center;}' + '   .calendar-box .select-head .select-month{ float:left;width:90px; height:20px; margin-left:5px; border:none;}' + '   .calendar-box .select-head .select-year{ float:left;width:90px; height:20px; margin-right:5px; border:none;margin-left:5px;}' + '   .calendar-box .day-box{ margin-top:8px;width:250px;}' + '   .calendar-box .day-box .th{ font-weight:bold; padding:5px 0; margin-bottom:5px; background:#332a1c; color:White; font-size:11px;}' + '   .calendar-box .day-box .th li{ display:inline-block; width:32px; text-decoration:none; text-align:center;}' + '   .calendar-box .day-box .list-box{clear:both; float:left;padding-left:3px;}' + '   .calendar-box .day-box .list-box li{display:inline-block; width:35px; margin:0 2x 4px 0;}' + '   .calendar-box .day-box .list-box a{width:100%; height:20px; line-height:20px; display:inline-block; text-decoration:none; background:#332a1c; color:White; text-align:center;}' + '   .calendar-box .day-box .list-box a:hover{ background:#eee;color:#332a1c;outline:1px solid #332a1c;}' + '   .calendar-box .day-box .list-box .selected{ background:#eee; color:#332a1c;outline:1px solid #332a1c;}' + '   .calendar-box ul,.calendar-box li{ display:inline-block; list-style:none; padding:0; margin:0;}' + '   .calendar-box .btn-box{clear:both; padding:5px 4px; font-size:11px;}' + '   .calendar-box .btn-box .donebtn{ float:right;}' + '   .calendar-box .btn-box a{ float:left; padding:5px; text-decoration:none; background:#332a1c; color:White;}' + '   .calendar-box .btn-box a:hover{ background:#eee; color:#332a1c;}' + '</style>';
 	    //html
 	    var calendarHtml = "" + '<div id="calendar_box" class="calendar-box">' + '    <div class="select-head">' + '        <a id="calendar_preMonthId" href="javascript:;" ><<</a>' + '        <select id="calendar_sel_moth" class="select-month">' + '        </select>' + '        <select id="calendar_sel_Year" class="select-year">' + '        </select>' + '        <a id="calendar_nextMonthId" href="javascript:;" >>></a>' + '    </div>' + '    <div class="day-box">' + '        <ul class="th">' + '            <li>' + '                <span>日</span>' + '            </li>' + '            <li>' + '                <span>一</span>' + '            </li>' + '            <li>' + '                <span>二</span>' + '            </li>' + '            <li>' + '                <span>三</span>' + '            </li>' + '            <li>' + '                <span>四</span>' + '            </li>' + '            <li>' + '                <span>五</span>' + '            </li>' + '            <li>' + '                <span>六</span>' + '            </li>' + '        </ul>' + '        <ul id="calendar_dayList" class="list-box">' + '        </ul>' + '    </div>' + '    <div class="btn-box">' + '        <a id="calendar_btnDone" class="donebtn" href="javascript:;">关闭</a>' + '    </div>' + '</div>';
 
-	    //api
+	    //interface
 	    window.$c = window.$c || {};
 	    window.$c.calendar = calendar;
 	});

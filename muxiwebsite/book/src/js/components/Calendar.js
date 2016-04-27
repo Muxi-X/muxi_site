@@ -158,7 +158,7 @@ $(document).ready(function(){
         var year = document.getElementById(calendarBox.selYearId).value;
         var moth = document.getElementById(calendarBox.selMonthId).value;
         var day = target.innerHTML;
-        var date = year + "-" + moth + "-" + day;
+        var date = year + "-" + fix(moth) + "-" + day;
         var inputBox = document.getElementById(calendar.targetInputBoxId);
         if(calendar.targetInputBoxId){
             inputBox.value = date;
@@ -176,8 +176,8 @@ $(document).ready(function(){
     calendar.preMonthEvent = function () {
         var year = +document.getElementById(calendarBox.selYearId).value;
         //注意这里是减2，因为new Date里面的month比实际小1，减去1是当前选择的月份，减去2后new出来才是前一个月
-        var month = +document.getElementById(calendarBox.selMonthId).value - 2;
-        displayDate(new Date(year, month, 1));
+        var moth = +document.getElementById(calendarBox.selMonthId).value - 2;
+        displayDate(new Date(year, moth, 1));
     };
     //下一个月
     calendar.nextMonthEvent = function () {
@@ -248,7 +248,10 @@ $(document).ready(function(){
         }
         return left;
     };
-
+    //格式化月份为两位数
+    var fix = function(month){
+        return ("" + month).length < 2 ? ("0" + month) : "" + month;
+    };
     //样式
     var calendarStyle = "" +      
         '<style type="text/css">' +
@@ -314,7 +317,7 @@ $(document).ready(function(){
     '    </div>' +
     '</div>';
 
-    //api
+    //interface
     window.$c = window.$c || {};
     window.$c.calendar = calendar;
 
