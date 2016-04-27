@@ -51,7 +51,7 @@
                             <div class="title">{{ book.name }}</div>
                             <div class="author">{{ book.author }}</div>
                         </a>
-                        <a href="{{ url_for("books.user", id=book.user.id) }}" class="lend_user"><p>借阅者：{{ book.user.username}}</p></a>
+                        <a href="{{ url_for("profile.user_profile", id=book.user.id) }}" class="lend_user"><p>借阅者：{{ book.user.username}}</p></a>
                             <div class="book_tags">到期时间：{{ book.end }}</div>
                     </div>
                 </div>
