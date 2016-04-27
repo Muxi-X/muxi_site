@@ -1,13 +1,13 @@
 <div class="header">
 	<div class="nav_image">
-		<img src="http://book.muxistudio.com/static/image/logo.png">
+        <img src="http://book.muxistudio.com/static/image/logo.png">
 	</div>
 	<ul class="menu va_item cp">
-		<li class="nav"><a href="http://book.muxistudio.com/">HOME</a></li>
+        <li class="nav"><a href="{{ url_for("books.home") }}">HOME</a></li>
 		<li class="nav"><a href="javascript:void(0)" id="search">SEARCH</a></li>
         {% if current_user.is_authenticated %}
-        <li class="nav"><a href="http://book.muxistudio.com/user/{{ current_user.id }}/">Hi! {{ current_user.username }}</a></li>
-        <li class="nav"><a href="http://muxistudio.com/auth/logout/">LOG OUT</a></li>
+        <li class="nav"><a href="{{ url_for("profile.user_profile", id=current_user.id) }}">Hi! {{ current_user.username }}</a></li>
+        <li class="nav"><a href="{{ url_for("auth.logout") }}">LOG OUT</a></li>
         {% else %}
         <li class="nav"><a href="{{ url_for('auth.login') }}" >LOG ON</a></li>
         {% endif %}

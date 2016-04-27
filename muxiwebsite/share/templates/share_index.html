@@ -14,10 +14,10 @@
     </div>
     <a href="/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
     <a href="/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
-     {% if current_user.is_authenticated %}
-        <a href="http://muxistudio.com/profile/{{ current_user.id }}/" class="header_tab_links" style="display:none"></a>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for("profile.user_profile", id=current_user.id) }}/" class="header_tab_links" style="display:none"></a>
     {% else %}
-        <a href="http://muxistudio.com/auth/login/" class="header_tab_links" style="display:none"></a>
+    <a href="{{ url_for("auth.login") }}" class="header_tab_links" style="display:none"></a>
     {% endif %}
 </div>
 <section class="section_center">
@@ -48,7 +48,7 @@
             <div class="card_more mdl-cell mdl-cell--10-col">
                 <a href="http://share.muxistudio.com/view/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
 				{% if share.author_id == current_user.id %}
-					<a href="http://share.muxistudio.com/edit-share/{{share.id}}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
+                <a href="{{ url_for("share.edit-share", id=share.id) }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
 				{% endif %}
             </div>
         </div>

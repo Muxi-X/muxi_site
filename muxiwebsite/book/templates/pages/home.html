@@ -1,7 +1,7 @@
 <!--home.html-->
 {% extends '/pages/book-base.html' %}
 {% block title %}<title>木犀图书</title>{% endblock %}
-{% block css_file %}        
+{% block css_file %}
 {{super()}}
 <link rel="stylesheet" type="text/css" href="/static/css/main.css">
 {% endblock %}
@@ -24,14 +24,14 @@
 		    <div class="box">
                 {% for book in new_book_list[i*6:(i+1)*6] %}
 		        <div class="new_book">
-                    <a href="http://book.muxistudio.com/info/{{ book.id }}/"><img src={{ book.image }} alt="" class="book"></a>
+                    <a href="{{ url_for("books.info", id=book.id) }}"><img src={{ book.image }} alt="" class="book"></a>
                     <div class="book_information">
-                       <a href="http://book.muxistudio.com/info/{{ book.id }}/" class="ta">
+                        <a href="{{ url_for("books.info", id=book.id) }}" class="ta">
 		               <div class="title">{{ book.name }}</div>
 		               <div class="author">{{ book.author }}</div>
                        </a>
                        <p class="book_tags"> 类别：{{ book.tag }}</p>
-                       <div class="summary">{{ book.summary[: 60] }}...</div>  
+                       <div class="summary">{{ book.summary[: 60] }}...</div>
                     </div>
                 </div>
                 {% endfor %}
@@ -51,7 +51,7 @@
                             <div class="title">{{ book.name }}</div>
                             <div class="author">{{ book.author }}</div>
                         </a>
-                            <a href="http://book.muxistudio.com/user/{{ book.user.id }}" class="lend_user"><p>借阅者：{{ book.user.username}}</p></a>
+                        <a href="{{ url_for("books.user", id=book.user.id) }}" class="lend_user"><p>借阅者：{{ book.user.username}}</p></a>
                             <div class="book_tags">到期时间：{{ book.end }}</div>
                     </div>
                 </div>
@@ -62,4 +62,3 @@
 </div>
 {% include '/components/footer.html' %}
 {% endblock %}
-
