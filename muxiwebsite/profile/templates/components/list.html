@@ -3,15 +3,19 @@
 		<div class="book topic">
 			<span>木犀图书</span>
 		</div>
-		{% for lists in books%}
+		{% for book in books %}
 		<div class="td">
 			<div class="title">
 				<a href="#" class="title-link">
-					《{{ lists.title }}》
+					《{{ book.title }}》
 				</a>
 			</div>
-			<div class="date">归还日：{{ lists.date }}</div>
-			<button id="btn-return">归还</button>
+			<div class="date">归还日：{{ book.date }}</div>
+			<form action="" method="POST" accept-charset="utf-8">
+				<input type="submit" class="btn-return hide" value="{{ book.id }}"></input>
+				<button type="" class="btn-return">还书</button>
+			</form>
+			
 		</div>
 		{% endfor %}
 	</div>

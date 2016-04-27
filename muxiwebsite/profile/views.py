@@ -8,13 +8,13 @@
 """
 
 from . import profile
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from ..models import User
 from .forms import EditForm
 from muxiwebsite import db
 
 
-@profile.route('/<int:id>/')
+@profile.route('/<int:id>/', methods=["POST", "GET"])
 def user_profile(id):
     """
     ex: /profile/1/
@@ -36,6 +36,9 @@ def user_profile(id):
         share.topic = share.title
         share.author = user.username
         share.contents = share.share[:10]
+
+    if request.method == 'POST':
+        return str(book.id)
 
     return render_template(
         "pages/user.html",

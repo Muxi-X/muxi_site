@@ -65,7 +65,7 @@
     position: relative;
     margin: 5px 0
 }
-.list .left .td #btn-return{
+.list .left .td .btn-return{
 	position: absolute;
 	right:-55px;
 	width: 40px;
@@ -76,12 +76,14 @@
     border-radius: 4px;
 	background-color: transparent
 }
-.list .left .td #btn-return:hover{
+.list .left .td .btn-return:hover{
 	background-color: #cb2a31;
 	color: #feffd6;
 	transition: all 0.5s
 }
-
+.list .left .td .hide{
+    opacity: 0;
+}
 .list .left .date {
     font-size: 13px;
     line-height: 20px;
