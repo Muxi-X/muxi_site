@@ -158,7 +158,7 @@ $(document).ready(function(){
         var year = document.getElementById(calendarBox.selYearId).value;
         var moth = document.getElementById(calendarBox.selMonthId).value;
         var day = target.innerHTML;
-        var date = year + "-" + fix(moth) + "-" + day;
+        var date = year + "-" + fix(moth) + "-" + fix(day);
         var inputBox = document.getElementById(calendar.targetInputBoxId);
         if(calendar.targetInputBoxId){
             inputBox.value = date;

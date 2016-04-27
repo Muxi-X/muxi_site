@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5387656d4a201957ffc0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "67b1c325674fa812ede9"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -861,7 +861,7 @@
 	        var year = document.getElementById(calendarBox.selYearId).value;
 	        var moth = document.getElementById(calendarBox.selMonthId).value;
 	        var day = target.innerHTML;
-	        var date = year + "-" + fix(moth) + "-" + day;
+	        var date = year + "-" + fix(moth) + "-" + fix(day);
 	        var inputBox = document.getElementById(calendar.targetInputBoxId);
 	        if (calendar.targetInputBoxId) {
 	            inputBox.value = date;
