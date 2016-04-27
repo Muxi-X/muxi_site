@@ -75,9 +75,12 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		background-size: cover;
 		height: 100%;
 	}
+	#register_box{
+		height: 60%;
+	}
 	.login_box{
 		width: 90%;
-		height: 60%;
+		height: 40%;
 		border: #eee 1px solid;
 		border-radius: 5px ;
 		background-color: rgba(0,0,0,0.1);
