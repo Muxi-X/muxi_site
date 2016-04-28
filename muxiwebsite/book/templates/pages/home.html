@@ -45,9 +45,9 @@
         <div class="right_box">
                 {% for book in get_book_list %}
                 <div class="new_book right_book">
-                    <a href="#"><img src={{ book.image }} alt="" class="book"></a>
+                    <a href="{{ url_for('books.info', id=book.id) }}"><img src={{ book.image }} alt="" class="book"></a>
                     <div class="book_information ">
-                        <a href="#" class="ta">
+                        <a href="{{ url_for('books.info', id=book.id) }}" class="ta">
                             <div class="title">{{ book.name }}</div>
                             <div class="author">{{ book.author }}</div>
                         </a>
