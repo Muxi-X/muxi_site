@@ -1,7 +1,7 @@
 <div class="list margin_auto">
 	<div class="left">
 		<div class="book topic">
-			<span>木犀图书</span>
+			<a href="{{ url_for('books.home') }}"><span>木犀图书</span></a>
 		</div>
 		{% for book in books %}
 		<div class="td">
@@ -20,22 +20,22 @@
 	</div>
 	<div class="middle">
 		<div class="share margin_auto topic">
-			<span>分享链接</span>
+			<a href="{{ url_for('shares.index') }}"><span>分享链接</span></a>
 		</div>
-		{% for comments in comments %}
+		{% for share in shares %}
 			<div class="title">
-				<a href="#" class="title-link">{{ comments.topic }}
+				<a href="#" class="title-link">{{ share.title }}
 				</a>
 			</div>
 			<div class="comments">
 				<div class="comments_lists">
-					{{ comments.author }}//{{ comments.contents }}
+					{{ share.author }}//{{ comments.contents }}
 				</div>
 				<div class="comments_lists">
-					{{ comments.author }}//{{ comments.contents }}
+					{{ share.author }}//{{ comments.contents }}
 				</div>
 				<div class="comments_lists">
-					{{ comments.author }}//{{ comments.contents }}
+					{{ share.author }}//{{ comments.contents }}
 				</div>
 			</div>
 		{% endfor %}

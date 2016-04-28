@@ -178,6 +178,7 @@
     display: block;
     font-size: 17px;
     font-weight: bolder;
+    color: #feffd6;
     line-height: 60px
 }
 
@@ -256,23 +257,35 @@
 .info .link .pic-1 {
     background: transparent url("../images/sprit.png") no-repeat 0 -43px
 }
-
+.info .link .pic-1:hover{
+    background: transparent url("../images/hover.png") no-repeat -5px -15px
+}
 .info .link .pic-2 {
     background: transparent url("../images/sprit.png") no-repeat -35px -43px
+}
+.info .link .pic-2:hover {
+    background: transparent url("../images/hover.png") no-repeat -44px -15px
 }
 
 .info .link .pic-3 {
     background: transparent url("../images/sprit.png") no-repeat -68px -43px
 }
+.info .link .pic-3:hover {
+    background: transparent url("../images/hover.png") no-repeat -83px -15px
+}
 
 .info .link .pic-4 {
     background: transparent url("../images/sprit.png") no-repeat -100px -43px
 }
-
+.info .link .pic-4:hover {
+    background: transparent url("../images/hover.png") no-repeat -126px -15px
+}
 .info .link .pic-5 {
     background: transparent url("../images/sprit.png") no-repeat -134px -43px
 }
-
+.info .link .pic-5:hover {
+    background: transparent url("../images/hover.png") no-repeat -168px -15px
+}
 .info .link .end {
     background: transparent url("../images/sprit.png") no-repeat -213px -43px
 }
