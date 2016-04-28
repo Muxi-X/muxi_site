@@ -6,7 +6,7 @@
 		{% for book in books %}
 		<div class="td">
 			<div class="title">
-				<a href="#" class="title-link">
+				<a href="{{ url_for('books.info', id=book.id) }}" class="title-link">
 					《{{ book.name }}》
 				</a>
 			</div>
