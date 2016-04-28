@@ -28,21 +28,11 @@
 				</a>
 			</div>
 			<div class="comments">
-                {% for comment in share.comment %}
+				{% for comment in share.comment[-2:] %}
 				<div class="comments_lists">
-<<<<<<< HEAD
-					{{ share.author }}//{{ comments.contents }}
-				</div>
-				<div class="comments_lists">
-					{{ share.author }}//{{ comments.contents }}
-				</div>
-				<div class="comments_lists">
-					{{ share.author }}//{{ comments.contents }}
-=======
 					{{ comment.author_name }}//{{ comment.comment }}
->>>>>>> b36fdbd0728977bcce855d4e5c81eec1217ea51c
 				</div>
-                {% endfor %}
+				{% endfor %}
 			</div>
 		{% endfor %}
 	</div>

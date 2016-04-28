@@ -13,6 +13,7 @@ from flask.ext.login import current_user
 from ..models import User, Book
 from .forms import EditForm
 from muxiwebsite import db
+import datetime
 
 
 @profile.route('/<int:id>/', methods=["POST", "GET"])
@@ -21,6 +22,7 @@ def user_profile(id):
     ex: /profile/1/
     木犀个人页
     """
+    date = datetime.date.today().strftime('%Y%m%d')[:4]
     user = User.query.get_or_404(id)
     user.avatar = user.avatar_url
     blogs = user.blogs
@@ -52,7 +54,8 @@ def user_profile(id):
         user=user,
         blogs=blogs,
         books=books,
-        shares=shares
+        shares=shares,
+        date=date
     )
 
 
@@ -61,6 +64,7 @@ def edit(id):
     """
     编辑个人页
     """
+    date = datetime.date.today().strftime('%Y%m%d')[:4]
     user = User.query.filter_by(id=id).first()
     form = EditForm()
     if form.validate_on_submit():
@@ -83,5 +87,5 @@ def edit(id):
     form.flickr.data = user.flickr
     form.weibo.data = user.weibo
     form.zhihu.data = user.zhihu
-    return render_template('/pages/edit.html', form=form)
+    return render_template('/pages/edit.html', form=form, date=date)
 
