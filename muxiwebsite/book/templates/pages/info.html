@@ -35,7 +35,7 @@
                       <div class="info_borrowed">
                        <h2>Sorry!Have Lended!</h2>
                        <p>借阅者：{{ book.user.username}}</p>
-                       <p>到期时间：{{ book.end }}</p>
+                       <p>到期时间：{{ book.end[:4]+'-'+book.end[4:6]+'-'+book.end[6:] }}</p>
                      </div>
                   {% endif %}
                   {% else %}
