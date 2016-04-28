@@ -22,21 +22,17 @@
 		<div class="share margin_auto topic">
 			<span>分享链接</span>
 		</div>
-		{% for comments in comments %}
+		{% for share in shares %}
 			<div class="title">
-				<a href="#" class="title-link">{{ comments.topic }}
+				<a href="#" class="title-link">{{ share.title }}
 				</a>
 			</div>
 			<div class="comments">
+                {% for comment in share.comment %}
 				<div class="comments_lists">
-					{{ comments.author }}//{{ comments.contents }}
+					{{ comment.author_name }}//{{ comment.comment }}
 				</div>
-				<div class="comments_lists">
-					{{ comments.author }}//{{ comments.contents }}
-				</div>
-				<div class="comments_lists">
-					{{ comments.author }}//{{ comments.contents }}
-				</div>
+                {% endfor %}
 			</div>
 		{% endfor %}
 	</div>

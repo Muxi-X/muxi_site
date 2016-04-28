@@ -82,6 +82,7 @@ def view_share(id):
         comment = Comment(
             comment = form.comment.data,
             author_id = current_user.id,
+            author_name = User.query.filter_by(id=current_user.id).first().username,
             share_id = id,
 			count = 0
             )
