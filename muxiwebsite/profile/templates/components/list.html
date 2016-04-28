@@ -24,7 +24,7 @@
 		</div>
 		{% for share in shares[-4:] %}
 			<div class="title">
-				<a href="#" class="title-link">{{ share.title }}
+				<a href="{{ url_for('shares.view_share', id=share.id) }}" class="title-link">{{ share.title }}
 				</a>
 			</div>
 			<div class="comments">
