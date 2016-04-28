@@ -22,7 +22,7 @@
 		<div class="share margin_auto topic">
 			<a href="{{ url_for('shares.index') }}"><span>分享链接</span></a>
 		</div>
-		{% for share in shares %}
+		{% for share in shares[-4:] %}
 			<div class="title">
 				<a href="#" class="title-link">{{ share.title }}
 				</a>
