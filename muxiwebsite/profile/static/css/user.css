@@ -65,25 +65,36 @@
     position: relative;
     margin: 5px 0
 }
-.list .left .td .btn-return{
-	position: absolute;
-	right:-55px;
-	width: 40px;
-	height: 25px;
-	line-height: 25px;
-	top: 0;
-	border:2px solid #cb2a31;
-    border-radius: 4px;
-	background-color: transparent
+.list .left .td .btn-checkbox{
+    position: absolute;
+    display: block;
+    right:-55px;
+    line-height: 25px;
+    top: 5px;
+    border:2px solid #cb2a31;
+    border-radius: 4px
 }
-.list .left .td .btn-return:hover{
+.list .left .form {
+    position: relative;
+}
+.list .left .form .btn-return{
+    position: absolute;
+    display: block;
+    right:-55px;
+    width: 55px;
+    height: 25px;
+    line-height: 25px;
+    border:2px solid #cb2a31;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: transparent
+}
+.list .left .form .btn-return:hover{
 	background-color: #cb2a31;
 	color: #feffd6;
 	transition: all 0.5s
 }
-.list .left .td .hide{
-    opacity: 0;
-}
+
 .list .left .date {
     font-size: 13px;
     line-height: 20px;
