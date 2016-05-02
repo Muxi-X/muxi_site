@@ -153,6 +153,7 @@ $(document).ready(function(){
     };
     //选取某天触发的事件
     calendar.selectDayEvent = function(event){
+        var today = new Date();
         var evt = window.event || event;
         var target = evt.srcElement || evt.target;
         var year = document.getElementById(calendarBox.selYearId).value;

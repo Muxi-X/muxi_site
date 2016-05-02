@@ -10,6 +10,16 @@
 {% include '/components/header.html' %}
 <div class="info_container">
     <div class="result_bgc">
+        <!-- 消息闪现 -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flashes" id="flashes" style="color: red;">
+            {% for message in messages %}
+            <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
           <div class="info_left">
                 <div class="title">{{ book.name }}</div>
                 <div class="author">{{ book.author }}</div>
