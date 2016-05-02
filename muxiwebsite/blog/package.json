@@ -8,15 +8,15 @@
     "watch:css": "watch 'npm run build:css' ./src/scss/*",
     "build": "rm -rf ./static/css && mkdir ./static/css && npm run build:css",
     "watch": "npm run watch:css && npm run livereload",
-    "livereload": "live-reload --port 5050 ./"
+    "livereload": "live-reload --port 5050 ./",
+    "default": "touch file.js"
   },
   "author": "Muxi FE Team",
   "license": "ISC",
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
     "live-reload": "^1.1.0",
+    "node-sass": "^3.6.0",
     "sass": "^0.5.0",
     "watch": "^0.16.0"
   }
