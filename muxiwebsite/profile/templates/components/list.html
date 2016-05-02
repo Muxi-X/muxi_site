@@ -3,6 +3,7 @@
 		<div class="book topic">
 			<a href="{{ url_for('books.home') }}"><span>木犀图书</span></a>
 		</div>
+		<form action="" method="POST" accept-charset="utf-8" class="form">
 		{% for book in books %}
 		<div class="td">
 			<div class="title">
@@ -11,12 +12,12 @@
 				</a>
 			</div>
 			<div class="date">归还日：{{ book.end[0:4]+'-'+book.end[4:6]+'-'+book.end[6:] }}</div>
-			<form action="" method="POST" accept-charset="utf-8">
-				<input type="submit" class="btn-return hide" value="{{ book.id }}"></input>
-				<button type="" class="btn-return">还书</button>
-			</form>
+			<input type="checkbox"  value={{ book.id }} name={{ book.id }} class="btn-checkbox"></input>
+			
 		</div>
 		{% endfor %}
+		<input type="submit" class="btn-return" value="确认还书"></input>
+		</form>
 	</div>
 	<div class="middle">
 		<div class="share margin_auto topic">
