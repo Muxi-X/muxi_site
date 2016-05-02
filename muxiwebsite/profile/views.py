@@ -42,11 +42,12 @@ def user_profile(id):
         share.contents = share.share[:10]
 
     if request.method == 'POST':
-        book = Book.query.get_or_404(book.id)
-        book.status = False
-        book.start = None
-        book.end = None
-        book.user_id = None
+        for iid in request.form.values():
+            book = Book.query.get_or_404(iid)
+            book.status = False
+            book.start = None
+            book.end = None
+            book.user_id = None
         return redirect(url_for('profile.user_profile', id=current_user.id))
 
     return render_template(
