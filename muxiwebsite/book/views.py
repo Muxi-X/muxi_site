@@ -146,7 +146,7 @@ def info(id):
             return redirect(url_for('profile.user_profile', id=current_user.id))
         else:
             flash('光阴似箭、岁月如梭,时间－你不能篡改她，更不能逆转她!')
-            return rediret(url_for('books.info', id=id))
+            return redirect(url_for('books.info', id=id))
     return render_template('/pages/info.html', book=book, form=form)
 
 
