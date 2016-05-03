@@ -1,7 +1,7 @@
 <div class="list margin_auto">
 	<div class="left">
 		<div class="book topic">
-			<a href="{{ url_for('books.home') }}"><span>木犀图书</span></a>
+            <a href="{{ url_for('books.home') }}"><span>木犀图书</span></a>
 		</div>
 		<form action="" method="POST" accept-charset="utf-8" class="form">
 		{% for book in books %}
@@ -13,7 +13,9 @@
 			<input type="checkbox"  value={{ book.id }} name={{ book.id }} class="btn-checkbox"></input>
 		</div>
 		{% endfor %}
+        {% if current_id == user.id and books[0] %}
 		<input type="submit" class="btn-return" value="确认还书"></input>
+        {% endif %}
 		</form>
 	</div>
 	<div class="middle">

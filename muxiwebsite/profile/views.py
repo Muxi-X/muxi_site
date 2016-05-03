@@ -56,6 +56,7 @@ def user_profile(id):
         blogs=blogs,
         books=books,
         shares=shares,
+        current_id=current_user.id,
         date=date
     )
 
