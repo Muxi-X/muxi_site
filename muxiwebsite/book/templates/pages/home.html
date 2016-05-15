@@ -27,7 +27,7 @@
                     <a href="{{ url_for("books.info", id=book.id) }}"><img src={{ book.image }} alt="" class="book"></a>
                     <div class="book_information">
                         <a href="{{ url_for("books.info", id=book.id) }}" class="ta">
-		               <div class="title">{{ book.name }}</div>
+                            <div class="title">{{ book.name }}({{ book.bid }})</div>
 		               <div class="author">{{ book.author }}</div>
                        </a>
                        <p class="book_tags"> 类别：{{ book.tag }}</p>
