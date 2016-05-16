@@ -70,6 +70,10 @@ def register():
             return redirect(url_for("auth.login"))
     return render_template("muxi_register.html", form=form)
 
+@auth.route('/lost/',methods=["POST","GET"])
+def lost():
+    """忘记密码"""
+    
 
 @login_required
 @auth.route('/logout/')

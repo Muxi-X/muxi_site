@@ -10,12 +10,8 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		background-size: cover;
 		height: 100%;
 	}
-	#register_box{
-		height: 450px;
-	}
 	.login_box{
 		width: 315px;
-		height: 300px;
 		border: #eee 1px solid;
 		border-radius: 5px ;
 		background-color: rgba(0,0,0,0.1);
@@ -27,6 +23,7 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		text-align: center;
 		position: fixed;
 		box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+
 	}
 	.login_box input{
 		width: 205px;
@@ -55,6 +52,7 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		width: 50px;
 		height: 40px;
 		transition: all .5s;
+		margin-bottom: 15px;
 	}
 	.login_box .btn:hover{
 		background-color: rgba(0,0,0,0.4);
@@ -75,12 +73,8 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		background-size: cover;
 		height: 100%;
 	}
-	#register_box{
-		height: 60%;
-	}
 	.login_box{
 		width: 90%;
-		height: 40%;
 		border: #eee 1px solid;
 		border-radius: 5px ;
 		background-color: rgba(0,0,0,0.1);
@@ -92,6 +86,7 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		text-align: center;
 		position: fixed;
 		box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+
 	}
 	.login_box input{
 		width: 70%;
@@ -118,6 +113,7 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 		background-color: transparent;
 		font-size: 15px;
 		width: 50px;
+		margin-bottom: 15px;
 		height: 30px;
 		transition: all .5s;
 	}
@@ -134,4 +130,10 @@ html,body{font-family:"Mircosoft YaHei","微软雅黑","Arial","Helvetica","Ping
 	font-weight: 900;
 	padding-left: 0; 
 
+}
+.forget{
+	margin-bottom: 2px;
+}
+.forget:hover{
+	text-decoration: underline;
 }
