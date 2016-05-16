@@ -19,7 +19,6 @@
                 {{ form.submit(class="btn") }}
                 <input type=hidden value="{{ next or '' }}" name=next>
             </form>
-            <div class="forget"><a href="{{ url_for('auth.lost') }}">忘记密码？</a></div>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             <ul class=flashes>
