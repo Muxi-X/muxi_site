@@ -43,7 +43,6 @@ muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
-#app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:1234@47.88.193.105/muxidb"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['WHOOSH_BASE'] = "search.db"
@@ -55,7 +54,7 @@ app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
 app.config['BLOG_PER_PAGE'] = 10
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SERVER_NAME'] = 'muxistudio.com'
+app.config['SERVER_NAME'] = 'flask.dev:5000'
 
 
 # 初始化扩展(app全局属性)

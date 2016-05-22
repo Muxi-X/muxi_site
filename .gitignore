@@ -8,7 +8,11 @@ search.db
 muxi_data.sqlite
 .idea
 .DS_Store
+<<<<<<< HEAD
 *.ini
 basedir.py
 uwsgi.py
 
+=======
+node_modules
+>>>>>>> 6b04b5bfae11bb40f5b5e40bdaa822e7dd506d80
