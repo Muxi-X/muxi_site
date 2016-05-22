@@ -109,8 +109,8 @@ def search_results():
     """
     get_book_list = []
     search = request.args.get('search')
-    results = Book.query.whoosh_search(search, app.config['MAX_SEARCH_RESULTS'])
-
+    page = request.args.get('page', 1, type=int)
+    results = Book.query.whoosh_search(search)
     for book in results[:]:
         """
         # 默认搜索结果全部为可借阅图书
@@ -122,9 +122,11 @@ def search_results():
             get_book_list.append(book)
         """
         get_book_list.append(book)
+    range_book_count = range(len(get_book_list)/6 + 1)
 
     return render_template('/pages/search_results.html',
                            get_book_list=get_book_list,
+                           range_book_count=range_book_count,
                            search=search)
 
 
@@ -191,53 +193,3 @@ def logout():
     """退出视图函数"""
     logout_user()
     return redirect(url_for('home'))
-
-
-# 对登录用户可见
-#@books.route('/user/<int:id>/', methods=["POST", "GET"])
-#def user(id):
-#    """
-#    用户个人信息页
-#        显示该用户历史借阅
-#        显示该用户快要过期的书（3天为界）
-#
-#        提供用户还书按钮
-#
-#        借阅图书默认按归还时间顺序排序
-#    """
-#    book_list = Book.query.filter_by(user_id=current_user.id).order_by('end').all()
-#    time_done_book = []
-#    time_dead_book = []
-#
-#    for book in book_list:
-#        delta = (datetime.datetime.strptime(book.end, "%Y-%m-%d %H:%M:%S") - \
-        #            datetime.datetime.now()).total_seconds()
-        #if delta <= 3*24*60*60 and delta > 0:
-        #    time_done_book.append(book)
-        #if delta <= 0:
-        #    time_dead_book.append(book)
-#
-#    if request.method == "POST":
-#        """在前端input标签的重定向页面进行处理"""
-#        return redirect(url_for('books.user', id=current_user.id))
-#
-#    books = Book.query.filter_by(name=request.args.get('back'), user_id=current_user.id).all()
-#    for book in books:
-#        book.status = False
-#        book.start = None
-#        book.end = None
-#        book.user_id = None
-#        flash('%s 已归还!' % book.name)
-#        return redirect(url_for('books.user', id=current_user.id))
-#
-#    range_book_count = range(len(book_list)/3 + 1)
-#    range_timedonebook_count = range(len(time_done_book)/3 + 1)
-#
-#    return render_template('/pages/user.html',
-#                           user=user,
-#                           time_done_book=time_done_book[:2],
-#                           book_list=book_list,
-#                           range_book_count=range_book_count,
-#                           range_timedonebook_count=range_timedonebook_count,
-#                           session=session)
-

@@ -15,7 +15,6 @@ from ..models import User
 from .forms import LoginForm, RegisterForm
 from flask import render_template, redirect, request, url_for, flash, session
 from flask.ext.login import login_user, login_required, logout_user, current_user
-from ..redirect_urls import is_safe_url, get_redirect_target, redirect_back
 import base64
 
 
