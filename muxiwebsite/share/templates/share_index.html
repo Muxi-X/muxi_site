@@ -3,22 +3,22 @@
 {% endblock %} {% block content %}
 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect tab_bar">
     {% if current_user.is_authenticated %}
-    <a href="http://share.muxistudio.com/send" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored btn_add">
+    <a href="/send" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored btn_add">
         <i class="material-icons">add</i>
     </a>
     {% endif %}
     <div class="mdl-tabs__tab-bar" id="header_tab_bar">
-        <a href="http://share.muxistudio.com/new/1" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
-        <a href="http://share.muxistudio.com/hot/" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
-        {% if current_user.is_authenticated %}
-            <a href="profile.muxistudio.com/{{ current_user.id }}/" class="mdl-tabs__tab header_tabs">MINE</a>
-        {% else %}
-            <a href="muxistudio.com/auth/login/" class="mdl-tabs__tab header_tabs">MINE</a>
-        {% endif %}
+        <a href="#" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
+        <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
+        <a href="#" class="mdl-tabs__tab header_tabs">MINE</a>
     </div>
-    <a href="http://share.muxistudio.com/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
-    <a href="http://share.muxistudio.com/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
-    <a href="http://share.muxistudio.com/?page=1" class="header_tab_links" style="display:none"></a>
+    <a href="/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
+    <a href="/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for("profile.user_profile", id=current_user.id) }}" class="header_tab_links" style="display:none"></a>
+    {% else %}
+    <a href="{{ url_for("auth.login") }}" class="header_tab_links" style="display:none"></a>
+    {% endif %}
 </div>
 <section class="section_center">
     {% for share in shares %}
@@ -28,8 +28,12 @@
                 <h2 class="card_title">{{ share.title }}</h2>
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                <div class="card_circle mdl-color--primary">
-                    <img src={{ share.avatar }} alt="avatar" title="{{ share.author }}">
+                <div class="card_circle mdl-color--primary" 
+                id={{'share_' + loop.index|string()}}>
+                    <img src={{ share.avatar }} alt="avatar">
+                </div>
+                <div class="mdl-tooltip" for={{'share_' + loop.index|string()}}>
+                    {{ share.author }}
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
@@ -42,9 +46,9 @@
                 <i class="material-icons mdl-color-text--grey">favorite</i>
             </div>
             <div class="card_more mdl-cell mdl-cell--10-col">
-                <a href="share.muxistudio.com/view/{{ share.id }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
+                <a href="{{ url_for("shares.view_share", id=share.id) }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
 				{% if share.author_id == current_user.id %}
-					<a href="http://share.muxistudio.com/edit-share/{{share.id}}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
+                <a href="{{ url_for("shares.edit", id=share.id) }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
 				{% endif %}
             </div>
         </div>
@@ -67,5 +71,5 @@
 		</div>
 	</div>
 </section>
-<script src="http://share.muxistudio.com/static/js/index.min.js"></script>
+<script src="/static/js/index.min.js"></script>
 {% endblock %}

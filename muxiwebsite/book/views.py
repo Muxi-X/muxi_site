@@ -75,7 +75,7 @@ def home():
         flash('用户名或密码错误!')
     range_book_count = range(len(new_book_list)/6 + 1)
 
-    return render_template('home.html', new_book_list=new_book_list,
+    return render_template('/pages/home.html', new_book_list=new_book_list,
                            get_book_list=get_book_list, form=form,
                            range_book_count=range_book_count)
 
@@ -123,7 +123,7 @@ def search_results():
         """
         get_book_list.append(book)
 
-    return render_template('search_results.html',
+    return render_template('/pages/search_results.html',
                            get_book_list=get_book_list,
                            search=search)
 
@@ -134,33 +134,20 @@ def info(id):
     form = GetForm()
     book = Book.query.get_or_404(id)
     if form.validate_on_submit():
-        day = form.day.data
-        if int(day) >= 0:
-            start = datetime.datetime.now()
+        formday = str(form.day.data)
+        day = formday[0:4] + formday[5:7] + formday[8:10]
+        start = str(datetime.date.today().strftime('%Y%m%d'))
+        dminuss = int(day)-int(start)
+        if dminuss >= 0:
             book.start = start
             book.user_id = current_user.id
             book.status = True  # 已被借
-            book.end = (start + datetime.timedelta(day)).strftime("%Y-%m-%d %H:%M:%S")
-            return redirect(url_for('books.user', id=current_user.id))
+            book.end = day
+            return redirect(url_for('profile.user_profile', id=current_user.id))
         else:
             flash('光阴似箭、岁月如梭,时间－你不能篡改她，更不能逆转她!')
-    return render_template('info.html', book=book, form=form)
-
-
-# 只对管理员可见
-@books.route('/rter/', methods=["POST", "GET"])
-@login_required
-def rter():
-    """用户注册接口"""
-    if current_user.role_id == 2:
-        form = RterForm()
-        if form.validate_on_submit():
-            u = User(username=form.username.data, password=form.password.data)
-            db.session.add(u)
-            db.session.commit()
-        return render_template('r.html', form=form)
-    else:
-        return redirect(url_for('books.home'))
+            return redirect(url_for('books.info', id=id))
+    return render_template('/pages/info.html', book=book, form=form)
 
 
 # 只对管理员可见
@@ -192,7 +179,7 @@ def bookin():
             db.session.commit()
             flash('书籍已录入！')
             return redirect(url_for('books.bookin'))
-        return render_template('bookin.html', form=form)
+        return render_template('/pages/bookin.html', form=form)
     else:
         return redirect(url_for('books.home'))
 
@@ -207,64 +194,50 @@ def logout():
 
 
 # 对登录用户可见
-@books.route('/user/<int:id>/', methods=["POST", "GET"])
-def user(id):
-    """
-    用户个人信息页
-        显示该用户历史借阅
-        显示该用户快要过期的书（3天为界）
+#@books.route('/user/<int:id>/', methods=["POST", "GET"])
+#def user(id):
+#    """
+#    用户个人信息页
+#        显示该用户历史借阅
+#        显示该用户快要过期的书（3天为界）
+#
+#        提供用户还书按钮
+#
+#        借阅图书默认按归还时间顺序排序
+#    """
+#    book_list = Book.query.filter_by(user_id=current_user.id).order_by('end').all()
+#    time_done_book = []
+#    time_dead_book = []
+#
+#    for book in book_list:
+#        delta = (datetime.datetime.strptime(book.end, "%Y-%m-%d %H:%M:%S") - \
+        #            datetime.datetime.now()).total_seconds()
+        #if delta <= 3*24*60*60 and delta > 0:
+        #    time_done_book.append(book)
+        #if delta <= 0:
+        #    time_dead_book.append(book)
+#
+#    if request.method == "POST":
+#        """在前端input标签的重定向页面进行处理"""
+#        return redirect(url_for('books.user', id=current_user.id))
+#
+#    books = Book.query.filter_by(name=request.args.get('back'), user_id=current_user.id).all()
+#    for book in books:
+#        book.status = False
+#        book.start = None
+#        book.end = None
+#        book.user_id = None
+#        flash('%s 已归还!' % book.name)
+#        return redirect(url_for('books.user', id=current_user.id))
+#
+#    range_book_count = range(len(book_list)/3 + 1)
+#    range_timedonebook_count = range(len(time_done_book)/3 + 1)
+#
+#    return render_template('/pages/user.html',
+#                           user=user,
+#                           time_done_book=time_done_book[:2],
+#                           book_list=book_list,
+#                           range_book_count=range_book_count,
+#                           range_timedonebook_count=range_timedonebook_count,
+#                           session=session)
 
-        提供用户还书按钮
-
-        借阅图书默认按归还时间顺序排序
-    """
-    book_list = Book.query.filter_by(user_id=current_user.id).order_by('end').all()
-    time_done_book = []
-    time_dead_book = []
-
-    for book in book_list:
-        delta = (datetime.datetime.strptime(book.end, "%Y-%m-%d %H:%M:%S") - \
-            datetime.datetime.now()).total_seconds()
-        if delta <= 3*24*60*60 and delta > 0:
-            time_done_book.append(book)
-        if delta <= 0:
-            time_dead_book.append(book)
-
-    # if request.method == "POST":
-    #     """在前端input标签的重定向页面进行处理"""
-    #     return redirect(url_for('books.user', id=current_user.id))
-
-    books = Book.query.filter_by(name=request.args.get('back'), user_id=current_user.id).all()
-    for book in books:
-        book.status = False
-        book.start = None
-        book.end = None
-        book.user_id = None
-        flash('%s 已归还!' % book.name)
-        return redirect(url_for('books.user', id=current_user.id))
-
-    range_book_count = range(len(book_list)/3 + 1)
-    range_timedonebook_count = range(len(time_done_book)/3 + 1)
-
-    return render_template('user.html',
-                           time_done_book=time_done_book[:2],
-                           book_list=book_list,
-                           range_book_count=range_book_count,
-                           range_timedonebook_count=range_timedonebook_count,
-                           session=session)
-
-"""
-@books.route('/upload/', methods=["POST", "GET"])
-@login_required
-def upload_file():
-    \"\"\"上传文件函数\"\"\"
-    session['fileurl'] = 'http://127.0.0.1:5000/static/image/logo.png'
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            session['fileurl'] = 'http://121.0.0.1:5000/static/image/%s' % filename
-            return redirect(url_for('user', username=current_user.username))
-    return render_template('upload.html')
-"""

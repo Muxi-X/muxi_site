@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}{% endblock %}
+        <!--css file-->
+        {% block css_file %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="background-images"></div>
+        <div class="container margin_auto">        
+            {% block page_content %}{% endblock %}
+        </div>
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/js/bundle.js"></script>
+    </body>
+</html>

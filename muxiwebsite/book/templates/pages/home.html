@@ -1,0 +1,64 @@
+<!--home.html-->
+{% extends '/pages/book-base.html' %}
+{% block title %}<title>木犀图书</title>{% endblock %}
+{% block css_file %}
+{{super()}}
+<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+{% endblock %}
+
+{% block page_content %}
+{% include '/components/header.html' %}
+<!-- <div class="bar" id="bar">
+	<div class="progress"></div>
+</div> -->
+<div class="home_container">
+	<div class="left">
+        <div class="content">
+            <span class="newbook_tag">NEW BOOKS</span>
+            <div id="prev" class="btn cp">&lsaquo;</div>
+            <div id="next" class="btn cp">&rsaquo;</div>
+        </div>
+		<div class="showbox">
+		    <ul class="slide">
+            {% for i in range_book_count %}
+		    <div class="box">
+                {% for book in new_book_list[i*6:(i+1)*6] %}
+		        <div class="new_book">
+                    <a href="{{ url_for("books.info", id=book.id) }}"><img src={{ book.image }} alt="" class="book"></a>
+                    <div class="book_information">
+                        <a href="{{ url_for("books.info", id=book.id) }}" class="ta">
+                            <div class="title">{{ book.name }}({{ book.bid }})</div>
+		               <div class="author">{{ book.author }}</div>
+                       </a>
+                       <p class="book_tags"> 类别：{{ book.tag }}</p>
+                       <div class="summary">{{ book.summary[: 60] }}...</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+		    </ul>
+	    </div>
+	</div>
+	<div class="right">
+        <div class="content">LENDING</div>
+        <div class="right_box">
+                {% for book in get_book_list %}
+                <div class="new_book right_book">
+                    <a href="{{ url_for('books.info', id=book.id) }}"><img src={{ book.image }} alt="" class="book"></a>
+                    <div class="book_information ">
+                        <a href="{{ url_for('books.info', id=book.id) }}" class="ta">
+                            <div class="title">{{ book.name }}</div>
+                            <div class="author">{{ book.author }}</div>
+                        </a>
+                        <a href="{{ url_for("profile.user_profile", id=book.user.id) }}" class="lend_user"><p>借阅者：{{ book.user.username}}</p></a>
+                            <div class="book_tags">到期时间：{{ book.end }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+        <!--占位-->
+    </div>
+</div>
+{% include '/components/footer.html' %}
+{% endblock %}

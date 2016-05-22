@@ -1,0 +1,184 @@
+//header.scss
+
+.background-images{
+	background:url("../images/bgimage1.png") no-repeat bottom center;
+	background-size:cover;
+	height:300px;
+}
+
+.header{
+	width:960px;
+	height:100px; 
+	position:absolute;
+	top: 200px;
+	.nav_image{
+		position:absolute;
+	}
+	.menu{
+		background: $main-color;
+		padding-left:455px;
+		height:75px;
+		line-height: 75px;
+		width:505px;
+	}
+	.nav{
+		display:inline-block;
+		text-align: center;
+		width:123px;
+		font-size:15px;
+		a{
+			color:#eee;
+			display:block;
+			width:100%;
+			line-height:70px;
+		}
+		a:hover{
+			background-color:#44351d;
+			border-top: #eee 5px solid;
+			margin-top: -5px;
+		}
+	}
+}
+#mask{
+	position:absolute;
+	left: 0;
+	top: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 2;
+}
+.popup{
+	display: none;
+	width: 500px;
+	height:320px;
+	border: 1px #dad33e solid;
+	background-color: #dad33e;
+	border-radius: 10px;
+	text-align: center;
+	position:fixed;
+	transform:translate(-50%,-50%);
+	top: 50%;
+	left: 50%;
+	z-index:3;
+	#close{
+		width:30px;
+		height:30px;
+		background:url("../images/close.png") no-repeat;
+		background-size:100%;
+		position:absolute;
+		top:10px;
+		right:10px;
+		cursor:pointer;
+	}
+	.search_word{
+		line-height: 110px;
+		font-size: 31px;
+		font-weight: 600;
+	}
+	.search_ipt{
+		position: relative;
+		height: 66px;
+		.ipt{
+			width: 284px;
+			padding:20px;
+			border: #fff843;
+			border-radius: 5px;
+			font-size: 18px;
+		}
+		.search_logo{
+			background: url("../images/search.png") no-repeat 100%;
+			width: 30px;
+			line-height: 64px;
+			vertical-align: middle;
+			margin-left: -40px;
+			border:none;
+			&:hover{
+				transform: scale(1.1);
+			}
+		}
+	}
+	.tags{
+		padding-left: 0;
+	}
+	.tags li{
+			display: inline-block;
+			margin-left: -9px;
+	}
+	.tags a{
+			font-size: 20px;
+			display:inline-block;
+			color: black;
+			margin:40px 0;
+			width: 70px;
+			line-height: 25px;
+			&:hover{
+				background-color:$main-color ;
+				color: white;
+			}
+	}
+	.logOn{
+		font-size: 38px;
+		margin-top: 35px;
+	}
+	.logOn_input{
+		margin: 17px auto;
+		position:relative;
+		.logo{
+			position:absolute;
+			width: 40px;
+			height: 40px;
+			vertical-align: middle;
+			top:7.5px;
+			left:110px;
+			}
+		.name{
+			background: transparent url(../images/logo_input.png) no-repeat 0 0;
+			}
+		.code{
+			background: transparent url(../images/logo_input.png) no-repeat 0 -38px;
+			}
+		.logOn_input_text input{
+			height: 55px;
+			width: 195px;
+			border: none;
+			border-radius: 5px;
+			padding: 0 55px;
+			font-size: 20px;
+			display:inline-block;
+		}
+		.logOn_text{
+			position:absolute;
+			font-size: 20px;
+			line-height: 55px;
+			right:110px;
+			top:0;
+		}
+
+	}
+	.btn{
+			width: 77px;
+			height: 36px;
+			background-color: #332a1c;
+			border: none;
+			border-radius: 5px;
+			color: #fff;
+			font-size:18px;
+			cursor: pointer;
+			display:inline-block;
+			margin: 10px 20px;
+			&:hover{
+				background-color: transparent;
+				color:#000;
+				border:solid $main-color 1px;
+			}
+	}
+	.cancel{
+			line-height: 36px;
+			vertical-align: top;
+		}
+	.go{
+		 	padding:0;
+		}
+
+}
+
+

@@ -8,3 +8,7 @@ search.db
 muxi_data.sqlite
 .idea
 .DS_Store
+*.ini
+basedir.py
+uwsgi.py
+

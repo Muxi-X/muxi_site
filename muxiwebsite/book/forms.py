@@ -39,7 +39,7 @@ class LoginForm(Form):
 class GetForm(Form):
     """借阅表单"""
     status = BooleanField('借阅')
-    day = IntegerField('借阅天数')
+    day = StringField('借阅天数')
     submit = SubmitField('确定借阅')
 
 

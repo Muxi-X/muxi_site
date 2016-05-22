@@ -1,0 +1,63 @@
+{% extends '/pages/book-base.html' %}
+{% block title %}<title>图书信息</title>{% endblock %}
+
+{% block css_file %}
+{{super()}}
+<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+{% endblock %}
+
+{% block page_content %}
+{% include '/components/header.html' %}
+<div class="info_container">
+    <div class="result_bgc">
+        <!-- 消息闪现 -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flashes" id="flashes" style="color: red;">
+            {% for message in messages %}
+            <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+          <div class="info_left">
+              <div class="title">{{ book.name }}({{ book.bid }})</div>
+                <div class="author">{{ book.author }}</div>
+                <div class="info_summary">{{ book.summary }}</div>
+          </div>
+          <div class="info_right">
+                <div class="info_book">
+                      <img src={{ book.image }} alt="" class="book">
+                 </div>
+               {% if current_user.is_authenticated %}
+                  {% if book.status == False %}
+                      <form method="post">
+                            <div class="info_b">
+                                <div class="info_input">
+                                {{ form.day(id="calendar",placeholder="截止日期") }}
+                                {{ form.hidden_tag() }}
+                                </div>
+                                <label id="info_logo"></label>
+                                <input type="submit" class="result_sub" value="BORROW">
+                            </div>
+                      </form>
+                      {% else %}
+                      <div class="info_borrowed">
+                       <h2>Sorry!Have Lended!</h2>
+                       <p>借阅者：{{ book.user.username}}</p>
+                       <p>到期时间：{{ book.end[:4]+'-'+book.end[4:6]+'-'+book.end[6:] }}</p>
+                     </div>
+                  {% endif %}
+                  {% else %}
+                    <div style="margin: 40px;">Sorry,请先<a href="{{ url_for('auth.login') }}">登录</a>!</div>
+                {% endif %}
+          </div>
+    </div>
+</div>
+ {% include '/components/footer.html' %}
+ <script type="text/javascript">
+   window.onload = function(){
+    $c.calendar.init("calendar");
+   } ;
+ </script>
+{% endblock %}

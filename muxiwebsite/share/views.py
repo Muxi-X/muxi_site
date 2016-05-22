@@ -75,12 +75,14 @@ def view_share(id):
     实现评论表单发表自己的评论
     """
     share = Share.query.get_or_404(id)
+    share.author = User.query.filter_by(id=share.author_id).first().username
     comments = Comment.query.filter_by(share_id=share.id).all()
     form = CommentForm()
     if form.validate_on_submit():
         comment = Comment(
             comment = form.comment.data,
             author_id = current_user.id,
+            author_name = User.query.filter_by(id=current_user.id).first().username,
             share_id = id,
 			count = 0
             )

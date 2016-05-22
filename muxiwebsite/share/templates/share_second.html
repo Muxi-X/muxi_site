@@ -9,7 +9,10 @@
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
                 <div class="card_circle mdl-color--primary">
-                    <img src="{{ share.avatar}}" alt="avatar">
+                    <img src="{{ share.avatar}}" alt="avatar" id="author">
+                </div>
+                 <div class="mdl-tooltip" for="author">
+                    {{ share.author }}
                 </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
@@ -31,7 +34,11 @@
             {% for comment in comments %}
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
                 <div class="card_circle ">
-                    <img src="{{ comment.avatar}}" alt="{{ comment.username }}">
+                    <img src="{{ comment.avatar}}" alt="{{ comment.username }}"
+                    id={{'comment_' + loop.index|string()}}>
+                </div>
+                <div class="mdl-tooltip" for={{'comment_' + loop.index|string()}}>
+                    {{ comment.username }}
                 </div>
             </div>
             <div class="second_comments_content mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">

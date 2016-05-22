@@ -5,7 +5,7 @@
             <div class="des">
                 <img src="{{  blog.avatar }}" alt="img">
                 <p class="title">
-                    <a href="http://blog.muxistudio.com/post/{{ blog.id }}">{{ blog.title }}</a>
+                    <a href="{{ url_for('blogs.post', id=blog.id) }}">{{ blog.title }}</a>
                 </p>
                 <div class="info">
                     <span class="name">{{ blog.author.username }}</span>

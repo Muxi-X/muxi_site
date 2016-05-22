@@ -1,15 +1,12 @@
-{% extends 'base.html' %}
+{% extends '/pages/book-base.html' %}
 {% block title %}<title>用户主页</title>{% endblock %}
 {% block css_file %}
-  <link href="http://book.muxistudio.com/static/css/First.css" rel="stylesheet" type="text/css" />
-  <link href="http://book.muxistudio.com/static/css/reset.css" rel="stylesheet" type="text/css" />
-  <link href="http://book.muxistudio.com/static/css/new_First.css" rel="stylesheet" type="text/css" />
-  <link href="http://book.muxistudio.com/static/header/css/header.css" rel="stylesheet" type="text/css" />
-  <link href="http://book.muxistudio.com/static/footer/css/footer.css" rel="stylesheet" type="text/css" />
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for("books.home") }}static/css/main.css">
 {% endblock %}
 
 {% block page_content %}
-{% include 'header.html' %}
+{% include '/components/header.html' %}
 <div class="container">
     <div class="left">
         <div class="content">正在借阅
@@ -31,13 +28,13 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}">
+                                <form action="{{ url_for("books.user", id=current_user.id) }}">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}">
+                                <form action="{{ url_for("books.user", id=current_user.id) }}">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
@@ -69,13 +66,13 @@
                             <div class="book_tags">
                                 {% if book.end %}
                                 <p>到期时间：{{ book.end }}</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}" method="POST">
+                                <form action="{{ url_for("books.user", id=current_user.id) }}" method="POST">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
                                 {% else %}
                                 <p>书已到期!</p>
-                                <form action="http://book.muxistudio.com/user/{{ current_user.id }}" method="POST">
+                                <form action="{{ url_for("books.user", current_user.id) }}" method="POST">
                                     <p class="book_back">还书</p>
                                     <input type="submit" name="back" value="{{ book.name }}">
                                 </form>
@@ -89,24 +86,6 @@
             </ul>
         </div>
     </div>
-    <!--占位-->
-    <!--div class="right">
-        <span class="content content_right">个人简介</span>
-        <div class="avanter"><img src="">
-            <div class="ava_button">
-                <a href="javascript:;" onclick="document.getElementById('avanter_iframe').style.display='block'">上传头像</a>
-            </div>
-        </div>
-    </div-->
-    <div id="avanter_iframe">
-        <iframe src="http://book.muxistudio.com/upload"></iframe>
-    </div>
 </div>
-{% include 'footer.html' %}
-{% endblock %}
-
-{% block script_file %}
-  <script type="text/javascript" src="http://book.muxistudio.com/static/js/jquery-1.3.2.min.js"></script>
-  <script type="text/javascript" src="http://book.muxistudio.com/static/js/shouye.js"></script>
-  <script type="text/javascript" src="http://book.muxistudio.com/static/header/js/header.js"></script>
+{% include '/components/footer.html' %}
 {% endblock %}
