@@ -102,11 +102,11 @@ class Role(db.Model):
 
 class Book(db.Model):
     """图书类"""
-    __searchable__ = ['name', 'tag', 'summary']
+    __searchable__ = ['name', 'tag', 'summary', 'bid']
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key = True)
     url = db.Column(db.String(164))
-    bid = db.Column(db.String(164))
+    bid = db.Column(db.Text)
     name = db.Column(db.Text)
     author = db.Column(db.Text)
     tag = db.Column(db.String(164))

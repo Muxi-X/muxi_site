@@ -43,11 +43,10 @@ muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
-# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:1234@47.88.193.105/muxidb"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['WHOOSH_BASE'] = "search.db"
-app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索最多加载5个搜索结果
+app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索每页最多加载5个搜索结果
 app.config['MUXI_ADMIN'] = 'neo1218'
 app.config["SHARE_PER_PAGE"] = 5
 app.config["MUXI_SHARES_PER_PAGE"] = 10
@@ -55,7 +54,7 @@ app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
 app.config['BLOG_PER_PAGE'] = 10
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SERVER_NAME'] = 'flask.dev:5000'
+app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
 
 
 # 初始化扩展(app全局属性)
@@ -69,7 +68,6 @@ pagedown = PageDown(app)
 def index():
      return render_template('index_d.html')
 
-# from . import views
 
 class MyAdminIndexView(admin.AdminIndexView):
     """rewrite is_authenticated method"""
@@ -111,9 +109,6 @@ def neomarkdown(markdown_content):
 # 蓝图注册
 from .book import books
 app.register_blueprint(books)
-
-#from .muxi import muxi
-#app.register_blueprint(muxi, url_prefix='/')
 
 from .share import shares
 app.register_blueprint(shares)
