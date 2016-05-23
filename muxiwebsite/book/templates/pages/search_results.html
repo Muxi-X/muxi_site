@@ -1,7 +1,7 @@
 {% extends '/pages/book-base.html' %}
 
 {% block css_file %}
-{{super()}}
+{{ super() }}
 <link rel="stylesheet" type="text/css" href="/static/css/main.css">
 {% endblock %}
 
@@ -24,7 +24,7 @@
               <div class="result_borrow">未借</div>
               {% endif %}
                <div class="right">
-                  <a href="{{ url_for('book.info', id=book.name) }}">
+                  <a href="{{ url_for('book.info', id=book.id) }}">
                   <img src={{ book.image }} alt="" class="book">
                   </a>
                   <div class="result_book_content">
