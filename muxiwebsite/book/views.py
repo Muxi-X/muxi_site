@@ -107,26 +107,29 @@ def search_results():
 
         提供书籍借阅表单
     """
-    get_book_list = []
+    book_list = []
     search = request.args.get('search')
     page = request.args.get('page', 1, type=int)
-    results = Book.query.whoosh_search(search)
-    for book in results[:]:
-        """
-        # 默认搜索结果全部为可借阅图书
-        if request.args.get('range') == 'can':
-            if book.status != True:
-            # 跳过不可借阅图书
-                get_book_list.append(book)
-        if request.args.get('range') == 'all':
-            get_book_list.append(book)
-        """
-        get_book_list.append(book)
-    range_book_count = range(len(get_book_list)/6 + 1)
-
+    pagination = Book.query.whoosh_search(search).order_by(Book.id).paginate(
+            page, per_page=app.config['MAX_SEARCH_RESULTS'],
+            error_out=False)
+    #for book in results[:]:
+    #    """
+    #    # 默认搜索结果全部为可借阅图书
+    #    if request.args.get('range') == 'can':
+    #        if book.status != True:
+    #        # 跳过不可借阅图书
+    #            get_book_list.append(book)
+    #    if request.args.get('range') == 'all':
+    #        get_book_list.append(book)
+    #    """
+    #    book_list.append(book)
+   # pagination = book_list.paginate(
+   #         page, per_page=app.config['MAX_SEARCH_RESULTS'],
+   #         error_out=False)
+    get_book_list = pagination.items
     return render_template('/pages/search_results.html',
                            get_book_list=get_book_list,
-                           range_book_count=range_book_count,
                            search=search)
 
 

@@ -1,4 +1,5 @@
 {% extends '/pages/book-base.html' %}
+{% import '/components/_macros.html' as macros %}
 {% block title %}搜索结果{% endblock %}
 {% block css_file %}
 {{ super() }}
@@ -9,22 +10,21 @@
 {% include '/components/header.html' %}
 <div class="info_container">
   <div class="result_bgc">
-      {% for i in range_book_count %}
       <div class="box">
-          {% for book in get_book_list[i*6:(i+1)*6] %}
+          {% for book in get_book_list %}
           <div class="result_bookinformation">
               <div class="left">
                 <div class="book_name">书名：{{ book.name }}</div>
                 <div class="tag"><strong>类别:</strong> {{ book.tag }}</div>
-                <div class="summary">{{ book.summary[:70] }}...<a href="{{ url_for('book.info', id=book.id) }}"><span>详情</span></a></div>
+                <div class="summary">{{ book.summary[:70] }}...<a href="{{ url_for('books.info', id=book.id) }}"><span>详情</span></a></div>
               </div>
               {% if book.status %}
               <div class="result_borrow">已借</div>
               {% else %}
               <div class="result_borrow">未借</div>
               {% endif %}
-               <div class="right">
-                  <a href="{{ url_for('book.info', id=book.id) }}">
+              <div class="right">
+                  <a href="{{ url_for('books.info', id=book.id) }}">
                   <img src={{ book.image }} alt="" class="book">
                   </a>
                   <div class="result_book_content">
@@ -34,8 +34,12 @@
               </div>
           </div>
           {% endfor %}
+          {% if pagination %}
+              <div class="pagination">
+                  {{ macros.pagination_widget(pagination, '.index') }}
+              </div>
+          {% endif %}
       </div>
-      {% endfor %}
   </div>
 </div>
 {% include '/components/footer.html' %}
