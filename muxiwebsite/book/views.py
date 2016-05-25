@@ -113,20 +113,6 @@ def search_results():
     pagination = Book.query.whoosh_search(search).paginate(
             page, per_page=app.config['MAX_SEARCH_RESULTS'],
             error_out=False)
-    #for book in results[:]:
-    #    """
-    #    # 默认搜索结果全部为可借阅图书
-    #    if request.args.get('range') == 'can':
-    #        if book.status != True:
-    #        # 跳过不可借阅图书
-    #            get_book_list.append(book)
-    #    if request.args.get('range') == 'all':
-    #        get_book_list.append(book)
-    #    """
-    #    book_list.append(book)
-   # pagination = book_list.paginate(
-   #         page, per_page=app.config['MAX_SEARCH_RESULTS'],
-   #         error_out=False)
     get_book_list = pagination.items
     return render_template('/pages/search_results.html',
                            get_book_list=get_book_list,
