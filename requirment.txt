@@ -6,7 +6,7 @@ flask-login==0.3.2
 flask-wtf
 flask-migrate
 flask-admin
-flask-whooshalchemy
+flask_whooshalchemy_redux
 flask-pagedown
 flask-misaka
 bleach

@@ -110,7 +110,7 @@ def search_results():
     book_list = []
     search = request.args.get('search')
     page = request.args.get('page', 1, type=int)
-    pagination = Book.query.whoosh_search(search).order_by(Book.id).paginate(
+    pagination = Book.query.whoosh_search(search).paginate(
             page, per_page=app.config['MAX_SEARCH_RESULTS'],
             error_out=False)
     #for book in results[:]:
