@@ -115,8 +115,10 @@ def search_results():
             error_out=False)
     get_book_list = pagination.items
     return render_template('/pages/search_results.html',
-                           get_book_list=get_book_list,
-                           search=search)
+        pagination=pagination,
+        get_book_list=get_book_list,
+        search=search
+        )
 
 
 # 对所有访客可见，但只有登录用户可以借阅(html改动)
