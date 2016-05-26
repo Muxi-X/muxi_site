@@ -107,9 +107,8 @@ def search_results():
 
         提供书籍借阅表单
     """
-    book_list = []
     search = request.args.get('search')
-    page = request.args.get('page', 1, type=int)
+    page = int(request.args.get('page') or 1)
     pagination = Book.query.whoosh_search(search).paginate(
             page, per_page=app.config['MAX_SEARCH_RESULTS'],
             error_out=False)

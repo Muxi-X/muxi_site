@@ -1,5 +1,4 @@
 {% extends '/pages/book-base.html' %}
-{% import '/components/_macros.html' as macros %}
 {% block title %}<title>搜索结果</title>{% endblock %}
 {% block css_file %}
 {{ super() }}
@@ -36,7 +35,20 @@
           {% endfor %}
           {% if pagination %}
               <div class="pagination">
-                  {{ macros.pagination_widget(pagination, '.search_results') }}
+                  <ul class="pagination">
+                      <li{% if not pagination.has_prev %} class="disabled"{% else %} class="able left" {% endif %}>
+                          <a href="{% if pagination.has_prev %}{{ url_for('books.search_results',
+                             page = pagination.prev_num) }}{% else %}javascript:void(0){% endif %}">
+                             Previous
+                          </a>
+                      </li>
+                      <li{% if not pagination.has_next %} class="disabled"{% else %} class="able right" {% endif %} >
+                          <a href="{% if pagination.has_next %}{{ url_for('books.search_results',
+                              page=pagination.next_num) }}{% else %}javascript:void(0){% endif %}">
+                              Next
+                          </a>
+                      </li>
+                  </ul>
               </div>
           {% endif %}
       </div>
