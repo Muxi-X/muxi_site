@@ -109,13 +109,23 @@ def search_results():
     """
     search = request.args.get('search')
     page = int(request.args.get('page') or 1)
-    pagination = Book.query.whoosh_search(search).paginate(
-            page, per_page=app.config['MAX_SEARCH_RESULTS'],
-            error_out=False)
-    get_book_list = pagination.items
+    book_all = Book.query.all()
+    book_search = {}
+    book_result = []
+    get_book_list = []
+
+    for book in book_all:
+        book_search.setdefault(str(book.name)+str(book.bid)+str(book.tag)+str(book.author), book)
+    for key in book_search.keys():
+        if search in key:
+            book_result.append(book_search[key])
+
+    last_page = len(book_result)/app.config['MAX_SEARCH_RESULTS']+1
+    for each_book in book_result[(page-1)*app.config['MAX_SEARCH_RESULTS']:(page*app.config['MAX_SEARCH_RESULTS'])]:
+        get_book_list.append(each_book)
+
     return render_template('/pages/search_results.html',
-        pagination=pagination,
-        get_book_list=get_book_list,
+        get_book_list=get_book_list, page=page, last_page=last_page,
         search=search
         )
 

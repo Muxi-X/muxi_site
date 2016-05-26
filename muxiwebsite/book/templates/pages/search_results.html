@@ -33,24 +33,22 @@
               </div>
           </div>
           {% endfor %}
-          {% if pagination %}
               <div class="pagination">
                   <ul class="pagination">
-                      <li{% if not pagination.has_prev %} class="disabled"{% else %} class="able left" {% endif %}>
-                          <a href="{% if pagination.has_prev %}{{ url_for('books.search_results',
-                             page = pagination.prev_num) }}{% else %}javascript:void(0){% endif %}">
+                      <li{% if page==1 %} class="disabled"{% else %} class="able left" {% endif %}>
+                          <a href="{% if page>1 %}{{ url_for('books.search_results',
+                             page=page-1, search=search) }}{% else %}javascript:void(0){% endif %}">
                              Previous
                           </a>
                       </li>
-                      <li{% if not pagination.has_next %} class="disabled"{% else %} class="able right" {% endif %} >
-                          <a href="{% if pagination.has_next %}{{ url_for('books.search_results',
-                              page=pagination.next_num) }}{% else %}javascript:void(0){% endif %}">
+                      <li{% if page==last_page %} class="disabled"{% else %} class="able right" {% endif %} >
+                          <a href="{% if page<last_page %}{{ url_for('books.search_results',
+                              page=page+1, search=search) }}{% else %}javascript:void(0){% endif %}">
                               Next
                           </a>
                       </li>
                   </ul>
               </div>
-          {% endif %}
       </div>
   </div>
 </div>
