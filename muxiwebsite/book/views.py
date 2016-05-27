@@ -120,7 +120,8 @@ def search_results():
         if search in key:
             book_result.append(book_search[key])
 
-    last_page = len(book_result)/app.config['MAX_SEARCH_RESULTS']+1
+    last_page = (len(book_result)-1)/app.config['MAX_SEARCH_RESULTS']+1
+
     for each_book in book_result[(page-1)*app.config['MAX_SEARCH_RESULTS']:(page*app.config['MAX_SEARCH_RESULTS'])]:
         get_book_list.append(each_book)
 
