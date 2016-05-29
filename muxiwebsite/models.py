@@ -337,6 +337,7 @@ class Blog(db.Model):
     # body 直接存markdown，在服务器端渲染
     title = db.Column(db.Text)
     body = db.Column(db.Text)
+    summary = db.Column(db.Text)
     img_url = db.Column(db.String(164))
     # body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
