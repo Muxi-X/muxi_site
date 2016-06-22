@@ -107,7 +107,7 @@ def search_results():
 
         提供书籍借阅表单
     """
-    search = request.args.get('search')
+    search = request.args.get('search').lower()
     page = int(request.args.get('page') or 1)
     book_all = Book.query.all()
     book_search = {}
@@ -115,10 +115,9 @@ def search_results():
     get_book_list = []
 
     for book in book_all:
-        book_search.setdefault((str(book.name) + str(book.bid) + str(book.tag) + str(book.author)).encode('utf-8'), book)
-    for key in book_search.keys():
-        if search in key:
-            book_result.append(book_search[key])
+        book.search = (str(book.name) + str(book.bid) + str(book.tag) + str(book.author)).lower()
+        if search in book.search:
+            book_result.append(book)
 
     last_page = (len(book_result)-1)/app.config['MAX_SEARCH_RESULTS']+1
 
