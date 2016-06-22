@@ -115,7 +115,7 @@ def search_results():
     get_book_list = []
 
     for book in book_all:
-        book_search.setdefault((str(book.name)+str(book.bid)+str(book.tag)+str(book.author)).encode('utf-8'), book)
+        book_search.setdefault(u' '.join(str(book.name), str(book.bid), str(book.tag), str(book.author)).encode('utf-8').strip(), book)
     for key in book_search.keys():
         if search in key:
             book_result.append(book_search[key])
