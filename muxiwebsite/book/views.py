@@ -115,8 +115,7 @@ def search_results():
     get_book_list = []
 
     for book in book_all:
-        book.search = (str(book.name) + str(book.bid) + str(book.tag) + str(book.author)).lower()
-        if search in book.search:
+        if (search in book.name.lower()) or (search in book.bid.lower()) or (search in book.tag.lower()) or (search in book.author.lower()):
             book_result.append(book)
 
     last_page = (len(book_result)-1)/app.config['MAX_SEARCH_RESULTS']+1
