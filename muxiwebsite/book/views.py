@@ -107,7 +107,7 @@ def search_results():
 
         提供书籍借阅表单
     """
-    search = request.args.get('search').lower()
+    search = u' '.join((request.args.get('search').lower()))
     page = int(request.args.get('page') or 1)
     book_all = Book.query.all()
     book_search = {}

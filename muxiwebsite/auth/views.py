@@ -16,6 +16,11 @@ from .forms import LoginForm, RegisterForm
 from flask import render_template, redirect, request, url_for, flash, session
 from flask.ext.login import login_user, login_required, logout_user, current_user
 import base64
+import sys
+
+
+reload(sys)
+sys.setdefaultencoding('utf-8') 
 
 
 @auth.route('/login/', methods=["POST"])
