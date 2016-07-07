@@ -30,6 +30,10 @@ from urllib2 import urlopen
 import json
 import datetime
 import os
+import sys
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 """
                            ｜
@@ -113,16 +117,12 @@ def search_results():
     book_search = {}
     book_result = []
     get_book_list = []
-
     for book in book_all:
-        if (search in book.name.lower()) or (search in book.bid.lower()) or (search in book.tag.lower()) or (search in book.author.lower()):
+        if search in ((book.name + book.tag + book.author).lower() + book.bid + book.name + book.tag + book.author):
             book_result.append(book)
-
     last_page = (len(book_result)-1)/app.config['MAX_SEARCH_RESULTS']+1
-
     for each_book in book_result[(page-1)*app.config['MAX_SEARCH_RESULTS']:(page*app.config['MAX_SEARCH_RESULTS'])]:
         get_book_list.append(each_book)
-
     return render_template('/pages/search_results.html',
         get_book_list=get_book_list, page=page, last_page=last_page,
         search=search
