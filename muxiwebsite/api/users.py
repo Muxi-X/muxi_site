@@ -52,16 +52,13 @@ def new_user():
     pw = request.args.get('password')
     em = request.args.get('email')
     user = User.query.filter_by(username=name).first()
-    if user is not None:
-        return "username has been registered!"
-    else:
-        user = User(
-                username=name,
-                email=em,
-                password=base64.b64encode(pw),
-                avatar_url='http://7xrvvt.com1.z0.glb.clouddn.com/shakedog.gif',
-                role_id=3
-                )
+    user = User(
+            username=name,
+            email=em,
+            password=pw,
+            avatar_url='http://7xrvvt.com1.z0.glb.clouddn.com/shakedog.gif',
+            role_id=3
+            )
     db.session.add(user)
     db.session.commit()
     return jsonify({
