@@ -22,6 +22,7 @@ def find_username():
     username = request.args.get('username')
     register_username = []
     users = User.query.all()
+    return users[0].username
     for user in users:
         register_username.append(user.username)
     if username in register_username:
