@@ -65,8 +65,7 @@ def get_token():
     if isinstance(g.current_user, AnonymousUser) or g.token_used:
         return unauthorized('Invalid credentials')
     return jsonify({
-        'token': g.current_user.generate_auth_token(3600*24),
-        'expiration': 3600*24
+        'token': g.current_user.generate_auth_token(),
     })
 
 

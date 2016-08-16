@@ -175,11 +175,10 @@ class User(db.Model, UserMixin):
         """验证密码散列值"""
         return check_password_hash(self.password_hash, password)
 
-    def generate_auth_token(self, expiration):
+    def generate_auth_token(self):
         """generate a token"""
         s = Serializer(
-            current_app.config['SECRET_KEY'],
-            expiration
+            current_app.config['SECRET_KEY']
         )
         return s.dumps({'id': self.id})
 
