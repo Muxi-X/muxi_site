@@ -7,7 +7,7 @@ models.py
 """
 
 from . import db, login_manager, app
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import JSONWebSignatureSerializer as Serializer
 from random import seed
 from flask import current_app, request, url_for
 from flask_login import UserMixin, current_user
