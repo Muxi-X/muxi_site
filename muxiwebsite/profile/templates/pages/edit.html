@@ -12,19 +12,19 @@
 			<form method="post">
                 {{ form.hidden_tag() }}
 				<div class="form-group">
-				<label for="username">用户名</label>
+				<label for="username">用户名(必填)</label>
 					<!--input type="text" class="form-input" id="username"
          autofocus required /-->
                     {{ form.username(class="form-input", id="username") }}
 				</div>
 				<div class="form-group">
-					<label for="pic">头像</label>
+					<label for="pic">头像(必填)</label>
 					<!--input type="text" class="form-input" id="pic"
          placeholder="图片链接" required／-->
                     {{ form.avatar_url(class="form-input", id="pic", placeholder="图片链接") }}
 				</div>
 				<div class="form-group">
-					<label for="introduce">个人介绍</label>
+					<label for="introduce">个人介绍(必填)</label>
 					<!--textarea class="form-textarea" id="text"></textarea-->
                     {{ form.info(class="form-textarea form-input", id="text") }}
 				</div>
