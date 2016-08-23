@@ -64,9 +64,15 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
 
+
+# Index
 @app.route('/')
 def index():
-     return render_template('index_d.html')
+    return render_template('index_d.html')
+
+@app.route('/joinus/')
+def joinus():
+    return render_template('index_q.html')
 
 
 class MyAdminIndexView(admin.AdminIndexView):
