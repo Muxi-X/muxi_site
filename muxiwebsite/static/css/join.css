@@ -1,0 +1,72 @@
+html,
+body {
+    height: 100%;
+    fony-size: 14px;
+}
+
+
+/* main */
+
+.main{
+	width: 100%;
+	margin: 0 auto;
+	margin-bottom: 120px;
+}
+.main a {
+	color: #fed700;
+}
+.contents{
+	text-align: center;
+	background-image: url('../images/q_bg.png');
+	background-repeat: no-repeat;
+	background-color: #fed700;
+	overflow: hidden;
+	height: 230px;
+	background-size: 100% 100%;
+}
+.contents h2{
+	line-height: 40px;
+	font-weight: bold;
+	font-size: 20px;
+	margin-top: 40px;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+.contents p {
+	line-height: 28px;
+}
+
+/* infomation */
+.info-box{
+	box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+}
+.info{
+	width: 895px;
+	margin: 0 auto;
+	padding-top: 45px;
+}
+.info-left{
+	display: inline-block;
+
+}
+.info-left .map{
+	width: 265px;
+	height: 165px;
+	border: 1px solid rgba(0,0,0,0.5);
+	margin-bottom: 20px;
+}
+.info-left p {
+	line-height: 22px;
+	font-size: 13px;
+}
+
+.info-right{
+	display: inline-block;
+	margin-left: 110px;
+	vertical-align: top;
+	width: 510px;
+}
+.form-contents{
+	border: 1px solid #000;
+	overflow: hidden;
+}
+

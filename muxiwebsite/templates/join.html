@@ -1,0 +1,56 @@
+
+{% extends 'base_d.html' %} 
+{% block title %}
+	<title>木犀团队</title>
+{% endblock %} 
+{% block style %} 
+	{{super()}}
+	<link rel="stylesheet" type="text/css" href="/static/css/join.css"> 
+{% endblock %} 
+{% block content %}
+	 {% include "header_d.html" %}
+	<div class="main">
+		<div class="contents" id="bgimg">
+			<h2>木犀团队2016秋季招新开始啦</h2>
+			<p>如果你想要见识到前端大神，如果你想了解后台的运作，如果你想跟小伙伴们一起打造一款产品，</p>
+			<p>你有一定的经验或是有颗对互联网热枕的心都可以拥有加入我们的机会。</p>
+			<p>木犀的未来，等你来创造。</p>
+		</div>
+		<div class="info-box">
+			<div class="info">
+				<div class="info-left">
+					<div class="map" id="map">
+						<!-- map占位 -->
+					</div>
+					<p>团队主管：赵鑫晖</p>
+					<p>负责人联系方式：15623004642 </p>
+					<p>官方邮箱： i@muxistudio.com </p>
+					<p>官方微博：<a href="http://weibo.com/u/5610679970" target="_blank">@木犀团队</a></p>
+					<p>官方QQ ：2017304902</p>
+					<p>团队地址：华中师范大学大学生活动中心306室</p>
+				</div>
+				<div class="info-right">
+					<div class="form">
+						<div class="form-contents">
+							<iframe height="600" allowTransparency="true" style="width:100%;border:none;overflow:auto;margin-top:-20px" frameborder="0" src="http://form.mikecrm.com/0RF83W"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- footer -->
+	<footer>
+		
+	</footer>
+	<script src="http://webapi.amap.com/maps?v=1.3&key=您申请的key值"></script>
+	<script>
+    var map = new AMap.Map('map', {
+        resizeEnable: true,
+        zoom:20,
+        center: [114.363648,30.515895]
+        
+    });
+
+</script>
+{% endblock %}

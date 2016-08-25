@@ -22,7 +22,7 @@
         前方不会太远~。
 """
 
-from flask import Flask, Markup, redirect, url_for, render_template
+from flask import Flask, Markup, redirect, url_for, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import flask_login as login
 from flask_login import LoginManager
@@ -66,14 +66,28 @@ pagedown = PageDown(app)
 
 
 # Index
+def is_mobie():
+    platform = request.user_agent.platform
+    if platform in ["android", "iphone", "ipad"]:
+        return True
+    else:
+        return False
+
 @app.route('/')
 def index():
-    return render_template('index_d.html')
+    flag = is_mobie()
+    if flag:
+        return render_template("index_m.html")
+    else:
+        return render_template('index_d.html')
 
-@app.route('/joinus/')
-def joinus():
-    return render_template('index_q.html')
-
+@app.route('/join')
+def join():
+    flag = is_mobie()
+    if flag:
+        return render_template("join.html")
+    else:
+        return render_template('join.html')
 
 class MyAdminIndexView(admin.AdminIndexView):
     """rewrite is_authenticated method"""
