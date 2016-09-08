@@ -90,4 +90,3 @@ def adduser():
 if __name__ == '__main__':
     app.debug = True
     manager.run()
-

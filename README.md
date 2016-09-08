@@ -11,48 +11,67 @@
 #### 当前状态: 开发中
 #### 分支
 
-    master: 主分支: 发布特定功能
-    develop: 开发分支
+    develop: 主分支
 
 ### 合作
 #### 1:本地环境搭建
 1.安装flask
 
     教程: http://docs.jinkan.org/docs/flask/installation.html#installation
-    不懂处请私聊朱承浩或者王怡凡
 
 2.安装扩展环境
 
-    进入虚拟环境(还是请参见教程)
+进入虚拟环境(还是请参见教程)
+
     pip install -r requirment.txt
 
-    安装遇到问题请私聊朱承浩或者王怡凡
+3.设置测试域名
 
+打开hosts文件
 
-3.构建本地测试数据库
-运行 data.sh 脚本
+    sudo vim /etc/hosts
 
-	$ chmod 777 data.sh
-	$ ./data.sh
+设置测试域名,在文件后面添加
 
-然后在跳出的交互解释器中输入以下命令来创建用户角色
+    127.0.0.1 flask.dev
+    127.0.0.1 blog.flask.dev
+    127.0.0.1 share.flask.dev
+    127.0.0.1 book.flask.dev
 
+4.设置环境变量
+
+打开.bashrc(或.zshrc)
+
+    vim ~/.bashrc(~/.zshrc)
+
+设置环境变量,在文件后添加
+
+    set MUXI_WEBSITE_SERVERNAME
+    export MUXI_WEBSITE_SERVERNAME="flask.dev:5000"
+
+5.构建本地测试数据库
+运行 createdb.sh 脚本
+
+	$ ./createdb.sh
+
+如果已有数据库
+
+    $ ./dbmigrate.sh
+
+6.创建用户角色
+
+    $ python manage.py shell
 	>> Role.insert_roles()
 	>> quit()
 
-然后本地测试数据库就搭好了
-
-4.连接远程测试数据库
-
-    搭建中........
-
-5.运行项目
+7.运行项目
 
     运行: python manage.py runserver
     当前路由:
-        127.0.0.1:5000/muxi  木犀官网
-        127.0.0.1:5000/book  木犀图书
-        127.0.0.1:5000/share/1 木犀分享
+        flask.dev:5000/  木犀官网
+        book.flask.dev:5000/ 木犀图书
+        share.flask.dev:5000/ 木犀分享
+        blog.flask.dev:5000/ 木犀博客
 
 #### Git 工作流
 
@@ -84,19 +103,18 @@
 
     请提交时只提交改动的文件，并写好commit信息
 
-6: 在Github 上向dev分支发送pull request
+6: 在Github 上向develop分支发送pull request
 
-7: 并入development分支(项目维护人负责)
 
-8: merge development分支到master，发布版本(项目维护人负责)
+8: merge，发布版本(项目维护人负责)
 
 ### ToDo
 
-	1. gravatar 头像处理  ==> 决定采用七牛URL作为头像
-	2. 个人页视图
-	3. 博客板块视图
-**4. 分享hot(热度)排序**
-	5. 各种文章的收藏功能
+- [x] gravatar 头像处理  ==> 决定采用七牛URL作为头像
+- [x] 个人页视图
+- [x] 博客板块视图
+- [x] 分享hot(热度)排序
+- [ ]各种文章的收藏功能
 
 ### 进度
 
@@ -133,6 +151,5 @@
     2016年1月17日: 完成木犀内外API, close掉了一系列的ISSUE
     -----------------------------------------------------
     2016年2月1日: 集成木犀个人信息修改页
-
-
-
+    -----------------------------------------------------
+    2016年8月25日: 官网更新第二版,设置域名,develop设为主分支
