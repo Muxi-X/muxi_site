@@ -22,7 +22,7 @@ def muxi_index():
     if flag:
         return render_template("index_m.html")
     else:
-				return render_template('index_d.html')
+		return render_template('index_d.html')
 
 @muxi.route('/join')
 def muxi_index():
@@ -30,5 +30,5 @@ def muxi_index():
     if flag:
         return render_template("join.html")
     else:
-				return render_template('join.html')
+		return render_template('index_d.html')
 

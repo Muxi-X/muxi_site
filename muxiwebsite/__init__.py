@@ -85,9 +85,9 @@ def index():
 def join():
     flag = is_mobie()
     if flag:
-        return render_template("join.html")
+        return render_template("index_m.html")
     else:
-        return render_template('join.html')
+        return render_template('join_d.html')
 
 class MyAdminIndexView(admin.AdminIndexView):
     """rewrite is_authenticated method"""

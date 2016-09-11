@@ -22,12 +22,12 @@ body {
 .logo {
     height: 40px;
     float: left;
-    margin-left: 35px;
+    margin-left: 15px;
     margin-top: 10px;
 }
 
 .logo img {
-    width: 50px;
+    width: 120px;
     height: auto;
 }
 /*footer*/
@@ -72,12 +72,13 @@ footer {
 
 .index .content p {
     text-align: center;
-    margin-bottom: 45px;
-    font-size: 25px;
+    margin-bottom: 15px;
+    font-size: 20px;
     line-height: 1.5em;
 }
 
 .slogan_bg {
+    pointer-events: none;
     position: absolute;
     bottom: 50px;
     left: 0;
@@ -90,9 +91,13 @@ footer {
     width: 70%;
 }
 
+.index .content .margin_btm{
+    margin-bottom:10px;
+}
+
 .index .content .btn {
     display: inline-block;
-    width: 172px;
+    width: 152px;
     height: 58px;
     border: 1px solid #fff;
     border-radius: 5px;
@@ -105,6 +110,7 @@ footer {
 }
 
 .index .content .middle {
+    vertical-align: middle;
     display: inline-block;
     height: auto;
 }
