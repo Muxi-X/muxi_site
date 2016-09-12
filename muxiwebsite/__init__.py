@@ -83,12 +83,12 @@ def index():
 
 @app.route('/deploy')
 def deploy():
-    os.system('sudo kill `sudo lsof -t -i:9001`;git pull;uwsgi --ini app.ini&')
+    os.system('sudo kill `sudo lsof -t -i:5555`;sudo kill `sudo lsof -t -i:5555`;git pull;uwsgi --ini app.ini&')
     return "deployed"
 
 @app.route('/test/')
 def test():
-    return '<h1>test 23</h1>'
+    return '<h1>test</h1>'
 
 @app.route('/join')
 def join():
