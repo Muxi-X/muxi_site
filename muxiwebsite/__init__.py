@@ -83,7 +83,7 @@ def index():
 
 @app.route('/deploy')
 def deploy():
-    os.system('sudo kill `sudo lsof -t -i:5555`;netstat -nplt;git add .;git commit;git pull;uwsgi --ini app.ini&')
+    os.system('sudo kill `sudo lsof -t -i:5555`;git pull;uwsgi --ini app.ini&')
     return "deployed"
 
 
