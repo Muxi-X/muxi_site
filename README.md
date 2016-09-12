@@ -84,9 +84,9 @@
 
 1: clone fork的项目仓库
 
-    git clone https://github.com/your_username/muxi_site.git
+    git clone https://github.com/<your_username>/muxi_site.git
 
-2: 从development分支开出功能分支(以feature为例)
+2: 从develop分支开出功能分支(以feature为例)
 
     git checkout develop
     git checkout -b feature develop
@@ -152,4 +152,4 @@
     -----------------------------------------------------
     2016年2月1日: 集成木犀个人信息修改页
     -----------------------------------------------------
-    2016年8月25日: 官网更新第二版,设置域名,develop设为主分支
+    2016年8月25日: 官网更新第二版,设置域名
