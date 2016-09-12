@@ -88,7 +88,7 @@ def deploy():
 
 @app.route('/test/')
 def test():
-    return '<h1>test 2</h1>'
+    return '<h1>test 23</h1>'
 
 @app.route('/join')
 def join():
