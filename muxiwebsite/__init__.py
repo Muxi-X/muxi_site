@@ -86,6 +86,10 @@ def deploy():
     os.system('sudo kill `sudo lsof -t -i:9001`;git pull;uwsgi --ini app.ini&')
     return "deployed"
 
+@app.route('/test/')
+def test():
+    return '<h1>test</h1>'
+
 @app.route('/join')
 def join():
     flag = is_mobie()
