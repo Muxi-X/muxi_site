@@ -86,6 +86,10 @@ def deploy():
     os.system('sudo kill `sudo lsof -t -i:5555`;git pull;uwsgi --ini app.ini&')
     return "deployed"
 
+@app.route('/test')
+def test():
+    return 'test'
+
 
 @app.route('/join')
 def join():
