@@ -81,6 +81,11 @@ def index():
     else:
         return render_template('index_d.html')
 
+@app.route('/deploy')
+def deploy():
+    os.system('sudo kill `sudo lsof -t -i:9001`;git pull;uwsgi --ini app.ini&')
+    return "deployed"
+
 @app.route('/join')
 def join():
     flag = is_mobie()
