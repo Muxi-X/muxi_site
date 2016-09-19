@@ -12,7 +12,7 @@
 #### 分支
 
     develop: 主分支
-    dev-branch: 开发分支
+    /* dev-branch: 开发分支 */
 
 ### 合作
 #### 1:本地环境搭建
@@ -107,7 +107,14 @@
 6: 在Github 上向develop分支发送pull request
 
 
-8: merge，发布版本(项目维护人负责)
+8: merge，发布版本，进行部署(项目维护人负责)
+
+    curl http://muxistudio.com/deploy
+    
+9: 检查是否正常运行
+
+    curl http://muxistudio.com
+
 
 ### ToDo
 
