@@ -23,6 +23,7 @@ def index():
         blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
         blog.avatar = User.query.filter_by(id = blog.author_id).first().avatar_url
         blog.content = blog.body
+        blog.intro = blog.summary
     article_date = []
 
     for blog in blog_all:
