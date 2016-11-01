@@ -116,12 +116,13 @@ admin = Admin(
         )
 
 
-from .models import User, Share, Blog, Book, Comment
+from .models import User, Share, Blog, Book, Comment, Type
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Book, db.session))
 admin.add_view(ModelView(Share, db.session))
 admin.add_view(ModelView(Comment, db.session))
 admin.add_view(ModelView(Blog, db.session))
+admin.add_view(ModelView(Type, db.session))
 
 
 # jinja2 filters

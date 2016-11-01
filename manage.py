@@ -24,7 +24,7 @@
 """
 
 from muxiwebsite import app, db
-from muxiwebsite.models import Book, User, Share, Role, Comment, Blog
+from muxiwebsite.models import Book, User, Share, Role, Comment, Blog, Type
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 import sys
@@ -48,7 +48,8 @@ def make_shell_context():
         Share=Share,
         Role=Role,
         Comment=Comment,
-		Blog=Blog
+		Blog=Blog,
+        Type=Type
     )
 
 
