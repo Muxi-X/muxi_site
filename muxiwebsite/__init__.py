@@ -55,7 +55,7 @@ app.config['BLOG_PER_PAGE'] = 10
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # Get from Environment
-app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
+# app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
 
 
