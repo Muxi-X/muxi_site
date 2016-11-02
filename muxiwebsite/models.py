@@ -39,14 +39,6 @@ BTMap = db.Table(
 )
 
 
-# python 3搜索的不兼容
-if sys.version_info[0] == 3:
-    enable_search = False
-else:
-    enable_search = True
-    import flask.ext.whooshalchemy as whooshalchemy
-
-
 class Permission:
     """
     用户权限定义(base 16)
@@ -237,10 +229,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-if enable_search:
-    whooshalchemy.whoosh_index(app, Book)
-
-
 class Share(db.Model):
     """分享类"""
     __tablename__ = "shares"
@@ -411,6 +399,8 @@ class Blog(db.Model):
 #             tags=allowed_tags, strip=True))
 #
 #db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+
+
 class Type(db.Model):
     """
     博客文章的分类

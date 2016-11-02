@@ -11,3 +11,4 @@ muxi_data.sqlite
 basedir.py
 uwsgi.py
 node_modules
+*.env

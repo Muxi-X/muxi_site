@@ -1,0 +1,8 @@
+.git
+
+rest_env/
+server/
+shell/
+supervisor/
+
+.dockerignore

@@ -43,7 +43,6 @@ muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['WHOOSH_BASE'] = "search.db"
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索每页最多加载5个搜索结果
@@ -54,7 +53,10 @@ app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
 app.config['BLOG_PER_PAGE'] = 10
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+# Get from Environment
 app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
 
 
 # 初始化扩展(app全局属性)
@@ -73,31 +75,6 @@ def is_mobie():
     else:
         return False
 
-@app.route('/')
-def index():
-    flag = is_mobie()
-    if flag:
-        return render_template("index_m.html")
-    else:
-        return render_template('index_d.html')
-
-@app.route('/deploy')
-def deploy():
-    os.system('sudo kill -9 `sudo lsof -t -i:5555`;git pull;uwsgi --ini app.ini&')
-    return "deployed"
-
-@app.route('/test')
-def test():
-    return 'test 3'
-
-
-@app.route('/join')
-def join():
-    flag = is_mobie()
-    if flag:
-        return render_template("index_m.html")
-    else:
-        return render_template('join_d.html')
 
 class MyAdminIndexView(admin.AdminIndexView):
     """rewrite is_authenticated method"""
@@ -155,4 +132,3 @@ app.register_blueprint(profile, url_prefix="/profile")
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")
-
