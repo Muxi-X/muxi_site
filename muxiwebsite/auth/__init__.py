@@ -16,7 +16,7 @@ from flask import Blueprint
 auth = Blueprint(
     'auth',
     __name__,
-    subdomain='auth',
+    subdomain = 'auth',
     template_folder = 'templates',
     static_folder = 'static'
 )
