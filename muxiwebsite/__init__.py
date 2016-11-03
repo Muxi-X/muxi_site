@@ -122,7 +122,7 @@ from .share import shares
 app.register_blueprint(shares)
 
 from .auth import auth
-app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(auth)
 
 from .blog import blogs
 app.register_blueprint(blogs)
