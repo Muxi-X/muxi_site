@@ -35,6 +35,9 @@
                 <div class="mdl-tooltip" for={{'share_' + loop.index|string()}}>
                     {{ share.author }}
                 </div>
+                <div>
+                    {{ share.tag }}
+                </div>
             </div>
             <div class="card_text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
                 {{ share.share[:100]|neomarkdown }}

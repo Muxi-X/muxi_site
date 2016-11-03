@@ -1,10 +1,10 @@
-{% extends "share_base.html" %} 
+{% extends "share_base.html" %}
 {% block head %}
     {{ super() }}
 {% endblock%}
 {% block title %}
 <title>木犀分享-新分享</title>
-{% endblock %} 
+{% endblock %}
 {% block content %}
 <section class="section_center">
     <div class="send_card mdl-card mdl-shadow--2dp">
@@ -13,6 +13,9 @@
             {{ form.title(class="send_title", placeholder="分享主题") }}
             <div class="send_content mdl-grid mdl-grid--no-spacing">
                 {{ form.share }}
+            </div>
+            <div>
+                {{ form.tag }}
             </div>
 
             <div class="mdl-card__actions mdl-card--border">
