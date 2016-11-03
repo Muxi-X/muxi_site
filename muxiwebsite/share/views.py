@@ -122,6 +122,7 @@ def add_share():
         share = Share(
                 title = form.title.data,
                 share = form.share.data,
+                tag = form.tag.data,
                 author_id = current_user.id
                 )
         db.session.add(share)
@@ -143,11 +144,13 @@ def edit(id):
     if form.validate_on_submit():
         share.title = form.title.data
         share.share = form.share.data
+        share.tag = form.tag.data
         db.session.add(share)
         db.session.commit()
         return redirect(url_for("shares.index", page=1))
     form.title.data = share.title
     form.share.data = share.share
+    form.tag.data = share.tag
     return render_template(
             "edit-share.html",
             form=form

@@ -8,7 +8,7 @@
 """
 
 from flask.ext.wtf import Form
-from wtforms.fields import StringField, SubmitField, TextAreaField
+from wtforms.fields import StringField, SubmitField, TextAreaField, RadioField
 from wtforms.validators import Required
 from flask.ext.pagedown.fields import PageDownField
 
@@ -17,6 +17,7 @@ class ShareForm(Form):
     """分享表单 markdown编辑器"""
     # title = StringField(validators=[Required()])
     title = TextAreaField(validators=[Required()])
+    tag = RadioField('tag', choices = ['frontend', 'backend', 'design', 'android', 'product'])
     share = PageDownField(validators=[Required()])
     submit = SubmitField('分享')
 
