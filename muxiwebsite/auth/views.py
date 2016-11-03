@@ -20,7 +20,7 @@ import sys
 
 
 reload(sys)
-sys.setdefaultencoding('utf-8') 
+sys.setdefaultencoding('utf-8')
 
 
 @auth.route('/login/', methods=["POST"])
@@ -30,7 +30,7 @@ def login1():
     user = User.query.filter_by(username=form.username.data).first()
     if user is not None and user.verify_password(form.password.data):
         login_user(user)
-        if session['refer']:
+        if session['refer'] and not session['refer'].endswith(url_for("auth.register")):
             return redirect(session['refer'])
         else:
             return redirect(url_for('profile.user_profile', id=current_user.id))
