@@ -39,6 +39,7 @@
     127.0.0.1 share.flask.dev
     127.0.0.1 book.flask.dev
     127.0.0.1 auth.flask.dev
+    127.0.0.1 profile.flask.dev
 
 4.设置环境变量
 
