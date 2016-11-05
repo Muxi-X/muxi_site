@@ -70,24 +70,46 @@ def edit(id):
     user = User.query.filter_by(id=id).first()
     form = EditForm()
     if form.validate_on_submit():
+
+        # must fill in
         user.username = form.username.data
         user.avatar_url = form.avatar_url.data
         user.info = form.info.data
+
+        user.email = form.email.data
+        user.birthday = form.birthday.data
+        user.hometown = form.hometown.data
+        user.group = form.group.data
+        user.timejoin = form.timejoin.data
+        user.timeleft = form.timeleft.data
+        user.left = form.left.data
+
+        # social networks' urls
         user.personal_blog = form.personal_blog.data
         user.github = form.github.data
         user.flickr = form.flickr.data
         user.weibo = form.weibo.data
         user.zhihu = form.zhihu.data
+
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('profile.user_profile', id=id))
+
     form.username.data = user.username
     form.avatar_url.data = user.avatar_url
     form.info.data = user.info
+    form.email.data = user.email
+    form.birthday.data = user.birthday
+    form.hometown.data = user.hometown
+    form.group.data = user.group
+    form.timejoin.data = user.timejoin
+    form.timeleft.data = user.timeleft
+    form.left.data = user.left
+
     form.personal_blog.data = user.personal_blog
     form.github.data = user.github
     form.flickr.data = user.flickr
     form.weibo.data = user.weibo
     form.zhihu.data = user.zhihu
-    return render_template('/pages/edit.html', form=form, date=date)
 
+    return render_template('/pages/edit.html', form=form, date=date)

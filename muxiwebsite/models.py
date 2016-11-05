@@ -116,17 +116,31 @@ class Book(db.Model):
 class User(db.Model, UserMixin):
     """用户类"""
     __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(164))
-    info = db.Column(db.Text)
+    id = db.Column(db.Integer, primary_key = True) # user id (auto generate)
+
+    email = db.Column(db.String(164)) # email address
+    birthday = db.Column(db.String(164)) # user's birthday
+    hometown = db.Column(db.String(164)) # hometown address and coordinates
+    group = db.Column(db.String(164)) # group info (be, fe, design, android, product)
+    timejoin = db.Column(db.String(164)) # time of joining muxi
+    timeleft = db.Column(db.String(164)) # time of leaving muxi
     username = db.Column(db.String(164), unique=True)
+    password_hash = db.Column(db.String(164))
+
+    left = db.Column(db.Boolean)
+
+    info = db.Column(db.Text) # talk about yourself
+    # url of your avatar (suggestion: upload to qiniu or imugur)
+    # tool: Drag (https://github.com/bHps2016/Drag)
     avatar_url = db.Column(db.Text)
+
+    # blog and social networks' urls
     personal_blog = db.Column(db.Text)
     github = db.Column(db.Text)
     flickr = db.Column(db.Text)
     weibo = db.Column(db.Text)
     zhihu = db.Column(db.Text)
-    password_hash = db.Column(db.String(164))
+
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
