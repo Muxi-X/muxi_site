@@ -53,19 +53,16 @@
     export MUXI_WEBSITE_SERVERNAME="flask.dev:5000"
 
 5.构建本地测试数据库
-运行 createdb.sh 脚本
 
-	$ ./createdb.sh
+	$ python manage.py db init
 
 如果已有数据库
 
-    $ ./dbmigrate.sh
+    $ python manage.py db migrate; python manage.py db upgrade
 
 6.创建用户角色
 
-    $ python manage.py shell
-	>> Role.insert_roles()
-	>> quit()
+    $ python manage.py insert_roles
 
 7.运行项目
 
@@ -75,6 +72,7 @@
         book.flask.dev:5000/ 木犀图书
         share.flask.dev:5000/ 木犀分享
         blog.flask.dev:5000/ 木犀博客
+        profile.flask.dev:5000/<int: id>/ 木犀个人页
 
 #### Git 工作流
 
@@ -110,12 +108,6 @@
 
 
 8: merge，发布版本，进行部署(项目维护人负责)
-
-    curl http://muxistudio.com/deploy
-    
-9: 检查是否正常运行
-
-    curl http://muxistudio.com
 
 
 ### ToDo
