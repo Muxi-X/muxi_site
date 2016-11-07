@@ -11,6 +11,11 @@
         <a href="#" class="mdl-tabs__tab {% if flag == 0 %}is-active{% endif%} header_tabs">NEW</a>
         <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 1 %}is-active{% endif%} ">HOT</a>
         <a href="#" class="mdl-tabs__tab header_tabs">MINE</a>
+        <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 2 %}is-active{% endif%} ">FRONTEND</a>
+        <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 3 %}is-active{% endif%} ">BACKEND</a>
+        <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 4 %}is-active{% endif%} ">ANDROID</a>
+        <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 5 %}is-active{% endif%} ">DESIGN</a>
+        <a href="#" class="mdl-tabs__tab header_tabs {% if flag == 6 %}is-active{% endif%} ">PRODUCT</a>
     </div>
     <a href="/?page=1&sort=new" class="header_tab_links " style="display:none"></a>
     <a href="/?page=1&sort=hot" class="header_tab_links" style="display:none"></a>
@@ -28,7 +33,7 @@
                 <h2 class="card_title">{{ share.title }}</h2>
             </div>
             <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                <div class="card_circle mdl-color--primary" 
+                <div class="card_circle mdl-color--primary"
                 id={{'share_' + loop.index|string()}}>
                     <img src={{ share.avatar }} alt="avatar">
                 </div>
@@ -52,6 +57,7 @@
                 <a href="{{ url_for("shares.view_share", id=share.id) }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">Read More</a>
 				{% if share.author_id == current_user.id %}
                 <a href="{{ url_for("shares.edit", id=share.id) }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">edit</a>
+                <a href="{{ url_for("shares.delete", id=share.id) }}" class="mdl-button mdl-js-button  mdl-js-ripple-effect">delete</a>
 				{% endif %}
             </div>
         </div>
