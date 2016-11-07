@@ -71,6 +71,7 @@ def index():
     for share in shares:
         share.avatar = User.query.filter_by(id=share.author_id).first().avatar_url
         share.comment_count = share.comment.count()
+        share.author_id = share.author_id
         share.author = User.query.filter_by(id=share.author_id).first().username
 
     return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)

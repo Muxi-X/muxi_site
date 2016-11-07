@@ -11,13 +11,36 @@
         <form method="post">
             {{ form.hidden_tag() }}
             {{ form.title(class="send_title", placeholder="分享主题") }}
+            
+            <div class="send_tag">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                    <input type="radio" id="option-1" class="mdl-radio__button" name="tag" value="android" checked>
+                    <span class="mdl-radio__label">Android</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                    <input type="radio" id="option-2" class="mdl-radio__button" name="tag" value="frontend">
+                    <span class="mdl-radio__label">FrontEnd</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+                    <input type="radio" id="option-3" class="mdl-radio__button" name="tag" value="backend">
+                    <span class="mdl-radio__label">BackEnd</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-4">
+                    <input type="radio" id="option-4" class="mdl-radio__button" name="tag" value="design">
+                    <span class="mdl-radio__label">Design</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-5">
+                    <input type="radio" id="option-5" class="mdl-radio__button" name="tag" value="product">
+                    <span class="mdl-radio__label">Product</span>
+                </label>
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-6">
+                    <input type="radio" id="option-6" class="mdl-radio__button" name="tag" value="cs">
+                    <span class="mdl-radio__label">Computer Science</span>
+                </label>
+            </div>
             <div class="send_content mdl-grid mdl-grid--no-spacing">
                 {{ form.share }}
             </div>
-            <div>
-                {{ form.tag }}
-            </div>
-
             <div class="mdl-card__actions mdl-card--border">
                 <button  type="submit" class="send_submit_btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised">
                 SHARE
