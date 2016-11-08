@@ -13,11 +13,18 @@
         <form method="post">
             {{ form.hidden_tag() }}
             {{ form.title(class="send_title" ) }}
+
+            <div class="send_tag">
+                {% for tag in tags %}
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-{{loop.index}}">
+                    <input type="radio" id="option-{{loop.index}}" class="mdl-radio__button" name="tag" value="{{ tag }}"
+                    >
+                    <span class="mdl-radio__label">{{ tag | capitalize }}</span>
+                </label>
+                {% endfor %}
+            </div>
             <div class="send_content mdl-grid mdl-grid--no-spacing">
                 {{ form.share }}
-            </div>
-            <div>
-                {{ form.tag }}
             </div>
 
             <div class="mdl-card__actions mdl-card--border">

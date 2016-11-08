@@ -13,30 +13,14 @@
             {{ form.title(class="send_title", placeholder="分享主题") }}
             
             <div class="send_tag">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                    <input type="radio" id="option-1" class="mdl-radio__button" name="tag" value="android" checked>
-                    <span class="mdl-radio__label">Android</span>
+            <!--
+                {% for tag in tags %}
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-{{loop.index}}">
+                    <input type="radio" id="option-{{loop.index}}" class="mdl-radio__button" name="tag" value="{{ tag }}">
+                    <span class="mdl-radio__label">{{ tag | capitalize }}</span>
                 </label>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-                    <input type="radio" id="option-2" class="mdl-radio__button" name="tag" value="frontend">
-                    <span class="mdl-radio__label">FrontEnd</span>
-                </label>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
-                    <input type="radio" id="option-3" class="mdl-radio__button" name="tag" value="backend">
-                    <span class="mdl-radio__label">BackEnd</span>
-                </label>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-4">
-                    <input type="radio" id="option-4" class="mdl-radio__button" name="tag" value="design">
-                    <span class="mdl-radio__label">Design</span>
-                </label>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-5">
-                    <input type="radio" id="option-5" class="mdl-radio__button" name="tag" value="product">
-                    <span class="mdl-radio__label">Product</span>
-                </label>
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-6">
-                    <input type="radio" id="option-6" class="mdl-radio__button" name="tag" value="cs">
-                    <span class="mdl-radio__label">Computer Science</span>
-                </label>
+                {% endfor %}
+            -->
             </div>
             <div class="send_content mdl-grid mdl-grid--no-spacing">
                 {{ form.share }}
@@ -47,9 +31,14 @@
                 </button>
             </div>
         </form>
-
+    
     </div>
 </section>
+<div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<script type="text/javascript" src="/static/js/send.js"></script>
 <script type="text/javascript" src="http://7xtb8m.com1.z0.glb.clouddn.com/Markdown.Converter.min.js"></script>
 <script type="text/javascript" src="http://7xtb8m.com1.z0.glb.clouddn.com/Markdown.Sanitizer.min.js"></script>
 {% endblock %}

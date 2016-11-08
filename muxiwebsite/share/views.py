@@ -28,6 +28,8 @@ from sqlalchemy import func
 import markdown
 
 
+tags = ['frontend', 'backend', 'android', 'design', 'product']
+
 @shares.route('/')
 def index():
     """
@@ -40,7 +42,7 @@ def index():
     # 添加分页, share变为分页对象
     page = int(request.args.get('page') or 1)
     shares_count = {}
-    tags = ['frontend', 'backend', 'android', 'design', 'product']
+    # tags = ['frontend', 'backend', 'android', 'design', 'product']
 
     sort_arg = request.args.get('sort')
     if sort_arg == None:
@@ -74,7 +76,7 @@ def index():
         share.author_id = share.author_id
         share.author = User.query.filter_by(id=share.author_id).first().username
 
-    return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
+    return render_template('share_index.html', tags = tags, shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
 
 
 @shares.route('/view/<int:id>/', methods=["GET", "POST"])
@@ -138,7 +140,8 @@ def add_share():
         db.session.commit()
         return redirect(url_for('.index', page = 1))
 
-    return render_template("share_send.html", form=form)
+    
+    return render_template("share_send.html", form=form, tags = tags)
 
 
 @login_required
@@ -176,5 +179,6 @@ def edit(id):
     form.tag.data = share.tag
     return render_template(
             "edit-share.html",
-            form=form
+            form=form,
+            tags = tags
             )
