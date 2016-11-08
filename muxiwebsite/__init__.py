@@ -10,10 +10,11 @@
     木犀官网是木犀团队的官方网站:
     功能模块:
 
-        1.muxi:   木犀官网   木犀的简介信息
+        1.i:   木犀官网   木犀的简介信息
         2.blog:   木犀博客   木犀团队的博客
         3.book:   木犀图书   木犀图书管理
         4.share:  木犀分享   木犀内部的分享小站
+        5.profile:  木犀个人页   木犀个人页
 
     管理模块:
         backend:  木犀统一管理后台
@@ -35,7 +36,6 @@ import markdown
 import os
 
 # the root path of xueer
-# __filename__ 就是占位
 muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 
 
@@ -44,9 +44,7 @@ app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-app.config['WHOOSH_BASE'] = "search.db"
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索每页最多加载5个搜索结果
-app.config['MUXI_ADMIN'] = 'neo1218'
 app.config["SHARE_PER_PAGE"] = 5
 app.config["MUXI_SHARES_PER_PAGE"] = 10
 app.config["SHARE_HOT_PER_PAGE"] = 3
@@ -129,6 +127,9 @@ app.register_blueprint(blogs)
 
 from profile import profile
 app.register_blueprint(profile)
+
+from i import i
+app.register_blueprint(i)
 
 from api import api
 app.register_blueprint(api, url_prefix="/api")

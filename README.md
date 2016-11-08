@@ -34,12 +34,12 @@
 
 设置测试域名,在文件后面添加
 
-    127.0.0.1 flask.dev
     127.0.0.1 blog.flask.dev
     127.0.0.1 share.flask.dev
     127.0.0.1 book.flask.dev
     127.0.0.1 auth.flask.dev
     127.0.0.1 profile.flask.dev
+    127.0.0.1 i.flask.dev
 
 4.设置环境变量
 
@@ -68,7 +68,7 @@
 
     运行: python manage.py runserver
     当前路由:
-        flask.dev:5000/  木犀官网
+        i.flask.dev:5000/  木犀官网
         book.flask.dev:5000/ 木犀图书
         share.flask.dev:5000/ 木犀分享
         blog.flask.dev:5000/ 木犀博客

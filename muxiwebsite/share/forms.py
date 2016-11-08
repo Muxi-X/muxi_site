@@ -17,16 +17,13 @@ class ShareForm(Form):
     """分享表单 markdown编辑器"""
     title = TextAreaField(validators=[Required()])
     # tag format ('<input value>', '<label display>')
-    tag = RadioField(
-            'tag',
-            choices =[
+    tag = RadioField('tag', choices=[
                 ('frontend','frontend'),
                 ('backend','backend'),
                 ('android', 'android'),
                 ('design', 'design'),
                 ('product', 'product')
-                ]
-            )
+                ], validators=[Required()])
     share = PageDownField(validators=[Required()])
     submit = SubmitField('分享')
 
@@ -38,8 +35,14 @@ class CommentForm(Form):
 
 
 class EditForm(Form):
-	"""编辑表单"""
-	title = StringField(validators=[Required()])
-	share = PageDownField(validators=[Required()])
-	submit = SubmitField('修改')
-
+    """编辑表单"""
+    title = TextAreaField(validators=[Required()])
+    tag = RadioField('tag', choices=[
+        ('frontend', 'frontend'),
+        ('backend', 'backend'),
+        ('android', 'android'),
+        ('design', 'design'),
+        ('product', 'product')
+        ])
+    share = PageDownField(validators=[Required()])
+    submit = SubmitField('修改')

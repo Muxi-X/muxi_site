@@ -11,11 +11,10 @@
         <form method="post">
             {{ form.hidden_tag() }}
             {{ form.title(class="send_title", placeholder="分享主题") }}
-            
             <div class="send_tag">
                 {% for tag in tags %}
                 <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-{{loop.index}}">
-                    <input type="radio" id="option-{{loop.index}}" class="mdl-radio__button" name="tag" value="{{ tag }}">
+                    <input type="radio" id="option-{{ loop.index }}" class="mdl-radio__button" name="tag" value="{{ tag }}">
                     <span class="mdl-radio__label">{{ tag | capitalize }}</span>
                 </label>
                 {% endfor %}
@@ -29,7 +28,6 @@
                 </button>
             </div>
         </form>
-    
     </div>
 </section>
 <div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
