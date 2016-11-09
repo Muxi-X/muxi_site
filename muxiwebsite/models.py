@@ -152,10 +152,7 @@ class User(db.Model, UserMixin):
         """用户角色实现"""
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.username == current_app.config['MUXI_ADMIN']:
-                self.role = Role.query.filter_by(permissions=0xff).first()
-            if self.role is None:
-                self.role = Role.query.filter_by(default=True).first()
+            self.role = Role.query.filter_by(default=True).first()
 
     def can(self, permissions):
         """判断用户的权限"""
@@ -163,7 +160,6 @@ class User(db.Model, UserMixin):
 
     def is_admin(self):
         """判断当前用户是否是管理员"""
-        # return self.username == current_app.config["MUXI_ADMIN"]
         return self.role_id == 2
 
     @property

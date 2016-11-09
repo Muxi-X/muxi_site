@@ -1,0 +1,37 @@
+<body>
+    <ul>
+    {% for frontend in frontends %}
+        <li>
+            {{ frontend.username }} // {{ frontend.group }} // {{ frontend.avatar_url }}
+        </li>
+    {% endfor %}
+    </ul>
+    <ul>
+    {% for backend in backends %}
+        <li>
+            {{ backend.username }}
+        </li>
+    {% endfor %}
+    </ul>
+    <ul>
+    {% for android in androids %}
+        <li>
+            {{ android.username }}
+        </li>
+    {% endfor %}
+    </ul>
+    <ul>
+    {% for design in designs %}
+        <li>
+            {{ design.username }}
+        </li>
+    {% endfor %}
+    </ul>
+    <ul>
+    {% for product in products %}
+        <li>
+            {{ product.username }}
+        </li>
+    {% endfor %}
+    </ul>
+</body>

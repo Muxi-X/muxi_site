@@ -85,9 +85,12 @@ class MyAdminIndexView(admin.AdminIndexView):
 
 
 admin = Admin(
-        app, name="木muxi犀", template_mode="bootstrap3",
+        app,
+        name="木muxi犀",
+        subdomain = 'auth',
+        template_mode="bootstrap3",
         index_view=MyAdminIndexView(),
-        base_template='my_master.html'
+        base_template='admin/logout.html'
         )
 
 
