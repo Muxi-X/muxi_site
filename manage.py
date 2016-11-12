@@ -66,6 +66,7 @@ def adduser():
 
     email = raw_input('email: ')
     username = raw_input('username: ')
+    group = raw_input('group: ')
     role_id = input('user:3, admin:2, moderator:1: ')
     password = getpass('password: ')
     confirm = getpass('confirm: ')
@@ -74,6 +75,8 @@ def adduser():
             email=email,
             username=username,
             password=password,
+            group=group,
+            left=False,
             role_id=role_id
         )
         db.session.add(user)

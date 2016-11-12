@@ -1,37 +1,67 @@
-<body>
-    <ul>
-    {% for frontend in frontends %}
-        <li>
-            {{ frontend.username }} // {{ frontend.group }} // {{ frontend.avatar_url }}
-        </li>
-    {% endfor %}
-    </ul>
-    <ul>
-    {% for backend in backends %}
-        <li>
-            {{ backend.username }}
-        </li>
-    {% endfor %}
-    </ul>
-    <ul>
-    {% for android in androids %}
-        <li>
-            {{ android.username }}
-        </li>
-    {% endfor %}
-    </ul>
-    <ul>
-    {% for design in designs %}
-        <li>
-            {{ design.username }}
-        </li>
-    {% endfor %}
-    </ul>
-    <ul>
-    {% for product in products %}
-        <li>
-            {{ product.username }}
-        </li>
-    {% endfor %}
-    </ul>
-</body>
+{% extends "i_base.html" %} 
+{% block content %}
+    <div class="avatar-title">前端组</div>
+    <div class="mdl-grid portfolio-max-width">
+        {% for frontend in frontends %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ frontend.avatar_url }}">
+                    </div>
+                </div>
+                <div class="username">{{ frontend.username }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">后台组</div>
+    <div class="mdl-grid portfolio-max-width">
+        {% for backend in backends %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ backend.avatar_url }}">
+                    </div>
+                </div>
+                <div class="username">{{ backend.username }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">Android组</div>
+    <div class="mdl-grid portfolio-max-width">
+        {% for android in androids %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ android.avatar_url }}">
+                    </div>
+                </div>
+                <div class="username">{{ android.username }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">设计组</div>
+    <div class="mdl-grid portfolio-max-width">
+        {% for design in designs %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ design.avatar_url }}">
+                    </div>
+                </div>
+                <div class="username">{{ design.username }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">产品组</div>
+    <div class="mdl-grid portfolio-max-width">
+        {% for product in products %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ product.avatar_url }}">
+                    </div>
+                </div>
+                <div class="username">{{ product.username }}</div>
+            </div>
+        {% endfor %}
+    </div>
