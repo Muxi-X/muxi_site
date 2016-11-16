@@ -35,6 +35,43 @@
                     {{ form.personal_blog(class="form-input", id="pic", placeholder="http://") }}
 				</div>
 				<div class="form-group">
+					<label for="email">email(必填)</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    {{ form.email(class="form-input", id="text") }}
+				</div>
+				<div class="form-group form-boolean">
+					<label for="birthday">生日(必填)</label>
+					<input type="date" class="form-input" name="birthday" id="birthday">
+                    <!-- {{ form.birthday(class="form-input", id="text") }} -->
+				</div>
+				<div class="form-group">
+					<label for="hometown">家乡(必填)</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    {{ form.hometown(class="form-input", id="text") }}
+				</div>
+				<div class="form-group">
+					<label for="group">组别(必填)</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    {{ form.group(class="form-input", id="text") }}
+				</div>
+				<div class="form-group form-boolean">
+					<label for="timejoin">加入时间</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    <input type="date" class="form-input" name="timejoin" id="timejoin">
+				</div>
+				<div class="form-group form-boolean">
+					<label for="timeleft">离开时间</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    <input type="date" class="form-input" name="timeleft" id="timeleft">
+				</div>
+				<div class="form-group">
+					<div class="form-boolean">
+						<label for="left">离开</label>
+						<!--textarea class="form-textarea" id="text"></textarea-->
+	                    {{ form.left(id="boolean") }}
+                    </div>
+				</div>
+				<div class="form-group">
 					<label for="person-page">Github</label>
 					<!--input type="text" class="form-input" id="pic"
          placeholder="http://"／-->
@@ -58,12 +95,12 @@
          placeholder="http://"／-->
                     {{ form.zhihu(class="form-input", id="pic", placeholder="http://") }}
 				</div>
-                <div>字符串{{ form.birthday }}</div>
+<!--                 <div>字符串{{ form.birthday }}</div>
                 <div>字符串{{ form.hometown }}</div>
                 <div>字符串{{ form.group }}</div>
                 <div>字符串{{ form.timejoin }}</div>
                 <div>字符串{{ form.timeleft }}</div>
-                <div>Boolean{{ form.left }}</div>
+                <div>Boolean{{ form.left }}</div> -->
 				<input type="submit" class="form-submit" value="确定">
 			</form>
 		</div>

@@ -7,12 +7,12 @@
         表单文件
 """
 
-from flask.ext.wtf import Form
+from flask.ext.wtf import FlaskForm
 from wtforms.fields import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import Required
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     """登录表单"""
     username = StringField('用户名', validators=[Required()])
     password = PasswordField('密码', validators=[Required()])
@@ -20,7 +20,7 @@ class LoginForm(Form):
     submit = SubmitField('登录')
 
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     """注册表单"""
     username = StringField('用户名', validators=[Required()])
     email = StringField('邮箱', validators=[Required()])
