@@ -39,7 +39,7 @@ def user_profile(id):
     for share in shares:
         share.topic = share.title
         share.author = user.username
-        share.contents = share.share[:10]
+        share.contents = share.share[:10]  
 
     if request.method == 'POST':
         for iid in request.form.values():
