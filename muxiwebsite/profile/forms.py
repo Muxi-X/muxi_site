@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask_wtf import Form
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField,SelectField
 from wtforms.validators import Required
 
 
@@ -15,7 +15,7 @@ class EditForm(Form):
     email = StringField('email')
     birthday = StringField('birthday')
     hometown = StringField('hometown')
-    group = StringField('group')
+    group = SelectField('group',choices=[('backend','后台'),('frontend','前端'),('android','android'),('product','产品'),('design','设计')])
     timejoin = StringField('timejoin')
     timeleft = StringField('timeleft')
     left = BooleanField('left')

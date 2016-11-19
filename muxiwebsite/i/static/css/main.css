@@ -1,3 +1,19 @@
+  .mdl-layout__content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+ }
+
+ .mdl-layout__content > *:not(.mdl-layout-spacer) {
+ -webkit-flex: none;
+ -ms-flex: none;
+ flex: none;
+ }
+
+
 .portfolio-header {
   position: relative;
   background-image: url(../images/header-bg.jpg);
@@ -183,6 +199,7 @@ footer {
   font-size: 40px;
   color: #7b7b7b;
 }
+
 .avatar{
   width: 200px;
   height: 200px;

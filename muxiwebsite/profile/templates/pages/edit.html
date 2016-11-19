@@ -26,7 +26,7 @@
 				<div class="form-group">
 					<label for="introduce">个人介绍(必填)</label>
 					<!--textarea class="form-textarea" id="text"></textarea-->
-                    {{ form.info(class="form-textarea form-input", id="text") }}
+                    {{ form.info(class="form-textarea form-input", id="intro") }}
 				</div>
 				<div class="form-group">
 					<label for="person-page">个人博客</label>
@@ -51,8 +51,7 @@
 				</div>
 				<div class="form-group">
 					<label for="group">组别(必填)</label>
-					<!--textarea class="form-textarea" id="text"></textarea-->
-                    {{ form.group(class="form-input", id="text") }}
+                    {{ form.group(class="form-input", id="group") }}
 				</div>
 				<div class="form-group form-boolean">
 					<label for="timejoin">加入时间</label>
@@ -61,7 +60,7 @@
 				</div>
 				<div class="form-group form-boolean">
 					<label for="timeleft">离开时间</label>
-					<!--textarea class="form-textarea" id="text"></textarea-->
+					<!-- <textarea class="form-textarea" id="text"></textarea> -->
                     {{ form.timeleft(class="form-input", id="left", type="date") }}
 				</div>
 				<div class="form-group">
@@ -95,7 +94,20 @@
          placeholder="http://"／-->
                     {{ form.zhihu(class="form-input", id="pic", placeholder="http://") }}
 				</div>
-				<input type="submit" class="form-submit" value="确定">
+				<input type="submit" class="form-submit" value="确定" id="submit">
 			</form>
 		</div>
+{% endblock %}
+{% block script %}
+<script>
+	var submit = document.querySelector("#submit");
+	var username = document.querySelector("#username");
+	var pic = document.querySelector("#pic");
+	var intro = document.querySelector("#intro");
+	submit.addEventListener('click',function(){
+		if(!(username.value && pic.value && intro.value)){
+			alert("必填字段还没有填写完整")
+		}
+	})
+</script>
 {% endblock %}

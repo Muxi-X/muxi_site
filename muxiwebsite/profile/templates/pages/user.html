@@ -5,7 +5,10 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/user.css">
 {% endblock %}
 {% block content %}
+	<div class="wrap">
 		{% include 'components/nav.html' %}
 		{% include 'components/info.html' %}
 		{% include 'components/list.html' %}
+	</div>
+	{% block script %}<script src="/static/js/main.js"></script>{% endblock %}
 {% endblock %}

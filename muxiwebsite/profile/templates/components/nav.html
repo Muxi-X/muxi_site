@@ -2,16 +2,6 @@
 	<div class="btn cp" id="nav-btn"></div>
 	<div class="pop hide">
 		<div class="cancel cp"></div>
-		<div class="profile-card">
-			<a class="profile-ctn">家乡:{{ current_user.hometown }}</a>
-			<a class="profile-ctn">生日:{{ current_user.birthday }}</a>
-			<a class="profile-ctn">组别:{{ current_user.group }}</a>
-			<a class="profile-ctn">加入时间:{{ current_user.timejoin }}</a>
-			{% if user.left %}
-			<a class="profile-ctn">离开时间:{{ current_user.timeleft }}</a>
-			{% endif %}
-			<a class="profile-ctn">邮箱:{{ current_user.email }}</a>		
-		</div>
 		<a href="http://muxistudio.com" class="link">木犀团队主页</a>
 		<a href="#" class="link">木犀团队博客</a>
 		<a href="{{ url_for('books.home') }}" class="link">木犀图书馆</a>

@@ -3,11 +3,19 @@
 		<img src="{{ user.avatar }}" class="avatar">
 	</div>
 	<div class="name">
-		<span>{{ user.name }}</span>
+		<a>{{ current_user.username }}</a>
 	</div>
 	<div class="small-circle margin_auto"></div>
 	<div class="user-info margin_auto">
-		<p>{{ user.produce }}</p>
+		<div>家乡:{{ current_user.hometown }}</div>
+		<div>生日:{{ current_user.birthday }}</div>
+		<div>组别:{{ current_user.group }}</div>
+		<div>加入时间:{{ current_user.timejoin }}</div>
+		{% if user.left %}
+			<div>离开时间:{{ current_user.timeleft }}</div>
+		{% endif %}
+		<div>邮箱:{{ current_user.email }}</div>
+		<div>个人介绍:{{ current_user.info }}</div>
 	</div>
 	<div class="link margin_auto space">
 			<li class="front img va_item"></li>
