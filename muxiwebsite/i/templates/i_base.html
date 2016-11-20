@@ -24,7 +24,11 @@
                     <a class="mdl-navigation__link is-active" href="index.html">Welcome</a>
                     <a class="mdl-navigation__link" href="https://github.com/Muxi-Studio">Github</a>
                     <a class="mdl-navigation__link" href="http://weibo.com/ccnumuxistudio">Sina Weibo</a>
-                    <a class="mdl-navigation__link" href="http://muxistudio.com/auth/login/">Login</a>
+                    {% if current_user.is_authenticated%}
+                        <a class="mdl-navigation__link" href="{{ url_for("auth.logout") }}">Logout</a>
+                    {% else %}
+                        <a class="mdl-navigation__link" href="{{ url_for("auth.login") }}">Login</a>
+                    {% endif %}
                 </nav>
             </div>
         </header>
@@ -33,7 +37,11 @@
                 <a class="mdl-navigation__link is-active" href="index.html">Portfolio</a>
                 <a class="mdl-navigation__link" href="https://github.com/Muxi-Studio">Github</a>
                 <a class="mdl-navigation__link" href="http://weibo.com/ccnumuxistudio">Sina Weibo</a>
-                <a class="mdl-navigation__link" href="http://muxistudio.com/auth/login/">Login</a>
+                {% if current_user.is_authenticated%}
+                    <a class="mdl-navigation__link" href="{{ url_for("auth.logout") }}">Logout</a>
+                {% else %}
+                    <a class="mdl-navigation__link" href="{{ url_for("auth.login") }}">Login</a>
+                {% endif %}
             </nav>
         </div>
         <main class="mdl-layout__content">

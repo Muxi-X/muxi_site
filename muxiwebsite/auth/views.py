@@ -80,4 +80,4 @@ def register():
 def logout():
     """登出界面"""
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('i.index'))
