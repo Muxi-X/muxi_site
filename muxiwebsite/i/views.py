@@ -6,8 +6,8 @@ from flask_login import login_required, current_user
 from muxiwebsite.models import User
 
 
-@login_required
 @i.route('/')
+@login_required
 def index():
     """
     木犀博客首页
@@ -15,8 +15,8 @@ def index():
     return render_template("index.html", current_user=current_user)
 
 
-@login_required
 @i.route('/members/')
+@login_required
 def members():
     """
     Show all members
