@@ -22,6 +22,10 @@ def user_profile(id):
     ex: /profile/1/
     木犀个人页
     """
+    try:
+        current_user.id
+    except:
+        return redirect(url_for("auth.login"))
     date = datetime.date.today().strftime('%Y%m%d')[:4]
     user = User.query.get_or_404(id)
     user.avatar = user.avatar_url
