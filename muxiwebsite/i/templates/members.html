@@ -10,7 +10,7 @@
                         <img class="avatar-img" src="{{ frontend.avatar_url }}">
                     </div>
                 </div>
-                <div class="username">{{ frontend.username }}</div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=current_user.id) }}">{{ frontend.username }}</a>
             </div>
         {% endfor %}
     </div>
@@ -23,7 +23,7 @@
                         <img class="avatar-img" src="{{ backend.avatar_url }}">
                     </div>
                 </div>
-                <div class="username">{{ backend.username }}</div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=current_user.id) }}>{{ backend.username }}</a>
             </div>
         {% endfor %}
     </div>
@@ -36,7 +36,7 @@
                         <img class="avatar-img" src="{{ android.avatar_url }}">
                     </div>
                 </div>
-                <div class="username">{{ android.username }}</div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=current_user.id) }}>{{ android.username }}</a>
             </div>
         {% endfor %}
     </div>
@@ -49,7 +49,7 @@
                         <img class="avatar-img" src="{{ design.avatar_url }}">
                     </div>
                 </div>
-                <div class="username">{{ design.username }}</div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=current_user.id) }}>{{ design.username }}</a>
             </div>
         {% endfor %}
     </div>
@@ -62,7 +62,7 @@
                         <img class="avatar-img" src="{{ product.avatar_url }}">
                     </div>
                 </div>
-                <div class="username">{{ product.username }}</div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=current_user.id) }}>{{ product.username }}</a>
             </div>
         {% endfor %}
     </div>
