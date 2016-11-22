@@ -9,6 +9,7 @@
 
 from . import profile
 from flask import render_template, url_for, redirect, request, flash
+from flask_login import login_required
 from flask.ext.login import current_user
 from ..models import User, Book
 from .forms import EditForm
@@ -17,15 +18,12 @@ import datetime
 
 
 @profile.route('/<int:id>/', methods=["POST", "GET"])
+@login_required
 def user_profile(id):
     """
     ex: /profile/1/
     木犀个人页
     """
-    try:
-        current_user.id
-    except:
-        return redirect(url_for("auth.login"))
     date = datetime.date.today().strftime('%Y%m%d')[:4]
     user = User.query.get_or_404(id)
     user.avatar = user.avatar_url
@@ -43,7 +41,7 @@ def user_profile(id):
     for share in shares:
         share.topic = share.title
         share.author = user.username
-        share.contents = share.share[:10]  
+        share.contents = share.share[:10]
 
     if request.method == 'POST':
         for iid in request.form.values():
@@ -60,7 +58,7 @@ def user_profile(id):
         blogs=blogs,
         books=books,
         shares=shares,
-        current_id=current_user.id,
+        current_user=current_user,
         date=date
     )
 
@@ -71,7 +69,7 @@ def edit(id):
     编辑个人页
     """
     date = datetime.date.today().strftime('%Y%m%d')[:4]
-    user = User.query.filter_by(id=id).first()
+    user = User.query.filter_by(id=current_user.id).first()
     form = EditForm()
     if form.validate_on_submit():
 
@@ -97,7 +95,7 @@ def edit(id):
 
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('profile.user_profile', id=id))
+        return redirect(url_for('profile.user_profile', id=current_user.id))
 
     form.username.data = user.username
     form.avatar_url.data = user.avatar_url
