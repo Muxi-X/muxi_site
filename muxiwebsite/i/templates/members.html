@@ -36,7 +36,7 @@
                         <img class="avatar-img" src="{{ android.avatar_url }}">
                     </div>
                 </div>
-                <a class="username" href="{{ url_for("profile.user_profile", id=android.id) }}>{{ android.username }}</a>
+                <a class="username" href="{{ url_for("profile.user_profile", id=android.id) }}">{{ android.username }}</a>
             </div>
         {% endfor %}
     </div>
@@ -49,7 +49,7 @@
                         <img class="avatar-img" src="{{ design.avatar_url }}">
                     </div>
                 </div>
-                <a class="username" href="{{ url_for("profile.user_profile", id=design.id) }}>{{ design.username }}</a>
+                <a class="username" href="{{ url_for("profile.user_profile", id=design.id) }}">{{ design.username }}</a>
             </div>
         {% endfor %}
     </div>
@@ -62,7 +62,7 @@
                         <img class="avatar-img" src="{{ product.avatar_url }}">
                     </div>
                 </div>
-                <a class="username" href="{{ url_for("profile.user_profile", id=product.id) }}>{{ product.username }}</a>
+                <a class="username" href="{{ url_for("profile.user_profile", id=product.id) }}">{{ product.username }}</a>
             </div>
         {% endfor %}
     </div>
