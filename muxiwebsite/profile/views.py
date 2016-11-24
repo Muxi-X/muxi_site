@@ -24,6 +24,8 @@ def user_profile(id):
     ex: /profile/1/
     木犀个人页
     """
+
+
     date = datetime.date.today().strftime('%Y%m%d')[:4]
     user = User.query.get_or_404(id)
     user.avatar = user.avatar_url
@@ -32,10 +34,12 @@ def user_profile(id):
         blog.address = url_for('blogs.post', id=blog.id)
 
     books = user.book
+    book_length = 0
     #return render_template("test.html", books=books)
     for book in books:
         book.title = book.name
         book.date = book.end
+        book_length += 1
 
     shares = user.share # topic, author, contents
     for share in shares:
@@ -52,14 +56,21 @@ def user_profile(id):
             book.user_id = None
         return redirect(url_for('profile.user_profile', id=current_user.id))
 
+    if int(current_user.id) == int(user.id):
+        owner = True
+    else:
+        owner = False
+
     return render_template(
         "pages/user.html",
         user=user,
         blogs=blogs,
         books=books,
+        book_length=book_length,
         shares=shares,
         current_user=current_user,
-        date=date
+        date=date,
+        owner=owner
     )
 
 
