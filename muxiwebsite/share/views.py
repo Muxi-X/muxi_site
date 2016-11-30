@@ -67,8 +67,11 @@ def index():
 
     elif sort_arg in tags:
         flag = tags.index(sort_arg) + 2
-        shares = Share.query.filter_by(tag=sort_arg).all()
-        shares_pages = None
+        shares = []
+        this_arg =  Share.query.filter_by(tag=sort_arg)
+        shares_pages = this_arg.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
+        shares = shares_pages.items
+
 
     for share in shares:
         share.avatar = User.query.filter_by(id=share.author_id).first().avatar_url
