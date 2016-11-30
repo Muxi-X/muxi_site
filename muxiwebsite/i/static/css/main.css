@@ -248,3 +248,7 @@ src: local('Material Icons'), local('MaterialIcons-Regular'), url(../font/2fcrYF
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
+.profile-grid{
+  width: 90%;
+}

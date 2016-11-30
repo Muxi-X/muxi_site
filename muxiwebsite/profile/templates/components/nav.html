@@ -6,6 +6,8 @@
 		<a href="#" class="link">木犀团队博客</a>
 		<a href="{{ url_for('books.home') }}" class="link">木犀图书馆</a>
 		<!-- 下面的链接指向个人编辑页面 -->
+		{% if current_user.id == user.id %}
         <a href={{ url_for("profile.edit", id=current_user.id) }} class="link">编辑个人资料</a>
+        {% endif %}
 	</div>
 </div>
