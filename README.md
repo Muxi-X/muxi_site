@@ -3,9 +3,6 @@
 
     我们在路上、前方不会太远
 
-木犀官网项目是面向木犀内部的一系列服务网站,分为团队介绍、图书、分享、博客四个板块
-
-<hr>
 
 ### 状态
 #### 当前状态: 开发中
@@ -108,6 +105,15 @@
 
 
 8: merge，发布版本，进行部署(项目维护人负责)
+
+    # 编写 muxiwebsite.env
+    C_FORCE_ROOT=true
+    CELERY_ACCEPT_CONTENT=json
+    MUXI_WEBSITE_SQL=mysql://<username>:<password>@<url-to-rds>/<database-name>
+    MUXI_WEBSITE_SERVERNAME=muxixyz.com
+
+    $ docker-compose build
+    $ docker-compose up
 
 
 ### ToDo
