@@ -14,7 +14,7 @@ from .. import db
 from ..models import User
 from .forms import LoginForm, RegisterForm
 from flask import render_template, redirect, request, url_for, flash, session
-from flask.ext.login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user, current_user
 import base64
 import sys
 
