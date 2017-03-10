@@ -1,11 +1,14 @@
 {% extends 'pages/base.html' %}
-{% block tittle %}个人页{% endblock %}
+{% block title %}个人页{% endblock %}
 {% block head %}
  	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="/profile/static/css/user.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/user.css">
 {% endblock %}
 {% block content %}
+	<div class="wrap">
 		{% include 'components/nav.html' %}
 		{% include 'components/info.html' %}
 		{% include 'components/list.html' %}
+	</div>
+	{% block script %}<script src="/static/js/main.js"></script>{% endblock %}
 {% endblock %}

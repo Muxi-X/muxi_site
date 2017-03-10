@@ -3,28 +3,36 @@
 		<img src="{{ user.avatar }}" class="avatar">
 	</div>
 	<div class="name">
-		<span>{{ user.name }}</span>
+		<a>{{ user.username }}</a>
 	</div>
 	<div class="small-circle margin_auto"></div>
 	<div class="user-info margin_auto">
-		<p>{{ user.produce }}</p>
+		<div>家乡:{{ user.hometown }}</div>
+		<div>生日:{{ user.birthday }}</div>
+		<div>组别:{{ user.group }}</div>
+		<div>加入时间:{{ user.timejoin }}</div>
+		{% if user.left %}
+			<div>离开时间:{{ user.timeleft }}</div>
+		{% endif %}
+		<div>邮箱:{{ user.email }}</div>
+		<div>个人介绍:{{ user.info }}</div>
 	</div>
 	<div class="link margin_auto space">
 			<li class="front img va_item"></li>
 			<li class="pic-1 img va_item">
-                <a href={{ current_user.personal_blog }}></a>
+                <a href={{ user.personal_blog }}></a>
 			</li>
 			<li class="pic-2 img va_item">
-                <a href={{ current_user.github }}></a>
+                <a href={{ user.github }}></a>
 			</li>
 			<li class="pic-3 img va_item">
-                <a href={{ current_user.flickr }}></a>
+                <a href={{ user.flickr }}></a>
 			</li>
 			<li class="pic-4 img va_item">
-                <a href={{ current_user.weibo }}></a>
+                <a href={{ user.weibo }}></a>
 			</li>
 			<li class="pic-5 img va_item">
-                <a href={{ current_user.zhihu }}></a>
+                <a href={{ user.zhihu }}></a>
 			</li>
 			<li class="end img va_item"></li>
 	</div>

@@ -6,7 +6,7 @@
 
         木犀表单文件
 """
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from wtforms import IntegerField, StringField, SubmitField, PasswordField, \
         BooleanField
 from wtforms.validators import Required, EqualTo

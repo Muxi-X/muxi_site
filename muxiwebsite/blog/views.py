@@ -21,8 +21,12 @@ def index():
     blog_list = Blog.query.order_by('-id').paginate(page, current_app.config['BLOG_PER_PAGE'], False)
     for blog in blog_all:
         blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
-        blog.avatar = User.query.filter_by(id = blog.author_id).first().avatar_url
+        try:
+            blog.avatar = User.query.filter_by(id=blog.author_id).first().avatar_url
+        except AttributeError:
+            blog.avatar = ""
         blog.content = blog.body
+        blog.intro = blog.summary
     article_date = []
 
     for blog in blog_all:
@@ -95,7 +99,7 @@ def post(id):
     return render_template("pages/post.html", blog=blog, form=form, comment_list=comment_list)
 
 
-@blogs.route('/<string:type>/')
+@blogs.route('/type/<string:type>/')
 def types(type):
     """
     返回对应分类下的文章

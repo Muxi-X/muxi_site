@@ -1,0 +1,10 @@
+#-------------------- muxiwebsite------------------------
+muxiwebsite:
+    build: .
+    env_file:
+        - muxiwebsite.env
+    command: gunicorn --name muxiwebsite -b 0.0.0.0:5488 -w 2 wsgi:app
+    ports:
+        - "5488:5488"
+    volumes:
+        - .:/muxiwebsite

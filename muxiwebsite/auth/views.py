@@ -14,13 +14,13 @@ from .. import db
 from ..models import User
 from .forms import LoginForm, RegisterForm
 from flask import render_template, redirect, request, url_for, flash, session
-from flask.ext.login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user, current_user
 import base64
 import sys
 
 
 reload(sys)
-sys.setdefaultencoding('utf-8') 
+sys.setdefaultencoding('utf-8')
 
 
 @auth.route('/login/', methods=["POST"])
@@ -30,10 +30,10 @@ def login1():
     user = User.query.filter_by(username=form.username.data).first()
     if user is not None and user.verify_password(form.password.data):
         login_user(user)
-        if session['refer']:
+        if session['refer'] and not session['refer'].endswith(url_for("auth.register")):
             return redirect(session['refer'])
         else:
-            return redirect(url_for('profile.user_profile', id=current_user.id))
+            return redirect(url_for('i.index'))
     else:
         flash("用户名或密码不存在!")
         return redirect(url_for("auth.login"))
@@ -80,4 +80,4 @@ def register():
 def logout():
     """登出界面"""
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('i.index'))

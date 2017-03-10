@@ -1,0 +1,69 @@
+{% extends "i_base.html" %} 
+{% block title %}木犀内网-团队成员{% endblock %}
+{% block content %}
+    <div class="avatar-title">前端组</div>
+    <div class="mdl-grid profile-grid">
+        {% for frontend in frontends %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ frontend.avatar_url }}">
+                    </div>
+                </div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=frontend.id) }}">{{ frontend.username }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">后台组</div>
+    <div class="mdl-grid profile-grid">
+        {% for backend in backends %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ backend.avatar_url }}">
+                    </div>
+                </div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=backend.id) }}">{{ backend.username }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">Android组</div>
+    <div class="mdl-grid profile-grid">
+        {% for android in androids %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ android.avatar_url }}">
+                    </div>
+                </div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=android.id) }}">{{ android.username }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">设计组</div>
+    <div class="mdl-grid profile-grid">
+        {% for design in designs %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ design.avatar_url }}">
+                    </div>
+                </div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=design.id) }}">{{ design.username }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="avatar-title">产品组</div>
+    <div class="mdl-grid profile-grid">
+        {% for product in products %}
+            <div class="mdl-cell mdl-card avatar-box">
+                <div class="mdl-card__media avatar-card">
+                    <div class="avatar">
+                        <img class="avatar-img" src="{{ product.avatar_url }}">
+                    </div>
+                </div>
+                <a class="username" href="{{ url_for("profile.user_profile", id=product.id) }}">{{ product.username }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

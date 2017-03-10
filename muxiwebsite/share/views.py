@@ -28,6 +28,8 @@ from sqlalchemy import func
 import markdown
 
 
+tags = ['frontend', 'backend', 'android', 'design', 'product']
+
 @shares.route('/')
 def index():
     """
@@ -40,32 +42,44 @@ def index():
     # 添加分页, share变为分页对象
     page = int(request.args.get('page') or 1)
     shares_count = {}
-    if request.args.get('sort') == None:
+    # tags = ['frontend', 'backend', 'android', 'design', 'product']
+
+    sort_arg = request.args.get('sort')
+    if sort_arg == None:
         shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
         shares = shares_pages.items
-    elif request.args.get('sort') == "new":
+
+    elif sort_arg == "new":
         flag = 0
         shares_pages = Share.query.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
         shares = shares_pages.items
-    elif request.args.get('sort') == "hot":
+
+    elif sort_arg == "hot":
         flag = 1
         shares = []
-        # shares = Share.query.join(Share.comment).order_by(Comment.count)[:15]
         for share in Share.query.all():
             shares_count[share] = share.comment.count()
         shares_count = sorted(shares_count.items(), lambda x, y: cmp(y[1], x[1]))
         for share_tuple in shares_count:
             shares.append(share_tuple[0])
         shares = shares[:5]
-        # shares_pages = shares.paginate(page, app.config["SHARE_PER_PAGE"], False)
         shares_pages = None
+
+    elif sort_arg in tags:
+        flag = tags.index(sort_arg) + 2
+        shares = []
+        this_arg =  Share.query.filter_by(tag=sort_arg)
+        shares_pages = this_arg.order_by('-id').paginate(page, app.config['SHARE_PER_PAGE'], False)
+        shares = shares_pages.items
+
 
     for share in shares:
         share.avatar = User.query.filter_by(id=share.author_id).first().avatar_url
         share.comment_count = share.comment.count()
+        share.author_id = share.author_id
         share.author = User.query.filter_by(id=share.author_id).first().username
 
-    return render_template('share_index.html', shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
+    return render_template('share_index.html', tags = tags, shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
 
 
 @shares.route('/view/<int:id>/', methods=["GET", "POST"])
@@ -96,8 +110,6 @@ def view_share(id):
         this_comment.count += 1
         return redirect(url_for('shares.view_share', id=id))
 
-    # share.avatar = User.query.filter_by(share=share.id).first().avatar_hash
-    # share.avatar = "http://7xj431.com1.z0.glb.clouddn.com/屏幕快照%202015-10-08%20下午10.28.04.png"
     share.avatar =  User.query.filter_by(id=share.author_id).first().avatar_url
     share.comments = len(Comment.query.filter_by(share_id=share.id).all())
 
@@ -122,13 +134,27 @@ def add_share():
         share = Share(
                 title = form.title.data,
                 share = form.share.data,
+                tag = form.tag.data,
                 author_id = current_user.id
                 )
         db.session.add(share)
         db.session.commit()
         return redirect(url_for('.index', page = 1))
+    return render_template("share_send.html", form=form, tags = tags)
 
-    return render_template("share_send.html", form=form)
+
+@login_required
+@shares.route('/delete/<int:id>/', methods=["GET", "POST"])
+@permission_required(Permission.WRITE_ARTICLES)
+def delete(id):
+    """
+    User could delete his share
+    """
+    share = Share.query.filter_by(id=id).first()
+    db.session.delete(share)
+    db.session.commit()
+    return redirect(url_for("shares.index"))
+
 
 
 @shares.route('/edit-share/<int:id>/', methods=["POST", "GET"])
@@ -143,12 +169,15 @@ def edit(id):
     if form.validate_on_submit():
         share.title = form.title.data
         share.share = form.share.data
+        share.tag = form.tag.data
         db.session.add(share)
         db.session.commit()
         return redirect(url_for("shares.index", page=1))
     form.title.data = share.title
     form.share.data = share.share
+    form.tag.data = share.tag
     return render_template(
             "edit-share.html",
-            form=form
+            form = form,
+            tags = tags
             )

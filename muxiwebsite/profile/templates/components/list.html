@@ -10,12 +10,14 @@
 				<a href="{{ url_for('books.info', id=book.id) }}" class="title-link">《{{ book.name }}》</a>
 			</div>
 			<div class="date">归还日：{{ book.end[0:4]+'-'+book.end[4:6]+'-'+book.end[6:] }}</div>
+			{% if current_user.id == user.id %}
 			<input type="checkbox"  value={{ book.id }} name={{ book.id }} class="btn-checkbox"></input>
+			{% endif %}
 		</div>
 		{% endfor %}
-        {% if current_id == user.id and books[0] %}
+		{% if owner and book_length > 0%}
 		<input type="submit" class="btn-return" value="确认还书"></input>
-        {% endif %}
+		{% endif %}
 		</form>
 	</div>
 	<div class="middle">

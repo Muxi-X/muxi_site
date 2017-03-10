@@ -27,6 +27,7 @@
   width: calc(100% - 60px); }
 
 .card_circle {
+  display: block;
   width: 64px;
   height: 64px;
   border-radius: 32px;
@@ -71,6 +72,11 @@
 .card_action_btn i {
   position: relative;
   vertical-align: middle; }
+
+.card_icon{
+  display: inline-block;
+  vertical-align: middle;
+}
 
 .mdl-badge[data-badge]:after {
   right: -10px; }
@@ -181,6 +187,10 @@
 .send_card .send_submit_btn {
   margin: 10px 0px 10px 50px; }
 
+.send_tag {
+  padding:10px;
+  border-top: 1px solid #ccc;
+}
 .footer {
   margin-top: 100px; }
 

@@ -6,6 +6,7 @@ profile = Blueprint(
     'profile',
     __name__,
     template_folder = 'templates',
+    subdomain = 'profile',
     static_folder = 'static'
 )
 

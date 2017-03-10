@@ -1,29 +1,40 @@
-{% extends "share_base.html" %} 
+{% extends "share_base.html" %}
 {% block head %}
     {{ super() }}
 {% endblock%}
 {% block title %}
 <title>木犀分享-新分享</title>
-{% endblock %} 
+{% endblock %}
 {% block content %}
 <section class="section_center">
     <div class="send_card mdl-card mdl-shadow--2dp">
         <form method="post">
             {{ form.hidden_tag() }}
             {{ form.title(class="send_title", placeholder="分享主题") }}
+            <div class="send_tag">
+                {% for tag in tags %}
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-{{loop.index}}">
+                    <input type="radio" id="option-{{ loop.index }}" class="mdl-radio__button" name="tag" value="{{ tag }}">
+                    <span class="mdl-radio__label">{{ tag | capitalize }}</span>
+                </label>
+                {% endfor %}
+            </div>
             <div class="send_content mdl-grid mdl-grid--no-spacing">
                 {{ form.share }}
             </div>
-
             <div class="mdl-card__actions mdl-card--border">
                 <button  type="submit" class="send_submit_btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised">
                 SHARE
                 </button>
             </div>
         </form>
-
     </div>
 </section>
+<div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+  <div class="mdl-snackbar__text"></div>
+  <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<script type="text/javascript" src="/static/js/send.js"></script>
 <script type="text/javascript" src="http://7xtb8m.com1.z0.glb.clouddn.com/Markdown.Converter.min.js"></script>
 <script type="text/javascript" src="http://7xtb8m.com1.z0.glb.clouddn.com/Markdown.Sanitizer.min.js"></script>
 {% endblock %}

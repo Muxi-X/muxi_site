@@ -39,14 +39,6 @@ BTMap = db.Table(
 )
 
 
-# python 3搜索的不兼容
-if sys.version_info[0] == 3:
-    enable_search = False
-else:
-    enable_search = True
-    import flask.ext.whooshalchemy as whooshalchemy
-
-
 class Permission:
     """
     用户权限定义(base 16)
@@ -124,17 +116,31 @@ class Book(db.Model):
 class User(db.Model, UserMixin):
     """用户类"""
     __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key = True)
-    email = db.Column(db.String(164))
-    info = db.Column(db.Text)
+    id = db.Column(db.Integer, primary_key = True) # user id (auto generate)
+
+    email = db.Column(db.String(164)) # email address
+    birthday = db.Column(db.String(164)) # user's birthday
+    hometown = db.Column(db.String(164)) # hometown address and coordinates
+    group = db.Column(db.String(164)) # group info (be, fe, design, android, product)
+    timejoin = db.Column(db.String(164)) # time of joining muxi
+    timeleft = db.Column(db.String(164)) # time of leaving muxi
     username = db.Column(db.String(164), unique=True)
+    password_hash = db.Column(db.String(164))
+
+    left = db.Column(db.Boolean)
+
+    info = db.Column(db.Text) # talk about yourself
+    # url of your avatar (suggestion: upload to qiniu or imugur)
+    # tool: Drag (https://github.com/bHps2016/Drag)
     avatar_url = db.Column(db.Text)
+
+    # blog and social networks' urls
     personal_blog = db.Column(db.Text)
     github = db.Column(db.Text)
     flickr = db.Column(db.Text)
     weibo = db.Column(db.Text)
     zhihu = db.Column(db.Text)
-    password_hash = db.Column(db.String(164))
+
     book = db.relationship('Book', backref="user", lazy="dynamic")
     share = db.relationship('Share', backref="user", lazy="dynamic")
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
@@ -146,10 +152,7 @@ class User(db.Model, UserMixin):
         """用户角色实现"""
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.username == current_app.config['MUXI_ADMIN']:
-                self.role = Role.query.filter_by(permissions=0xff).first()
-            if self.role is None:
-                self.role = Role.query.filter_by(default=True).first()
+            self.role = Role.query.filter_by(default=True).first()
 
     def can(self, permissions):
         """判断用户的权限"""
@@ -157,7 +160,6 @@ class User(db.Model, UserMixin):
 
     def is_admin(self):
         """判断当前用户是否是管理员"""
-        # return self.username == current_app.config["MUXI_ADMIN"]
         return self.role_id == 2
 
     @property
@@ -237,16 +239,13 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-if enable_search:
-    whooshalchemy.whoosh_index(app, Book)
-
-
 class Share(db.Model):
     """分享类"""
     __tablename__ = "shares"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     share = db.Column(db.Text)
+    tag = db.Column(db.Text)
     content = db.Column(db.Text)  # 存取markdown渲染以后的内容
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -338,7 +337,6 @@ class Blog(db.Model):
     body = db.Column(db.Text)
     summary = db.Column(db.Text)
     img_url = db.Column(db.String(164))
-    # body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章分类: 一篇文章对应一个分类
@@ -401,16 +399,18 @@ class Blog(db.Model):
             db.session.add(b)
             db.session.commit()
 
-#     @staticmethod
-#     def on_changed_body(target, value, oldvalue, initiator):
-#         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-#                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-#                         'h1', 'h2', 'h3', 'p']
-#         target.body_html = bleach.linkify(bleach.clean(
-#             markdown(value, output_format='html'),
-#             tags=allowed_tags, strip=True))
-#
-#db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
+
+db.event.listen(Blog.body, 'set', Blog.on_changed_body)
+
+
 class Type(db.Model):
     """
     博客文章的分类

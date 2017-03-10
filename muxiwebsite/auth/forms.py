@@ -7,7 +7,7 @@
         表单文件
 """
 
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from wtforms.fields import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import Required
 

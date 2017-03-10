@@ -1,8 +1,8 @@
 {% extends 'pages/base.html' %}
-{% block tittle %}个人编辑页{% endblock %}
+{% block title %}个人编辑页{% endblock %}
 {% block head %}
  	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="/profile/static/css/edit.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/edit.css">
 {% endblock %}
 {% block content %}
 		<div class="edit-container margin_auto">
@@ -26,13 +26,49 @@
 				<div class="form-group">
 					<label for="introduce">个人介绍(必填)</label>
 					<!--textarea class="form-textarea" id="text"></textarea-->
-                    {{ form.info(class="form-textarea form-input", id="text") }}
+                    {{ form.info(class="form-textarea form-input", id="intro") }}
 				</div>
 				<div class="form-group">
 					<label for="person-page">个人博客</label>
 					<!--input type="text" class="form-input" id="pic"
          placeholder="http://" required／-->
                     {{ form.personal_blog(class="form-input", id="pic", placeholder="http://") }}
+				</div>
+				<div class="form-group">
+					<label for="email">email(必填)</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    {{ form.email(class="form-input", id="text") }}
+				</div>
+				<div class="form-group form-boolean">
+					<label for="birthday">生日(必填)</label>
+					<!-- <input type="date" class="form-input" name="birthday" id="birthday"> -->
+                    {{ form.birthday(class="form-input", id="text", type="date") }}
+				</div>
+				<div class="form-group">
+					<label for="hometown">家乡(必填)</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    {{ form.hometown(class="form-input", id="text") }}
+				</div>
+				<div class="form-group">
+					<label for="group">组别(必填)</label>
+                    {{ form.group(class="form-input", id="group") }}
+				</div>
+				<div class="form-group form-boolean">
+					<label for="timejoin">加入时间</label>
+					<!--textarea class="form-textarea" id="text"></textarea-->
+                    {{ form.timejoin(class="form-input", id="join", type="date") }}
+				</div>
+				<div class="form-group form-boolean">
+					<label for="timeleft">离开时间</label>
+					<!-- <textarea class="form-textarea" id="text"></textarea> -->
+                    {{ form.timeleft(class="form-input", id="left", type="date") }}
+				</div>
+				<div class="form-group">
+					<div class="form-boolean">
+						<label for="left">离开</label>
+						<!--textarea class="form-textarea" id="text"></textarea-->
+	                    {{ form.left(id="boolean") }}
+                    </div>
 				</div>
 				<div class="form-group">
 					<label for="person-page">Github</label>
@@ -58,7 +94,20 @@
          placeholder="http://"／-->
                     {{ form.zhihu(class="form-input", id="pic", placeholder="http://") }}
 				</div>
-				<input type="submit" class="form-submit" value="确定">
+				<input type="submit" class="form-submit" value="确定" id="submit">
 			</form>
 		</div>
+{% endblock %}
+{% block script %}
+<script>
+	var submit = document.querySelector("#submit");
+	var username = document.querySelector("#username");
+	var pic = document.querySelector("#pic");
+	var intro = document.querySelector("#intro");
+	submit.addEventListener('click',function(){
+		if(!(username.value && pic.value && intro.value)){
+			alert("必填字段还没有填写完整")
+		}
+	})
+</script>
 {% endblock %}

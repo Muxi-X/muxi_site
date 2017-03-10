@@ -25,7 +25,7 @@ from werkzeug import secure_filename
 from muxiwebsite.models import User, Book
 from forms import BookForm, GetForm, LoginForm, RterForm
 from flask import render_template, redirect, url_for, flash, request, session
-from flask.ext.login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 from urllib2 import urlopen
 import json
 import datetime

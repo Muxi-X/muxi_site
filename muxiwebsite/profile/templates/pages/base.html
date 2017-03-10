@@ -5,7 +5,8 @@
 	<meta charset="utf-8" />
 	<meta name="description" content="木犀个人页" />
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-	<link rel="stylesheet" type="text/css" href="/profile/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="icon" href="/static/images/share_128.ico" sizes="32x32">
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
@@ -17,11 +18,11 @@
 		<div class="right bd-2"></div>
 		<div class="down bd-1">
 			<div class="footer margin_auto">
-                © 2015-{{ date }} <a href="{{ url_for("index") }}" alt="木犀官网">Muxistudio </a>保留所有权利 Design by buhuan
+                © 2015-{{ date }} <a href="http://muxistudio.com" alt="木犀官网">Muxistudio </a>保留所有权利 Design by buhuan
 			</div>
 		</div>
 	</div>
-<script src="/profile/static/js/main.js"></script>
+	{% block script %}{% endblock %}
 <!--<script src="//localhost:9091"></script> -->
 </body>
 </html>

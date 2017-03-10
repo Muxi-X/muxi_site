@@ -22,7 +22,8 @@
 
 .list {
     width: 960px;
-    margin-top: 12px
+    margin-top: 12px;
+    padding-bottom:73px;
 }
 
 .list .topic {
@@ -351,4 +352,10 @@
     text-align: center;
     line-height: 20px;
     color: #fff
+}
+
+.wrap{
+    width: 100%;
+    height: auto;
+    background-color: #feffd6;
 }

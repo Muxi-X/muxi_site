@@ -3,16 +3,13 @@
 
     我们在路上、前方不会太远
 
-木犀官网项目是面向木犀内部的一系列服务网站,分为团队介绍、图书、分享、博客四个板块
-
-<hr>
 
 ### 状态
 #### 当前状态: 开发中
 #### 分支
 
     develop: 主分支
-    dev-branch: 开发分支
+    /* dev-branch: 开发分支 */
 
 ### 合作
 #### 1:本地环境搭建
@@ -34,10 +31,12 @@
 
 设置测试域名,在文件后面添加
 
-    127.0.0.1 flask.dev
     127.0.0.1 blog.flask.dev
     127.0.0.1 share.flask.dev
     127.0.0.1 book.flask.dev
+    127.0.0.1 auth.flask.dev
+    127.0.0.1 profile.flask.dev
+    127.0.0.1 i.flask.dev
 
 4.设置环境变量
 
@@ -51,28 +50,26 @@
     export MUXI_WEBSITE_SERVERNAME="flask.dev:5000"
 
 5.构建本地测试数据库
-运行 createdb.sh 脚本
 
-	$ ./createdb.sh
+	$ python manage.py db init
 
 如果已有数据库
 
-    $ ./dbmigrate.sh
+    $ python manage.py db migrate; python manage.py db upgrade
 
 6.创建用户角色
 
-    $ python manage.py shell
-	>> Role.insert_roles()
-	>> quit()
+    $ python manage.py insert_roles
 
 7.运行项目
 
     运行: python manage.py runserver
     当前路由:
-        flask.dev:5000/  木犀官网
+        i.flask.dev:5000/  木犀官网
         book.flask.dev:5000/ 木犀图书
         share.flask.dev:5000/ 木犀分享
         blog.flask.dev:5000/ 木犀博客
+        profile.flask.dev:5000/<int: id>/ 木犀个人页
 
 #### Git 工作流
 
@@ -85,9 +82,9 @@
 
 1: clone fork的项目仓库
 
-    git clone https://github.com/your_username/muxi_site.git
+    git clone https://github.com/<your_username>/muxi_site.git
 
-2: 从development分支开出功能分支(以feature为例)
+2: 从develop分支开出功能分支(以feature为例)
 
     git checkout develop
     git checkout -b feature develop
@@ -107,7 +104,17 @@
 6: 在Github 上向develop分支发送pull request
 
 
-8: merge，发布版本(项目维护人负责)
+8: merge，发布版本，进行部署(项目维护人负责)
+
+    # 编写 muxiwebsite.env
+    C_FORCE_ROOT=true
+    CELERY_ACCEPT_CONTENT=json
+    MUXI_WEBSITE_SQL=mysql://<username>:<password>@<url-to-rds>/<database-name>
+    MUXI_WEBSITE_SERVERNAME=muxixyz.com
+
+    $ docker-compose build
+    $ docker-compose up
+
 
 ### ToDo
 
@@ -153,4 +160,4 @@
     -----------------------------------------------------
     2016年2月1日: 集成木犀个人信息修改页
     -----------------------------------------------------
-    2016年8月25日: 官网更新第二版,设置域名,develop设为主分支
+    2016年8月25日: 官网更新第二版,设置域名
