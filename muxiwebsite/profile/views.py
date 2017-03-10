@@ -10,7 +10,7 @@
 from . import profile
 from flask import render_template, url_for, redirect, request, flash
 from flask_login import login_required
-from flask.ext.login import current_user
+from flask_login import current_user
 from ..models import User, Book
 from .forms import EditForm
 from muxiwebsite import db
