@@ -67,3 +67,14 @@ def new_share():
     }), 201
 
 
+# 展示特定id的分享,相关评论,发表评论
+@api.route('/views/<int:id>',methods=["GET"."POST"])
+def view_share(id) :
+    share = Share.query.get_or_404(id)
+    share.author =
+    User.query.filter_by(id=share.author_id).fisrt().username
+    comments = Comment.query.filter_by(share_id=share.id).all()
+
+    if request.method == 'POST' :
+        comment = CommentForm()
+        comment.
