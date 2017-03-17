@@ -15,6 +15,7 @@ from muxiwebsite import db
 from .authentication import auth
 from flask_login import current_user
 
+tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @api.route('/shares/', methods=['GET'])
 def get_shares():
@@ -74,7 +75,79 @@ def view_share(id) :
     share.author =
     User.query.filter_by(id=share.author_id).fisrt().username
     comments = Comment.query.filter_by(share_id=share.id).all()
-
+    
     if request.method == 'POST' :
-        comment = CommentForm()
-        comment.
+        comment = Comment()
+        comment.comment = request.get_json().get("comment")
+        comment.share_id = id 
+        comment.author_id = current_user.id 
+        comment.count = 0 
+        comment.auhtor_name =
+        User.query.filter_by(id=current_user.id).first().username
+
+        db.session.add(comment)
+        db.session.commit()
+        this_comment = Comment.query.filter_by(
+            comment = comment.comment.data ,    
+            author_id = current_user.id,
+            share_id = id ,
+                ).first() 
+        this_comment.count += 1 
+        return jsonify(comment.to_json()) , 201 
+    
+    share_avatar =
+    User.query.filter_by(id=share.author_id).first().avator_url
+    share_comments_num =
+
+
+
+
+@login_required
+@api.route('/send/',methods=['GET','POST'])
+    def add_share() :
+        if request.method == 'POST' :
+            share = Share() 
+            share.title =  request.get_json.get("title")
+            share.share = request.get_json.get("share")
+            share.tag = request.get_json.get("tag")
+            share.content = request.get_json.get("content")
+            share.author_id = current_user.id
+            db.session.add(share)
+            db.session.commit()
+            return redirect(url_for('.index',page))
+        return jsonify(share.to_json2()) ,201 
+
+
+@login_required
+@api.route('/delete/<int:id>',methods=['GET','DELETE'])
+@permission_required(Permission.WRITE_APTICLES)
+def delete(id) :
+    share = Share.query.get_or_404(id)
+    if request.method == 'DELETE' :
+        db.session.delete(share)
+        db.session.commit()
+        return jsonify({
+            'deleted' : share.id 
+
+            }) , 200 
+
+
+
+@api.route('/edit-share/<int:id>/', methods=["PUT", "GET"])
+@login_required
+@permission_required(Permission.WRITE_ARTICLES)
+def edit(id) :
+    share = Share.query.get_or_404(id) 
+    if request.method == 'put' :
+        share.share = request.get_json().get("share")
+        share.title = request.get_json().get("title")
+        db.session.add(share)
+        db.session.commit()
+        return jsonify({
+            'edited' : share.id  
+            }) , 200 
+
+
+@api.route('/')
+def index() :
+
