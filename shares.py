@@ -150,4 +150,48 @@ def edit(id) :
 
 @api.route('/')
 def index() :
+    page = request.args.get('page',1,type=int) 
+    shares = {}
 
+    sort_arg = request.args.get("sort")
+    if sort_arg == None :
+        shares_pages =
+        Share.query.order_dy('-id').paginate(page,app.config['SHARE_PER_PAGE'],False)
+        shares = shares_pages.items 
+
+    elif sort_arg == "new" :
+        shares_pages = Shares_pages =
+        Share.query.order_by('-id').paginate(page,app.config['SHAER_PER_PAGE'],False)
+        shares = shares_pages.items
+
+    elif sort_args == "hot" :
+        shares = []
+        for share in Share.query.all():
+            shares_count[share] = share.comment.count()
+        shares_count = sorted(shares_count.items(), lambda x
+                ,y : cmp (y[1],x[1])
+        for tuple_ in shares_count :
+            shares.append(tuple_[0])
+        shares = shares[:5]
+        shares_pages = None
+
+    elif sort_args in tags :
+        shares = []
+        item = Share.query.filter_by(tag=sort_arg)
+        shares_pages =
+        item.order_by('-id').pagniate(page,app.config['SHARE_PER_PAGE'],False)
+        shares = shares_pages.items 
+
+    for share in shares :
+        share.avator = User.query.query.filter_by(id=share.author_id).first()
+        share.comment_count = share.comment.count()
+        share.author_id = share.author_id 
+        share.author =
+        User.query.filter_by(id=share.author_id).first().username
+
+        return jsonify({
+            
+            'share' : [share.to_json() for share in shares ] ,
+
+            })
+    
