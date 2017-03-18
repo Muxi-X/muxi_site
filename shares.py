@@ -10,10 +10,11 @@
 
 from flask import url_for, jsonify, request, g, current_app
 from . import api
-from muxiwebsite.models import Share, AnonymousUser
+from muxiwebsite.models import Share, AnonymousUser , User , Comment , Permission 
 from muxiwebsite import db
 from .authentication import auth
-from flask_login import current_user
+from flask_login import current_user , login_required 
+from ..decorators import permission_required 
 
 tags = ['frontend', 'backend', 'android', 'design', 'product']
 
@@ -47,32 +48,11 @@ def get_shares():
     }), 200, {'link': '<%s>; rel="next", <%s>; rel="last"' % (next, last)}
 
 
-@api.route('/shares/', methods=['POST', 'GET'])
-@auth.login_required
-def new_share():
-    """创建一个分享"""
-    data_dict = eval(request.data)
-    if not hasattr(g.current_user, 'id'):
-        return jsonify({
-            'error' : 'please login first'
-        }), 403
-    share = Share(
-        title = data_dict.get('title'),
-        share = data_dict.get('share'),
-        author_id = g.current_user.id
-    )
-    db.session.add(share)
-    db.session.commit()
-    return jsonify({
-        'new share' : share.id
-    }), 201
-
-
 # 展示特定id的分享,相关评论,发表评论
-@api.route('/views/<int:id>',methods=["GET"."POST"])
+@api.route('/views/<int:id>',methods=["GET","POST"])
 def view_share(id) :
     share = Share.query.get_or_404(id)
-    share.author =
+    share.author = \
     User.query.filter_by(id=share.author_id).fisrt().username
     comments = Comment.query.filter_by(share_id=share.id).all()
     
@@ -81,46 +61,49 @@ def view_share(id) :
         comment.comment = request.get_json().get("comment")
         comment.share_id = id 
         comment.author_id = current_user.id 
-        comment.count = 0 
-        comment.auhtor_name =
+        comment.auhtor_name = \
         User.query.filter_by(id=current_user.id).first().username
 
         db.session.add(comment)
         db.session.commit()
-        this_comment = Comment.query.filter_by(
-            comment = comment.comment.data ,    
-            author_id = current_user.id,
-            share_id = id ,
-                ).first() 
-        this_comment.count += 1 
         return jsonify(comment.to_json()) , 201 
     
-    share_avatar =
+    share.avatar = \
     User.query.filter_by(id=share.author_id).first().avator_url
-    share_comments_num =
+    
+    for comment in comments :
+        comment.avatar = \
+        Username.query_filter_by(id=comment.author_id).first().avatar_url
+        comment.username = \
+        User.query.filter_by(id=comment.author_id).first().username
+        comment.content  = comment.comment 
 
+    return jsonify({
+        "share" : share.to_json() , 
+        "comment" : [comment.to_json() for comment in comments ] ,
+
+        }) ,200 
 
 
 
 @login_required
-@api.route('/send/',methods=['GET','POST'])
-    def add_share() :
-        if request.method == 'POST' :
-            share = Share() 
-            share.title =  request.get_json.get("title")
-            share.share = request.get_json.get("share")
-            share.tag = request.get_json.get("tag")
-            share.content = request.get_json.get("content")
-            share.author_id = current_user.id
-            db.session.add(share)
-            db.session.commit()
-            return redirect(url_for('.index',page))
-        return jsonify(share.to_json2()) ,201 
+@api.route('/send/',methods=['POST'])
+def add_share() :
+    if request.method == 'POST' :
+        share = Share() 
+        share.title =  request.get_json.get("title")
+        share.share = request.get_json.get("share")
+        share.tag = request.get_json.get("tag")
+        share.content = request.get_json.get("content")
+        share.author_id = current_user.id
+        db.session.add(share)
+        db.session.commit()
+        return jsonify(share.to_json()) ,201 
 
 
 @login_required
 @api.route('/delete/<int:id>',methods=['GET','DELETE'])
-@permission_required(Permission.WRITE_APTICLES)
+@permission_required(Permission.WRITE_ARTICLES)
 def delete(id) :
     share = Share.query.get_or_404(id)
     if request.method == 'DELETE' :
@@ -138,7 +121,7 @@ def delete(id) :
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id) :
     share = Share.query.get_or_404(id) 
-    if request.method == 'put' :
+    if request.method == 'PUT' :
         share.share = request.get_json().get("share")
         share.title = request.get_json().get("title")
         db.session.add(share)
@@ -155,21 +138,20 @@ def index() :
 
     sort_arg = request.args.get("sort")
     if sort_arg == None :
-        shares_pages =
-        Share.query.order_dy('-id').paginate(page,app.config['SHARE_PER_PAGE'],False)
+        shares_pages = \
+        Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
         shares = shares_pages.items 
 
     elif sort_arg == "new" :
-        shares_pages = Shares_pages =
-        Share.query.order_by('-id').paginate(page,app.config['SHAER_PER_PAGE'],False)
+        shares_pages = Shares_pages = \
+        Share.query.order_by('-id').paginate(page,currnet_app.config['SHAER_PER_PAGE'],False)
         shares = shares_pages.items
 
     elif sort_args == "hot" :
         shares = []
         for share in Share.query.all():
             shares_count[share] = share.comment.count()
-        shares_count = sorted(shares_count.items(), lambda x
-                ,y : cmp (y[1],x[1])
+        shares_count = sorted(shares_count.items(), lambda x ,y : cmp(y[1],x[1]))
         for tuple_ in shares_count :
             shares.append(tuple_[0])
         shares = shares[:5]
@@ -178,20 +160,20 @@ def index() :
     elif sort_args in tags :
         shares = []
         item = Share.query.filter_by(tag=sort_arg)
-        shares_pages =
-        item.order_by('-id').pagniate(page,app.config['SHARE_PER_PAGE'],False)
+        shares_pages = \
+        item.order_by('-id').pagniate(page,current_app.config['SHARE_PER_PAGE'],False)
         shares = shares_pages.items 
 
     for share in shares :
         share.avator = User.query.query.filter_by(id=share.author_id).first()
         share.comment_count = share.comment.count()
         share.author_id = share.author_id 
-        share.author =
+        share.author = \
         User.query.filter_by(id=share.author_id).first().username
 
-        return jsonify({
+    return jsonify({
             
             'share' : [share.to_json() for share in shares ] ,
 
-            })
+            }) , 200 
     
