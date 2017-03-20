@@ -32,10 +32,10 @@ def get_shares():
     shares = pagination.items
     prev = None
     if pagination.has_prev:
-        prev = url_for('api.get_shares', page=page-1, _external=True)
+        prev = url_for('api/shares', page=page-1, _external=True)
     next = None
     if pagination.has_next:
-        next = url_for('api.get_shares', page=page+1, _external=True)
+        next = url_for('api/shares', page=page+1, _external=True)
     shares_count = len(Share.query.all())
     page_count = shares_count//current_app.config['MUXI_SHARES_PER_PAGE']
     if not isinstance(page_count, int) \
@@ -44,7 +44,8 @@ def get_shares():
     last = url_for('api.get_shares', page=page_count, _external=True)
     return jsonify({
         'shares': [share.to_json() for share in shares],
-        'count': pagination.total
+        'count': pagination.total , 
+        'page' : page # 当前页 
     }), 200, {'link': '<%s>; rel="next", <%s>; rel="last"' % (next, last)}
 
 
@@ -131,7 +132,7 @@ def edit(id) :
             }) , 200 
 
 
-@api.route('/')
+@api.route('/',methods=['GET'])
 def index() :
     page = request.args.get('page',1,type=int) 
     shares = {}
@@ -173,6 +174,7 @@ def index() :
 
     return jsonify({
             
+            'page' : page , 
             'share' : [share.to_json() for share in shares ] ,
 
             }) , 200 
