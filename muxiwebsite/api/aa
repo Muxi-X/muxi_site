@@ -1,0 +1,93 @@
+g" : [text] , // 分享的标签 ,
+
+200
+
+# 所有分享
+
+- url : api/shares/
+
+- METHOD :GET
+
+- description : 所有分享
+
+- GET DATA :      
+
+ "share": [text] , 分享的列表
+
+"title" : [text] , 标题的列表
+
+"tag" : [text] , 标签的列表 
+
+200
+
+
+# 添加分享
+
+    url : api/send/
+    METHOD : POST
+    description : 添加分享
+
+    POST DATA :
+
+    "title":  text  // 标题
+
+    "share: text  // 内容
+
+    "tag": text // 标签
+
+    "content" : text // 渲染为markdown 后的内容
+
+    201 
+
+# 删除分享
+
+    url : api/delete/<int:id>
+    METHOD : GET , DELETE
+    description : 删除分享
+
+     return jsonify({                                                        
+
+              'deleted' : share.id                                               
+
+             }) , 200  
+
+# 编辑分享
+
+    url : api/edit-share/<int:id>/
+    METHOD : PUT , GET
+    description : 对已有的分享进行编辑
+
+    PUT DATA :
+
+    "share": text // 分享的内容
+
+    "title" : text // 标题
+
+    200 
+
+# 查看一篇分享, 评论
+
+    url : api/views/<int:id>
+    METHOD : GET ,POST
+    description : 查看一篇分享,评论 ,发送评论
+
+    POST DATA :
+
+    "comment" : text  // 评论
+
+    " author_id: Int // 评论者
+
+    201 
+
+    GET DATA : 
+
+    "share" : text // 分享
+
+    "title" : text //标题
+
+    "tag": text // 标签
+
+    "comment" : [text] // 评论的列表
+
+
+
