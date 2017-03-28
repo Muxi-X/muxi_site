@@ -8,9 +8,12 @@ from ..models import Blog, Comment, Tag, User, Type
 from .forms import CommentForm
 from muxiwebsite import db, auth
 
+
+tags = ['frontend', 'backend', 'android', 'design', 'product']
+
 # 木犀博客首页
-@blogs.route('/blog/',methods=['GET'])
-def index():
+@api.route('/blog/',methods=['GET'])
+def get_blog():
     page = int(request.args.get('page') or 1)
     article_tag = Tag.query.all()
     blog_all = Blog.query.order_by('-id').all()
@@ -37,7 +40,7 @@ def index():
                     for blog in blog_list]) , 200
 
 #博客归档页面return:
-@blogs.route('/blog/index/<string:index>/', methods=["GET"])
+@api.route('/blog/index/<string:index>/', methods=["GET"])
 def ym(index):
     blog_list = []
     for blog in Blog.query.all():
@@ -56,7 +59,7 @@ def ym(index):
 
 
 #博客文章页面
-@blogs.route('/blog/post/<int:id>/', methods=["GET"])
+@api.route('/blog/post/<int:id>/', methods=["GET"])
 def post(id):
     blog = Blog.query.get_or_404(id)
     comment_list =Comment.query.filter_by(blog_id=id).all()
@@ -69,24 +72,50 @@ def post(id):
                            blog.timestamp.minute),
                    'comment': [comment.to_json() for comment in comment_list ]}) , 200
 
-@blogs.route('/blog/post/<int:id>/', methods=["POST"])
+
+
+@api.route('/blog/post/<int:id>/', methods=["POST"])
 def comment(id):
     blog = Blog.query.get_or_404(id)
     # 提交评论
-    if current_user.is_authenticated():
-        name = current_user.username
-        uid = current_user.id
-    else:
-        name = request.get_json().get("name")
-        uid = 0
-    comment = Comment()
-    comment.comment =request.get_json().get("comment")
-    comment.author_id= request.get_json().get("uid")
-    comment.author_name =  name
+    comments = Comment.query.filter_by(blog_id=id).all()
+    #if current_user.is_authenticated():
+    #    name = current_user.username
+    #    uid = current_user.id
+    #else:
+    #    name = request.get_json().get("name")
+    #    uid = 0
+    #comment = Comment()
+    #comment.comment =request.get_json().get("comment")
+    #comment.author_id= request.get_json().get("uid")
+    #comment.author_name =  name
     comment.blog_id= request.get_json().get("id")
 
-    db.session.add(comment)
-    db.session.commit()
+
+
+
+    if request.method == 'POST' :
+        comment = Comment()
+        comment.comment = request.get_json().get("comment")
+        comment.blog_id = id 
+        comment.author_id = request.get_json().get("author_id") 
+     #   comment.auhtor_name = \
+      #  User.query.filter_by(id=author_id).first().username
+
+        db.session.add(comment)
+        db.session.commit()
+        return jsonify(comment.to_json()) , 201 
+    
+        blog.avatar = \
+        User.query.filter_by(id=share.author_id).first().avator_url
+    
+    for comment in comments :
+        comment.avatar = \
+        User.query.filter_by(id=comment.author_id).first().avatar_url
+        comment.username = \
+        User.query.filter_by(id=comment.author_id).first().username
+        comment.content  = comment.comment 
+
 
     blog.comment_number += 1
     db.session.add(blog)
@@ -94,8 +123,17 @@ def comment(id):
     return 200
 
 
+
+
+
+
+
+
+
+
+
 #  返回对应分类下的文章,分类: WEB, 设计, 安卓, 产品, 关于
-@blogs.route('/blog/type/<string:type>/',methods=['GET'])
+@api.route('/blog/type/<string:type>/',methods=['GET'])
 def types(type):
 
     page = int(request.args.get('page') or 1)
