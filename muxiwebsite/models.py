@@ -170,7 +170,6 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         """设置密码散列值"""
-        password = base64.b64decode(password)
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):

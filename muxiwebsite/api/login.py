@@ -8,10 +8,10 @@
 
 """
 
-from flask import jsonify, g, request
+from flask import jsonify, request
 from . import api
 from muxiwebsite.models import User
-from .authentication import auth
+#from .authentication import auth
 from muxiwebsite import db
 
 @api.route('/api/login/', methods=['GET', 'POST'])
