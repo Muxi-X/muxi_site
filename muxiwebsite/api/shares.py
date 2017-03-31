@@ -13,7 +13,8 @@ from flask import url_for, jsonify, request, g, current_app
 from muxiwebsite.models import Share, AnonymousUser , User , Comment , Permission 
 from muxiwebsite import db
 from .authentication import auth
-from flask_login import current_user , login_required 
+from flask_login import current_user 
+from muxiwebsite.decorators import login_required 
 from ..decorators import permission_required 
 from . import api
 
@@ -54,21 +55,27 @@ def get_shares():
 @api.route('/views/<int:id>',methods=["GET","POST"])
 def view_share(id) :
     share = Share.query.get_or_404(id) 
-  #  share.author = \
-  #  User.query.filter_by(id=share.author_id).first().username
+    share.author_id = Share.query.filter_by(id=id).first().author_id
     comments = Comment.query.filter_by(share_id=id).all()
-    
-    if request.method == 'POST' :
-        comment = Comment()
-        comment.comment = request.get_json().get("comment")
-        comment.share_id = id 
-        comment.author_id = request.get_json().get("author_id") 
-     #   comment.auhtor_name = \
-      #  User.query.filter_by(id=author_id).first().username
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except :
+        current_user_id = None 
 
-        db.session.add(comment)
-        db.session.commit()
-        return jsonify(comment.to_json()) , 201 
+    if request.method == 'POST' :
+        if current_user_id is not None :
+            comment = Comment()
+            comment.comment = request.get_json().get("comment")
+            comment.share_id = id 
+            comment.author_id = current_user_id 
+
+            db.session.add(comment)
+            db.session.commit()
+            return jsonify(comment.to_json()) , 201 
+        return jsonify({ 
+            
+            'message' : 'you can not comment!' }),400 
     
         share.avatar = \
         User.query.filter_by(id=share.author_id).first().avator_url
@@ -90,16 +97,22 @@ def view_share(id) :
         }) ,200 
 
 
-
-#@login_required
 @api.route('/send',methods=['POST'])
 def add_share() :
     share = Share() 
+    token = request.headers.get("token")
     share.title =  request.get_json().get("title")
     share.share = request.get_json().get("share")
     share.tag = request.get_json().get("tag")
     share.content = request.get_json().get("content")
-    share.author_id = request.get_json().get("id")
+    current_user = User.verify_auth_token(token)
+    try :
+        share.author_id = current_user.id
+    except :
+        return jsonify({
+            
+            'message' : 'you can not send a share!'
+            }) , 200 
     db.session.add(share)
     db.session.commit()
     return jsonify( { 
@@ -113,27 +126,33 @@ def add_share() :
                  _external=True)} ) 
  
 
-#@login_required
-@api.route('/delete/<int:id>',methods=['GET','DELETE'])
-#@permission_required(Permission.WRITE_ARTICLES)
+@api.route('/delete/<int:id>',methods=['DELETE'])
 def delete(id) :
     share = Share.query.get_or_404(id)
-    if request.method == 'DELETE' :
+    token = request.headers.get("token")
+    current_user_id = User.verify_auth_token(token).id
+    author_id = Share.query.filter_by(id=id).first().author_id
+    if  current_user_id == author_id :
         db.session.delete(share)
         db.session.commit()
         return jsonify({
             'deleted' : share.id  , 
 
             }) , 200 
+    return jsonify({
+        
+        'message' : 'You can not delete it!'
+        }) , 400
 
 
 
-@api.route('/edit-share/<int:id>', methods=["PUT", "GET"])
-#@login_required
-#@permission_required(Permission.WRITE_ARTICLES)
+@api.route('/edit-share/<int:id>', methods=["PUT"])
 def edit(id) :
     share = Share.query.get_or_404(id) 
-    if request.method == 'PUT' :
+    token = request.headers.get("token")
+    current_user_id = User.verify_auth_token(token).id
+    author_id = Share.query.filter_by(id=id).first().author_id
+    if  current_user_id == author_id :
         share.share = request.get_json().get("share")
         share.title = request.get_json().get("title")
         db.session.add(share)
@@ -141,6 +160,10 @@ def edit(id) :
         return jsonify({
             'edited' : share.id  ,
             }) , 200 
+    return jsonify({ 
+        
+        'message' : 'You can not edit!'
+        }) , 400 
 
 
 @api.route('/',methods=['GET'])
