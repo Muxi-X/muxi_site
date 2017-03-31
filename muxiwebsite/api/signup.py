@@ -35,4 +35,4 @@ def signup():
 
     return jsonify({
         "created": user.id
-        }), 400
+        }), 200

@@ -14,7 +14,7 @@ from muxiwebsite.models import User
 #from .authentication import auth
 from muxiwebsite import db
 
-@api.route('/api/login/', methods=['GET', 'POST'])
+@api.route('/login/', methods=['POST'])
 def login():
     email = request.get_json().get("email")
     pwd = request.get_json().get("password")
