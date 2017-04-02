@@ -9,8 +9,7 @@
 """
 
 from flask import url_for, jsonify, request, g, current_app
-
-from muxiwebsite.models import Share, AnonymousUser , User , Comment , Permission 
+from muxiwebsite.models import Share, AnonymousUser , User , Comment 
 from muxiwebsite import db
 from .authentication import auth
 from flask_login import current_user 
@@ -51,40 +50,16 @@ def get_shares():
     }), 200, {'link': '<%s>; rel="next", <%s>; rel="last"' % (next, last)}
 
 
-# 展示特定id的分享,相关评论,发表评论
-@api.route('/views/<int:id>',methods=["GET","POST"])
+@api.route('/share/<int:id>/comments/',methods=["GET"])
 def view_share(id) :
+    '''查看某一篇分享的评论'''
     share = Share.query.get_or_404(id) 
     share.author_id = Share.query.filter_by(id=id).first().author_id
     comments = Comment.query.filter_by(share_id=id).all()
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except :
-        current_user_id = None 
-
-    if request.method == 'POST' :
-        if current_user_id is not None :
-            comment = Comment()
-            comment.comment = request.get_json().get("comment")
-            comment.share_id = id 
-            comment.author_id = current_user_id 
-
-            db.session.add(comment)
-            db.session.commit()
-            return jsonify(comment.to_json()) , 201 
-        return jsonify({ 
-            
-            'message' : 'you can not comment!' }),400 
-    
-        share.avatar = \
-        User.query.filter_by(id=share.author_id).first().avator_url
-    
+    share.avatar = User.query.filter_by(id=share.author_id).first().avatar_url
     for comment in comments :
-        comment.avatar = \
-        User.query.filter_by(id=comment.author_id).first().avatar_url
-        comment.username = \
-        User.query.filter_by(id=comment.author_id).first().username
+        comment.avatar = User.query.filter_by(id=comment.author_id).first().avatar_url
+        comment.username = User.query.filter_by(id=comment.author_id).first().username
         comment.content  = comment.comment 
 
     return jsonify({
@@ -96,9 +71,35 @@ def view_share(id) :
 
         }) ,200 
 
+@api.route('/add_comment/<int:id>',methods=['POST']) 
+def add_comment(id) :
+    share = Share.query.get_or_404(id)
+    share.author_id = Share.query.filter_by(id=id).first().author_id
+    token = request.headers.get("token") 
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except :
+        return jsonify({
+            
+            'message' : 'you can not add a comment!'
+            }) , 400 
+    comment = Comment()
+    comment.comment = request.get_json().get("comment")
+    comment.share_id = id 
+    comment.author_id = current_user_id 
 
-@api.route('/send',methods=['POST'])
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify({
+        
+        'message' : 'You add a comment successfully!'
+        }) , 200 
+
+
+@api.route('/send_share',methods=['POST'])
 def add_share() :
+    '''登录用户发送分享'''
     share = Share() 
     token = request.headers.get("token")
     share.title =  request.get_json().get("title")
@@ -126,8 +127,9 @@ def add_share() :
                  _external=True)} ) 
  
 
-@api.route('/delete/<int:id>',methods=['DELETE'])
+@api.route('/delete_share/<int:id>',methods=['DELETE'])
 def delete(id) :
+    '''删除分享(发送分享的用户)'''
     share = Share.query.get_or_404(id)
     token = request.headers.get("token")
     current_user_id = User.verify_auth_token(token).id
@@ -146,8 +148,9 @@ def delete(id) :
 
 
 
-@api.route('/edit-share/<int:id>', methods=["PUT"])
+@api.route('/edit_share/<int:id>', methods=["PUT"])
 def edit(id) :
+    '''编辑已经发送的分享(发送该分享的用户)'''
     share = Share.query.get_or_404(id) 
     token = request.headers.get("token")
     current_user_id = User.verify_auth_token(token).id
@@ -160,14 +163,16 @@ def edit(id) :
         return jsonify({
             'edited' : share.id  ,
             }) , 200 
+
     return jsonify({ 
         
         'message' : 'You can not edit!'
         }) , 400 
 
 
-@api.route('/',methods=['GET'])
+@api.route('/index_share',methods=['GET'])
 def index() :
+    '''分享首页,根据所选标签显示分享'''
     page = request.args.get('page',1,type=int) 
     shares = {}
 
@@ -199,10 +204,8 @@ def index() :
         item.order_by('-id').pagniate(page,current_app.config['SHARE_PER_PAGE'],False)
         shares = shares_pages.items 
 
-                        
-
     return jsonify({
             'page' : page , 
             'share' : [share.to_json() for share in shares ] , 
-            }) , 200 
+     }) , 200 
     

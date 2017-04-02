@@ -4,7 +4,8 @@
 	decorators.py
 	~~~~~~~~~~~~~
 
-		装饰器文件
+		装饰器文件 
+                没有用它!
 """
 
 from functools import wraps
@@ -30,7 +31,6 @@ def login_required(f) :
     def decorated(*args,**kwargs) :
         token_header = request.headers.get('token',None)
         if token_header :
-            print 'hahhahah' 
             token_hash = token_header[6:]
             decode_token = base64.b64decode(token_hash)
             token = decode_token[:-1]
