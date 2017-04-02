@@ -119,8 +119,8 @@ def neomarkdown(markdown_content):
 from .book import books
 app.register_blueprint(books)
 
-#from .share import shares
-#app.register_blueprint(shares)
+from .share import shares
+app.register_blueprint(shares)
 
 from .auth import auth
 app.register_blueprint(auth)

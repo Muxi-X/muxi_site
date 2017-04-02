@@ -1,6 +1,6 @@
 # coding: utf-8
 
-"""
+
     forms.py
     ~~~~~~~~
 
@@ -47,4 +47,3 @@ class EditForm(Form):
         ])
     share = PageDownField(validators=[Required()])
     submit = SubmitField('修改')
-"""

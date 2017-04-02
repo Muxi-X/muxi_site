@@ -13,7 +13,7 @@
         /hot: 显示最热分享
         /view_share: 查看分享的具体信息，评论，发表评论
 """
-"""
+
 # models import
 from . import shares
 from jinja2 import Environment
@@ -182,4 +182,4 @@ def edit(id):
             tags = tags
             )
 
-        """
+
