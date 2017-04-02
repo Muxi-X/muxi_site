@@ -170,7 +170,7 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         """设置密码散列值"""
-        password = base64.b64decode(password)
+ #       password = base64.b64decode(password)
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
@@ -276,8 +276,9 @@ class Share(db.Model):
             'title' : self.title,
             'share' : self.share,
             'date' : self.timestamp,
-            'username' : User.query.filter_by(id=self.author_id).first().username,
-            'comment' : url_for('api.get_shares_id_comments', id=self.id)
+            'author_id' :self.author_id,
+            'comment' : url_for('api.get_shares_id_comments', id=self.id) , 
+            'content' : self.content ,
         }
         return json_share
 

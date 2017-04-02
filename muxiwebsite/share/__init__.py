@@ -6,7 +6,7 @@
         分享，是木犀的团队精神，这个小站类似于v2ex，不过分享者都是
         团队中的朋友，这会不一样 ~ ~ ~
 """
-
+"""
 from flask import Blueprint
 
 shares = Blueprint(
@@ -19,4 +19,8 @@ shares = Blueprint(
 
 
 from . import views, forms
-"""@muxistudio bugday 2015年10月16日"""
+
+"""
+"""
+muxistudio bugday 2015年10月16日"""
+"""

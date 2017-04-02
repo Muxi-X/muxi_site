@@ -13,7 +13,7 @@
         /hot: 显示最热分享
         /view_share: 查看分享的具体信息，评论，发表评论
 """
-
+"""
 # models import
 from . import shares
 from jinja2 import Environment
@@ -32,11 +32,11 @@ tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @shares.route('/')
 def index():
-    """
+    
     muxi_share 分享你的知识
 	主页，默认显示最新的分享
 	添加分页，默认显示第一页
-	"""
+	
 
     flag = 0
     # 添加分页, share变为分页对象
@@ -84,10 +84,10 @@ def index():
 
 @shares.route('/view/<int:id>/', methods=["GET", "POST"])
 def view_share(id):
-    """
+    
     显示特定id的分享，相关信息以及评论
     实现评论表单发表自己的评论
-    """
+
     share = Share.query.get_or_404(id)
     share.author = User.query.filter_by(id=share.author_id).first().username
     comments = Comment.query.filter_by(share_id=share.id).all()
@@ -108,7 +108,7 @@ def view_share(id):
 			share_id = id,
 			).first()
         this_comment.count += 1
-        return redirect(url_for('shares.view_share', id=id))
+       return redirect(url_for('shares.view_share', id=id))
 
     share.avatar =  User.query.filter_by(id=share.author_id).first().avatar_url
     share.comments = len(Comment.query.filter_by(share_id=share.id).all())
@@ -128,7 +128,7 @@ def view_share(id):
 @login_required
 @shares.route('/send/', methods=["GET", "POST"])
 def add_share():
-    """分享"""
+    分享
     form = ShareForm()
     if form.validate_on_submit():
         share = Share(
@@ -147,9 +147,9 @@ def add_share():
 @shares.route('/delete/<int:id>/', methods=["GET", "POST"])
 @permission_required(Permission.WRITE_ARTICLES)
 def delete(id):
-    """
+    
     User could delete his share
-    """
+    
     share = Share.query.filter_by(id=id).first()
     db.session.delete(share)
     db.session.commit()
@@ -161,9 +161,9 @@ def delete(id):
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id):
-    """
+    
     用户可以修改自己的分享
-    """
+    
     form = EditForm()
     share = Share.query.filter_by(id=id).first()
     if form.validate_on_submit():
@@ -181,3 +181,5 @@ def edit(id):
             form = form,
             tags = tags
             )
+
+        """
