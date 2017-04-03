@@ -28,9 +28,3 @@ def login():
     return jsonify ({
         'token': token,
         }), 200
-
-
-@api.route('/test/')
-def test():
-    token = request.args.get('token')
-    return User.verify_auth_token(token).username
