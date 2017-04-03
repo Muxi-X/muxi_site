@@ -17,7 +17,6 @@ from muxiwebsite import db
 @api.route('/signup/', methods=['POST'])
 def signup():
     """用户注册"""
- #   return "OK"
     un = request.get_json().get("username")
     email = request.get_json().get("email")
     password = request.get_json().get("password")
