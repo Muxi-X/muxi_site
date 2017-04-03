@@ -32,6 +32,10 @@ def get_shares():
         error_out=False
     )
     shares = pagination.items
+    per_page = current_app.config['MUXI_SHARES_PER_PAGE']
+    pages_count = pagination.total / per_page + 1
+    if page > pages_count :
+        return jsonify({}),  404 
     prev = None
     if pagination.has_prev:
         prev = url_for('api.get_shares', page=page-1, _external=True)
@@ -48,6 +52,7 @@ def get_shares():
         'shares': [share.to_json() for share in shares],
         'count': pagination.total , 
         'page' : page , # 当前页数
+        'pages_count' : pages_count , 
     }), 200, {'link': '<%s>; rel="next", <%s>; rel="last"' % (next, last)}
 
 
@@ -72,7 +77,7 @@ def view_share(id) :
         "author_id" : share.author_id ,
         "comments" : [comment.to_json() for comment in comments ] ,
 
-        }) ,200 
+        })  
 
 @api.route('/shares/<int:id>/add_comment/',methods=['POST']) 
 def add_comment(id) :
@@ -195,6 +200,11 @@ def index() :
     if sort_args == None :
         shares_pages = \
         Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1 
+        if page > pages_count : 
+            return jsonify({
+                'message' : 'can not find the page!'
+                }) , 404 
         shares = shares_pages.items 
 
     elif sort_args == "hot" :
@@ -206,15 +216,22 @@ def index() :
         for tuple_ in shares_count :
             shares.append(tuple_[0])
         shares = shares[:5]
+        pages_count = 1 
         shares_pages = None
 
     elif sort_args in tags :
         shares = []
         item = Share.query.filter_by(tag=sort_args)
         shares_pages = item.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
         shares = shares_pages.items 
+        if page > pages_count : 
+            return jsonify({
+                'message' : 'can not find the page!'
+                }) , 404
 
     return jsonify({
+            'pages_count' : pages_count ,
             'page' : page , 
             'share' : [share.to_json() for share in shares ] , 
      }) , 200 

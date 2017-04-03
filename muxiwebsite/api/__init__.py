@@ -10,4 +10,4 @@ api = Blueprint(
     static_folder = 'static'
 )
 
-from . import authentication, users, comments, shares, users, find, likes, signup , login 
+from . import authentication, users, comments, shares, users, find, likes  
