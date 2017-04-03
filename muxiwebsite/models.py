@@ -170,7 +170,6 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         """设置密码散列值"""
-        password = base64.b64decode(password)
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
@@ -193,7 +192,7 @@ class User(db.Model, UserMixin):
         except:
             return None
         # get id
-        return User.query.filter_by(id=data['id']).first()
+        return User.query.get_or_404(data['id'])
 
     def to_json(self):
         json_user = {

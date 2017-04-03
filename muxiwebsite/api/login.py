@@ -20,17 +20,11 @@ def login():
 
     user = User.query.filter_by(email=email).first()
     if not user:
-        return jsonify({}), 403
+        return jsonify({}), 400
     if not user.verify_password(pwd):
         return jsonify({}), 400
 
     token = user.generate_auth_token()
     return jsonify ({
-        'token': token,
+        'token': token
         }), 200
-
-
-@api.route('/test/')
-def test():
-    token = request.args.get('token')
-    return User.verify_auth_token(token).username
