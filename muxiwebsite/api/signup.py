@@ -29,7 +29,12 @@ def signup():
     if un is None or email is None or password is None:
         return jsonify ({}), 400
 
-    user = User(username = un, email = email, password=password)
+    user = User(
+        username = un,
+        email = email,
+        password = password
+        )
+
     db.session.add(user)
     db.session.commit()
 
