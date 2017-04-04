@@ -15,6 +15,7 @@ from muxiwebsite import db
 from .authentication import auth
 from flask_login import current_user
 
+
 @api.route('/shares/', methods=['GET'])
 def get_shares():
     """
