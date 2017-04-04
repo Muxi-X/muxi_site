@@ -13,7 +13,6 @@ from muxiwebsite.models import Share, AnonymousUser , User , Comment
 from muxiwebsite import db
 from .authentication import auth
 from flask_login import current_user 
-from muxiwebsite.decorators import login_required 
 from ..decorators import permission_required 
 from . import api
 
@@ -48,8 +47,10 @@ def get_shares():
             or page_count == 0:
         page_count = page_count + 1
     last = url_for('api.get_shares', page=page_count, _external=True)
+    author_name = []
+
     return jsonify({
-        'shares': [share.to_json() for share in shares],
+        'shares': [ share.to_json()  for share in shares ],
         'count': pagination.total , 
         'page' : page , # 当前页数
         'pages_count' : pages_count , 
@@ -62,25 +63,17 @@ def view_share(id) :
     查看某一篇分享的评论
     '''
     share = Share.query.get_or_404(id) 
-    share.author_id = Share.query.filter_by(id=id).first().author_id
     comments = Comment.query.filter_by(share_id=id).all()
-    share.avatar = User.query.filter_by(id=share.author_id).first().avatar_url
-    for comment in comments :
-        comment.avatar = User.query.filter_by(id=comment.author_id).first().avatar_url
-        comment.username = User.query.filter_by(id=comment.author_id).first().username
-        comment.content  = comment.comment 
 
     return jsonify({
-        "share" : share.share , 
-        "title" : share.title ,
-        "tag" : share.tag , 
-        "author_id" : share.author_id ,
-        "comments" : [comment.to_json() for comment in comments ] ,
-
-        })  
+         [ comment.to_json() for comment in comments ] ,
+        }) ,200  
 
 @api.route('/shares/<int:id>/add_comment/',methods=['POST']) 
 def add_comment(id) :
+    ''' 
+    登录用户发表评论
+    '''
     token = request.headers.get("token") 
     try :
         current_user_id = User.verify_auth_token(token).id
@@ -118,8 +111,7 @@ def add_share() :
     share = Share()       
     share.title =  request.get_json().get("title")
     share.share = request.get_json().get("share") 
-    share.tag = request.get_json().get("tag")    
-    share.content = request.get_json().get("content")
+    share.tag = request.get_json().get("tags")    
     share.author_id = current_user_id
 
     db.session.add(share)
@@ -159,6 +151,18 @@ def delete(id) :
             'deleted' : share.id  , 
             }) , 200 
         
+@api.route('/shares/<int:id>/views/',methods=['GET'])
+def views(id) :
+    '''
+    查看单个分享,和它所有的评论
+    '''
+    share = Share.query.get_or_404(id)
+    comments = Comment.query.filter_by(share_id=id).all()
+    return jsonify ({
+        'share' : share.to_json() ,
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        }) ,200 
+
 
 @api.route('/shares/<int:id>/edit/', methods=["PUT"])
 def edit(id) :
@@ -195,7 +199,7 @@ def index() :
     '''
     分享首页,根据所选标签显示分享
     '''
-    page = request.args.get('page',1,type=int) 
+    page = request.argrs.get('page',1,type=int) 
     sort_args = request.args.get("sort")
     if sort_args == None :
         shares_pages = \
