@@ -199,7 +199,7 @@ def index() :
     '''
     分享首页,根据所选标签显示分享
     '''
-    page = request.argrs.get('page',1,type=int) 
+    page = request.args.get('page',1,type=int) 
     sort_args = request.args.get("sort")
     if sort_args == None :
         shares_pages = \
