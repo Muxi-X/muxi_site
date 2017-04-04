@@ -193,7 +193,7 @@ class User(db.Model, UserMixin):
         except:
             return None
         # get id
-        return User.query.get_or_404(data['id'])
+        return User.query.filter_by(id=data['id']).first()
 
     def to_json(self):
         json_user = {

@@ -5,8 +5,7 @@ from flask import Blueprint
 api = Blueprint(
     'api',
     __name__,
-    template_folder = 'templates',
-    static_folder = 'static'
+    subdomain = 'api',
 )
 
-from . import authentication, users, comments, shares, users, find, likes
+from . import authentication,users,comments,shares,users,find,likes,signup,login
