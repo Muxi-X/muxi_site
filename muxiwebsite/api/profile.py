@@ -21,9 +21,7 @@ def show_profile():
     token = request.headers.get('token')
 
     user = User.query.filter_by(username=un).first()
-    timejoin = datetime.date.today().strftime('%Y%m%d')
-    timeleft = datetime.date.today().strftime('%Y%m%d')
-
+    
     if not user or not user.verify_auth_token(token):
         return jsonify({}), 403
 
@@ -44,3 +42,34 @@ def show_profile():
         "weibo": user.weibo,
         "zhihu": user.zhihu
         })
+
+@api.route('/edit_profile/', methods=['POST'])
+def edit_profile():
+    """编辑用户信息"""
+    token = request.headers.get('token') 
+    un = request.args.get('username')
+  
+    user = User.query.filter_by(username=un)
+
+    if not user or not User.verify_auth_token(token):
+        return jsonify({}), 403
+
+    user.avatar_url = request.get_json().get("avatar_url")
+    user.birthday = request.get_json().get("birthday")
+    user.flickr = request.get_json().get("flickr")
+    user.github = request.get_json().get("github")
+    user.group = request.get_json().get("group")
+    user.hometown = request.get_json().get("hometown")
+    user.info = request.get_json().get("info")
+    user.personal_blog = request.get_json().get("personal_blog")
+    user.timejoin = request.get_json().get("timejoin")
+    user.timeleft = request.get_json().get("timeleft")
+    user.weibo = request.get_json().get("weibo")
+    user.zhihu = request.get_json().get("zhihu")
+
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({
+        'edited_id': un
+        }) , 200  
