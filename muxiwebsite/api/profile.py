@@ -43,15 +43,16 @@ def show_profile():
         "zhihu": user.zhihu
         })
 
+
 @api.route('/edit_profile/', methods=['POST'])
 def edit_profile():
     """编辑用户信息"""
     token = request.headers.get('token') 
     un = request.args.get('username')
   
-    user = User.query.filter_by(username=un)
+    user = User.query.filter_by(username=un).first()
 
-    if not user or not User.verify_auth_token(token):
+    if not user or not user.id==User.verify_auth_token(token):
         return jsonify({}), 403
 
     user.avatar_url = request.get_json().get("avatar_url")
@@ -70,6 +71,4 @@ def edit_profile():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({
-        'edited_id': un
-        }) , 200  
+    return jsonify({}) , 201
