@@ -22,8 +22,18 @@ def show_profile():
 
     user = User.query.filter_by(username=un).first()
     
-    if not user or not user.verify_auth_token(token):
+    if not user or not user.id==user.verify_auth_token(token):
         return jsonify({}), 403
+
+    books = user.book
+    book_ids = [books.id]
+    #喵喵喵？
+
+    shares = user.share
+    share_ids = [shares.id]
+
+    blogs = user.blog
+    blog_ids = [blogs.id]
 
     return jsonify({
         "id": user.id, 
@@ -40,7 +50,10 @@ def show_profile():
         "github": user.github,
         "flickr": user.flickr,
         "weibo": user.weibo,
-        "zhihu": user.zhihu
+        "zhihu": user.zhihu,
+        "book_ids": book_ids,
+        "share_ids": share_ids,
+        "blog_ids": blog_ids
         })
 
 
