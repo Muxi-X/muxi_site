@@ -212,6 +212,7 @@ def index() :
         shares = shares_pages.items 
 
     elif sort_args == "hot" :
+        page = 1 
         shares_count = {}
         shares = []
         for share in Share.query.all():
