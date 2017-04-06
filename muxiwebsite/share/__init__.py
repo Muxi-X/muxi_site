@@ -19,8 +19,4 @@ shares = Blueprint(
 
 
 from . import views, forms
-
-
-"""
-muxistudio bugday 2015年10月16日
-"""
+"""@muxistudio bugday 2015年10月16日"""

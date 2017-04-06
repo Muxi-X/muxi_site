@@ -135,4 +135,4 @@ from i import i
 app.register_blueprint(i)
 
 from api import api
-app.register_blueprint(api)
+app.register_blueprint(api, url_prefix="/api")
