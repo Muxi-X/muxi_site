@@ -1,10 +1,12 @@
 # coding: utf-8
 
+
 """
     forms.py
     ~~~~~~~~
 
         muxishare表单文件
+
 """
 
 from flask_wtf import Form
