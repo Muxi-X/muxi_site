@@ -16,7 +16,7 @@ from flask_login import AnonymousUserMixin
 from datetime import datetime
 import sys
 import bleach
-from markdown import markdown
+import markdown
 import hashlib
 import base64
 
