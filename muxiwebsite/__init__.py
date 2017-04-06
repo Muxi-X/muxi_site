@@ -128,11 +128,11 @@ app.register_blueprint(auth)
 from .blog import blogs
 app.register_blueprint(blogs)
 
-from profile import profile
+from .profile import profile
 app.register_blueprint(profile)
 
-from i import i
+from .i import i
 app.register_blueprint(i)
 
-from api import api
+from .api import api
 app.register_blueprint(api)
