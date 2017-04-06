@@ -8,4 +8,6 @@ api = Blueprint(
     subdomain = 'api',
 )
 
-from . import authentication, users, comments, shares, users, find, likes,blog, login
+
+from . import authentication, users,  comments,  shares,  users,  find, \
+              likes,  signup,  login,  profile, blog
