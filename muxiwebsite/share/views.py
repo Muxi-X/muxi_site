@@ -32,11 +32,11 @@ tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @shares.route('/')
 def index():
-    """
+    """    
     muxi_share 分享你的知识
 	主页，默认显示最新的分享
 	添加分页，默认显示第一页
-	"""
+    """	
 
     flag = 0
     # 添加分页, share变为分页对象
@@ -84,6 +84,7 @@ def index():
 
 @shares.route('/view/<int:id>/', methods=["GET", "POST"])
 def view_share(id):
+    
     """
     显示特定id的分享，相关信息以及评论
     实现评论表单发表自己的评论
@@ -128,7 +129,9 @@ def view_share(id):
 @login_required
 @shares.route('/send/', methods=["GET", "POST"])
 def add_share():
-    """分享"""
+    """
+    分享
+    """
     form = ShareForm()
     if form.validate_on_submit():
         share = Share(
@@ -156,14 +159,11 @@ def delete(id):
     return redirect(url_for("shares.index"))
 
 
-
 @shares.route('/edit-share/<int:id>/', methods=["POST", "GET"])
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id):
-    """
-    用户可以修改自己的分享
-    """
+    """用户可以修改自己的分享"""
     form = EditForm()
     share = Share.query.filter_by(id=id).first()
     if form.validate_on_submit():
@@ -181,3 +181,5 @@ def edit(id):
             form = form,
             tags = tags
             )
+
+
