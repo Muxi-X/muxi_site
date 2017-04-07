@@ -59,7 +59,7 @@ def show_profile():
         "book_ids": book_ids,
         "share_ids": share_ids,
         "blog_ids": blog_ids
-        })
+        }), 200
 
 
 @api.route('/edit_profile/', methods=['POST'])
