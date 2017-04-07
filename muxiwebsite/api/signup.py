@@ -3,9 +3,7 @@
 """
     signup.py
     ~~~~~~~~~
-
     木犀官网注册API
-
 """
 
 from flask import jsonify, g, request
@@ -13,6 +11,8 @@ from . import api
 from muxiwebsite.models import User
 from .authentication import auth
 from muxiwebsite import db
+from werkzeug.security import generate_password_hash
+import base64
 
 @api.route('/signup/', methods=['POST'])
 def signup():
@@ -31,7 +31,9 @@ def signup():
     user = User(
         username = un,
         email = email,
-        password = password
+        password = base64.b64encode(password),
+        avatar_url = "http://7xrvvt.com1.z0.glb.clouddn.com/shakedog.gif",
+        role_id = 3
         )
 
     db.session.add(user)

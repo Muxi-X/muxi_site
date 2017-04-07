@@ -16,7 +16,7 @@ from flask_login import AnonymousUserMixin
 from datetime import datetime
 import sys
 import bleach
-import markdown
+from markdown import markdown
 import hashlib
 import base64
 
@@ -193,7 +193,7 @@ class User(db.Model, UserMixin):
         except:
             return None
         # get id
-        return User.query.filter_by(id=data['id']).first()
+        return data['id']
 
     def to_json(self):
         json_user = {
