@@ -60,7 +60,7 @@ def show_profile():
         }), 200
 
 
-    @api.route('/edit_profile/', methods=['POST'])
+@api.route('/edit_profile/', methods=['POST'])
 def edit_profile():
     """编辑用户信息"""
     token = request.headers.get('token') 
