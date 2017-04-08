@@ -1,4 +1,4 @@
-# conding: utf-8 
+# conding: utf-8
 
 from flask import jsonify, request
 from . import api
@@ -16,7 +16,7 @@ def login():
     if not user.verify_password(pwd):
         return jsonify({}), 400
     token = user.generate_auth_token()
-        return jsonify ({
+    return jsonify ({
             'token': token,
                 }), 200
 
