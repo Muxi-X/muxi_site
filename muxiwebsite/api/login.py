@@ -1,4 +1,12 @@
-# conding: utf-8 
+# coding: utf-8
+
+"""
+    login.py
+    ~~~~~~~~
+
+    木犀官网登陆API
+
+"""
 
 from flask import jsonify, request
 from . import api
@@ -15,8 +23,9 @@ def login():
         return jsonify({}), 403
     if not user.verify_password(pwd):
         return jsonify({}), 400
+
     token = user.generate_auth_token()
-        return jsonify ({
-            'token': token,
-                }), 200
+    return jsonify ({
+        'token': token,
+        }), 200
 
