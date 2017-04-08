@@ -39,11 +39,11 @@ def show_profile():
         blog_ids.append(blog.id)
 
     return jsonify({
-        "id": user.id, 
-        "email": user.email, 
-        "birthday": user.birthday, 
+        "id": user.id,
+        "email": user.email,
+        "birthday": user.birthday,
         "hometown": user.hometown,
-        "group": user.group, 
+        "group": user.group,
         "timejoin": user.timejoin,
         "timeleft": user.timeleft,
         "username": un,
@@ -60,16 +60,18 @@ def show_profile():
         }), 200
 
 
-    @api.route('/edit_profile/', methods=['POST'])
+@api.route('/edit_profile/', methods=['POST'])
 def edit_profile():
     """编辑用户信息"""
-    token = request.headers.get('token') 
+    token = request.headers.get('token')
     un = request.args.get('username')
 
     user = User.query.filter_by(username=un).first()
 
-    if not user or not user.id==User.verify_auth_token(token):
-        return jsonify({}), 403
+    if not user :
+        return jsonify({"message":"1"}) , 403
+    if   user.id != User.verify_auth_token(token).id :
+        return jsonify({"messsage":"2" }), 403
 
     user.avatar_url = request.get_json().get("avatar_url")
     user.birthday = request.get_json().get("birthday")

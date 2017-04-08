@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# conding: utf-8
-=======
 # coding: utf-8
 
 """
@@ -10,7 +7,6 @@
     木犀官网登陆API
 
 """
->>>>>>> a6580b6da6d98229503940f7f81006bce384c9d4
 
 from flask import jsonify, request
 from . import api
@@ -30,11 +26,6 @@ def login():
 
     token = user.generate_auth_token()
     return jsonify ({
-<<<<<<< HEAD
-            'token': token,
-                }), 200
-=======
         'token': token,
         }), 200
->>>>>>> a6580b6da6d98229503940f7f81006bce384c9d4
 
