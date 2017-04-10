@@ -12,9 +12,11 @@ from . import api
 def index():
     return "hi"
 
-# 木犀博客首页
 @api.route('/blog/',methods=['GET'])
 def get_blog():
+    """
+    木犀博客首页
+    """
     page = int(request.args.get('page') or 1)
     article_tag = Tag.query.all()
     blog_all = Blog.query.order_by('-id').all()
@@ -30,10 +32,6 @@ def get_blog():
         blog.intro = blog.summary
     article_date = []
 
-#    for blog in blog_all:
-#        if blog.index not in article_date:
-#            article_date.append(blog.index)
-
     return jsonify([{
                    'blog_tag':blog.tag.value,
                    'blog_date':"%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day),
@@ -41,9 +39,12 @@ def get_blog():
                    'blog_body':blog.body}
                     for blog in blog_list]) , 200
 
-#博客归档页面return:
+
 @api.route('/blog/index/<string:index>/', methods=["GET"])
 def ym(index):
+    """
+    博客归档页面return:
+    """
     blog_list = []
     for blog in Blog.query.all():
         if blog.index == index:
@@ -60,9 +61,11 @@ def ym(index):
                     for blog in blog_list]) , 200
 
 
-#博客文章页面
 @api.route('/blog/post/<int:id>/', methods=["GET"])
 def post(id):
+    """
+    博客文章页面
+    """
     blog = Blog.query.get_or_404(id)
     comment_list =Comment.query.filter_by(blog_id=id).all()
     return jsonify({
@@ -76,35 +79,22 @@ def post(id):
                    'comment': [comment.to_json() for comment in comment_list ]}) , 200
 
 
-
 @api.route('/blog/post/<int:id>/', methods=["POST"])
 def comment(id):
-    # 提交评论
-    #if current_user.is_authenticated():
-    #    name = current_user.username
-    #    uid = current_user.id
-    #else:
-    #    name = request.get_json().get("name")
-    #    uid = 0
-    #comment = Comment()
-    #comment.comment =request.get_json().get("comment")
-    #comment.author_id= request.get_json().get("uid")
-    #comment.author_name =  name
 
-
+    """
+    提交评论
+    """
     if request.method == 'POST' :
         blog = Blog.query.get_or_404(id)
         comments = Comment.query.filter_by(blog_id=id).all()
         comment = Comment()
         comment.comment = request.get_json().get("comment")
         comment.blog_id = request.get_json().get("id")
-        comment.author_id = request.get_json().get("author_id") 
-     #   comment.auhtor_name = \
-      #  User.query.filter_by(id=author_id).first().username
 
+        comment.author_id = request.get_json().get("author_id")
         db.session.add(comment)
         db.session.commit()
-    
         blog.avatar = \
                 User.query.filter_by(id=blog.author_id).first().avatar_url
 
@@ -113,17 +103,19 @@ def comment(id):
                 User.query.filter_by(id=comment.author_id).first().avatar_url
             comment.username = \
                 User.query.filter_by(id=comment.author_id).first().username
-            comment.content  = comment.comment 
+            comment.content  = comment.comment
+
 
         blog.comment_number += 1
         db.session.add(blog)
         db.session.commit()
         return jsonify(comment.to_json())
 
-
-#  返回对应分类下的文章,分类: WEB, 设计, 安卓, 产品, 关于
 @api.route('/blog/type/<string:type>/',methods=['GET'])
 def types(type):
+    """
+    返回对应分类下的文章,分类: WEB, 设计, 安卓, 产品, 关于
+    """
     page = int(request.args.get('page') or 1)
     blog_all = Blog.query.all()
     type_item = Type.query.filter_by(value=type).first()
