@@ -9,6 +9,8 @@ api = Blueprint(
     template_folder = 'templates',
     static_folder = 'static'
 )
+from . import authentication, users, comments, shares, users, find, likes,blog, login, signup
+
 
 from . import authentication, users, comments, shares, users, find, \
         likes, signup, login, profile   
