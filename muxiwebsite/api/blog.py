@@ -32,13 +32,13 @@ def get_blog():
         blog.intro = blog.summary
     article_date = []
 
-
     return jsonify([{
                    'blog_tag':blog.tag.value,
                    'blog_date':"%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day),
                    'blog_avatar':User.query.filter_by(id=blog.author_id).first().avatar_url,
                    'blog_body':blog.body}
                     for blog in blog_list]) , 200
+
 
 @api.route('/blog/index/<string:index>/', methods=["GET"])
 def ym(index):
@@ -79,23 +79,22 @@ def post(id):
                    'comment': [comment.to_json() for comment in comment_list ]}) , 200
 
 
-
 @api.route('/blog/post/<int:id>/', methods=["POST"])
 def comment(id):
+
     """
     提交评论
     """
-
     if request.method == 'POST' :
         blog = Blog.query.get_or_404(id)
         comments = Comment.query.filter_by(blog_id=id).all()
         comment = Comment()
         comment.comment = request.get_json().get("comment")
         comment.blog_id = request.get_json().get("id")
-        comment.author_id = request.get_json().get("author_id")
-     db.session.add(comment)
-        db.session.commit()
 
+        comment.author_id = request.get_json().get("author_id")
+        db.session.add(comment)
+        db.session.commit()
         blog.avatar = \
                 User.query.filter_by(id=blog.author_id).first().avatar_url
 
@@ -106,12 +105,11 @@ def comment(id):
                 User.query.filter_by(id=comment.author_id).first().username
             comment.content  = comment.comment
 
+
         blog.comment_number += 1
         db.session.add(blog)
         db.session.commit()
         return jsonify(comment.to_json())
-
-
 
 @api.route('/blog/type/<string:type>/',methods=['GET'])
 def types(type):
