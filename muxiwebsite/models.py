@@ -271,7 +271,7 @@ class Share(db.Model):
             db.session.commit()
 
     def to_json(self):
-        author = User.query.filter_by(id=self.author_id).first() 
+        author = User.query.filter_by(id=self.author_id).first()
         if not author:
             username = ""
         else:
@@ -283,7 +283,7 @@ class Share(db.Model):
             'share' : self.share,
             'date' : self.timestamp,
             'username' : username,
-            'comment' : url_for('api.get_shares_id_comments', id=self.id), 
+            'comment' : url_for('api.get_shares_id_comments', id=self.id),
             'content' : self.content,
             'avatar' : author.avatar_url ,
         }
@@ -328,7 +328,7 @@ class Comment(db.Model):
             'date' : self.timestamp,
             'comment' : self.comment,
             'username' : User.query.filter_by(id=self.author_id).first().username ,
-            'avatar' : User.query.filter_by(id=self.author_id).first().avatar_url , 
+            'avatar' : User.query.filter_by(id=self.author_id).first().avatar_url ,
         }
         return json_comment
 
