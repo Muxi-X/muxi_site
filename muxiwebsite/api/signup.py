@@ -40,5 +40,6 @@ def signup():
     db.session.commit()
 
     return jsonify({
-        "created": user.id
+        "created": user.id ,
+        "token" : User.generate_auth_token(user)
         }), 200

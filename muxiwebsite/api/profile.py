@@ -20,7 +20,7 @@ def show_profile():
 
     user = User.query.filter_by(username=un).first()
 
-    if not user or not user.verify_auth_token(token):
+    if not user or not user.verify_auth_token(token).id:
         return jsonify({}), 403
 
     books = user.book
