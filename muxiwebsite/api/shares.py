@@ -48,6 +48,7 @@ def get_shares():
         'pages_count' : pages_count ,
     }), 200
 
+
 @api.route('/shares/<int:id>/comments/',methods=["GET"])
 def view_share(id) :
     '''
