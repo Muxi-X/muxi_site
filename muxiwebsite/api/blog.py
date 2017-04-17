@@ -7,11 +7,6 @@ from ..models import Blog, Comment, Tag, User, Type
 from muxiwebsite import db, auth
 from . import api
 
-'''
-@api.route('/')
-def index():
-    return "hi"
-'''
 @api.route('/blog/',methods=['GET'])
 def get_blog():
     """
