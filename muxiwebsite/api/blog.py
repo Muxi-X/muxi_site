@@ -8,10 +8,6 @@ from muxiwebsite import db, auth
 from . import api
 
 
-@api.route('/')
-def index():
-    return "hi"
-
 @api.route('/blog/',methods=['GET'])
 def get_blog():
     """
@@ -79,7 +75,7 @@ def post(id):
                    'comment': [comment.to_json() for comment in comment_list ]}) , 200
 
 
-@api.route('/blog/post/<int:id>/', methods=["POST"])
+@api.route('/blog/post/<int:id>/comments/', methods=["POST"])
 def comment(id):
 
     """
@@ -138,4 +134,93 @@ def types(type):
                     'blog_body':blog.body,
                     'type_item':type_item.value,
                     'page':page}
-                    for blog in blog_list]) , 200
+                    for blog in blog_list]) , 200  
+
+
+@api.route('/blog/<int:id>/edit/' ,methods=['PUT'])
+@login_required
+def edit_blog(id) :
+    '''
+    编辑博客
+    '''
+    blog = Blog.query.get_or_404(id)
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except AttributeError :
+        return jsonify({
+            'message' : '抱歉请先登录'
+            }) , 400
+    type_id = Blog.query.filter_by(id=id).first().type_id
+    author_id = Blog.query.filter_by(id=id).first().author_id
+    if  current_user_id != author_id :
+        return jsonify({
+            'message': '抱歉你没有编辑的权限'
+            }) , 404
+
+    blog.body = request.get_json().get("body")
+    blog.title = request.get_json().get("title")
+    blog.summary = request.get_json().get("summary")
+
+    db.session.add(blog)
+    db.session.commit()
+    return jsonify({
+            'edited' : blog.id ,
+            }) , 200
+
+
+@api.route('/blog/send/',methods=['POST'])
+def add_blog(id) :
+    '''
+    登录用户发送分享
+    '''
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except AttributeError :
+        return jsonify({
+            'message' : '你不能添加博客'
+            }) , 404
+
+    blog = Blog()
+    blog.title =  request.get_json().get("title")
+    blog.body = request.get_json().get("body")
+    blog.summary = request.get_json().get("summary")
+    blog.tag = request.get_json().get("tags")
+    blog.author_id = current_user_id
+
+    db.session.add(blog)
+    db.session.commit()
+
+    return jsonify( {
+                    "body" : blog.body ,
+                    "title" : blog.title ,
+                    "summary":blog.summary ,
+                    "tag" : blog.tag ,
+                    "author_id" : blog.author_id ,
+                    "id" :  blog.id ,
+                    } ) , 200 
+
+
+@api.route('/blog/<int:id>/delete/',methods=['DELETE'])
+def blog_delete(id) :
+    blog = Blog.query.get_or_404(id)
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except AttributeError :
+        return jsonify({
+            'message': '请先登录'
+            }) , 404
+
+    author_id = Blog.query.filter_by(id=id).first().author_id
+    if  current_user_id != author_id :
+        return jsonify({
+            'message' : '你没有权限删除该博客'
+            }) , 404
+
+    db.session.delete(blog)
+    return jsonify({
+            'deleted' : blog.id  ,
+            }) , 200
+
