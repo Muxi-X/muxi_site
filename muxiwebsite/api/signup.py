@@ -22,11 +22,11 @@ def signup():
     password = request.get_json().get("password")
 
     if User.query.filter_by(username=un).first() is not None:
-        return jsonify ({}), 400
+        return jsonify ({}), 401
     if User.query.filter_by(email=email).first() is not None:
-        return jsonify ({}), 400
+        return jsonify ({}), 402
     if un is None or email is None or password is None:
-        return jsonify ({}), 400
+        return jsonify ({}), 403
 
     user = User(
         username = un,
@@ -41,5 +41,4 @@ def signup():
 
     return jsonify({
         "created": user.id ,
-        "token" : User.generate_auth_token(user)
         }), 200

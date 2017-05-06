@@ -20,7 +20,6 @@ tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @api.route('/shares/all/', methods=['GET'])
 def get_shares():
-
     """
     获取所有分享
     """
@@ -36,10 +35,6 @@ def get_shares():
     if page > pages_count :
         return jsonify({}),  404
     shares_count = len(Share.query.all())
-    page_count = shares_count//current_app.config['MUXI_SHARES_PER_PAGE']
-    if not isinstance(page_count, int) \
-            or page_count == 0:
-        page_count = page_count + 1
 
     return jsonify({
         'shares': [ share.to_json()  for share in shares ],
@@ -173,7 +168,7 @@ def edit(id) :
     author_id = Share.query.filter_by(id=id).first().author_id
     if  current_user_id != author_id :
         return jsonify({
-            'messa"e': 'You can not edit!'
+            'message': 'You can not edit!'
             }) , 404
 
     share.share = request.get_json().get("share")

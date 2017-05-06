@@ -113,6 +113,11 @@ def insert_roles():
     db.session.commit()
     return 'roles has been inserted!'
 
+@manager.command
+def test() :
+    import unittest
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity=2).run(tests)
 
 if __name__ == '__main__':
     app.debug = True
