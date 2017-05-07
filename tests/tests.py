@@ -1,3 +1,4 @@
+#coding: utf-8
 import unittest
 from flask import current_app , url_for,jsonify
 from muxiwebsite import create_app
@@ -6,8 +7,9 @@ import random
 from muxiwebsite.models import Share
 import json
 TOKEN = str(0)
+SHARE_ID = 1
 db = SQLAlchemy()
-number = random.randint(201,300)
+number = random.randint(301,500)
 
 class BasicTestCase(unittest.TestCase) :
     def setUp(self) :
@@ -33,7 +35,6 @@ class BasicTestCase(unittest.TestCase) :
                         "email" : str(number) ,
                         "password" : str(number) }) ,
                     content_type = 'application/json')
-        print response.status_code
         self.assertTrue( response.status_code == 200 )
 
     def test_login(self) :
@@ -41,7 +42,7 @@ class BasicTestCase(unittest.TestCase) :
                     url_for('api.login',_external=True),
                     data = json.dumps({
                         "password" : "1" ,
-                        "email" : "1" ,
+                        "email" : "1"
                         }) ,
                     content_type = 'application/json'
                     )
@@ -49,7 +50,6 @@ class BasicTestCase(unittest.TestCase) :
         global TOKEN
         TOKEN = s
         self.assertTrue( response.status_code == 200 )
-
 
     def test_get_shares(self) :
         response = self.client.get(
@@ -78,34 +78,60 @@ class BasicTestCase(unittest.TestCase) :
     def test_send_share(self) :
         response = self.client.post(
                     url_for('api.add_share',_external=True),
-                    headers = {"token": TOKEN},
+                    headers = {
+                        "token": TOKEN ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
                     data = json.dumps({
                         "title" : "####" ,
                         "share" : "###" ,
                         "tags" : "frontend" }),
+                    content_type = 'application/json'
                     )
-        print response.status_code
+        t = json.loads(response.data)['id']
+        global SHARE_ID
+        SHARE_ID = int(t)
         self.assertTrue( response.status_code == 200 )
 
     def test_send_comment(self) :
         response = self.client.post(
-                    url_for('api.add_comment',id=1,_external=True),
-                    headers = {"token": TOKEN } ,
-                    data = json.dumps({
-                        "comment" : "###"  }),
+                url_for('api.add_comment',id=1,_external=True),
+                headers = {
+                    "token": TOKEN ,
+                    "Accept" : "application/json" ,
+                    "Content_Type" :"application/json"
+                    },
+                data = json.dumps(dict(comment="###")),
+                content_type = 'application/json'
                     )
-        print response.status_code
         self.assertTrue( response.status_code == 200 )
 
-    def test_edit_share(self) :
+    def test_wedit_share(self) :
         response = self.client.put(
-                    url_for('api.edit',id=1,_external=True),
-                    headers = {"token": TOKEN } ,
+                    url_for('api.edit',id=SHARE_ID,_external=True),
+                    headers = {
+                        "token": TOKEN ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
                     data = json.dumps({
                         "title" : "####" ,
                         "share" : "###" }) ,
+                    content_type = 'application/json'
                     )
-        print response.status_code
+        self.assertTrue( response.status_code == 200 )
+
+    def test_zdelete_share(self) :
+        response = self.client.delete(
+                    url_for('api.delete',id=SHARE_ID,_external=True),
+                    headers = {
+                        "token": TOKEN ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
+                    content_type = 'application/json'
+                    )
         self.assertTrue( response.status_code == 200 )
 
 

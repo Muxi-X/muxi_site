@@ -164,7 +164,6 @@ def edit(id) :
         return jsonify({
             'message' : 'login first! '
             }) , 400
-
     author_id = Share.query.filter_by(id=id).first().author_id
     if  current_user_id != author_id :
         return jsonify({
