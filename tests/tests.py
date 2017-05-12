@@ -9,7 +9,7 @@ import json
 TOKEN = str(0)
 SHARE_ID = 1
 db = SQLAlchemy()
-number = random.randint(301,500)
+number = random.randint(501,900)
 
 class BasicTestCase(unittest.TestCase) :
     def setUp(self) :
@@ -37,7 +37,7 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
-    def test_login(self) :
+    def test_s_login(self) :
         response = self.client.post(
                     url_for('api.login',_external=True),
                     data = json.dumps({
@@ -122,7 +122,7 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
-    def test_zdelete_share(self) :
+    def test_zzdelete_share(self) :
         response = self.client.delete(
                     url_for('api.delete',id=SHARE_ID,_external=True),
                     headers = {
@@ -134,4 +134,30 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
+    def test_zget_profile(self) :
+        response = self.client.get(
+                    url_for('api.show_profile',username = str(number),_external=True) ,
+                    headers = {
+                        "token" : TOKEN ,
+                        "Content_Type" : "application/json"
+                        } ,
+                    content_type = 'application/json'
+                    )
+        self.assertTrue ( response.status_code == 200 )
+
+    def test_zedit_profile(self) :
+        response = self.client.post(
+                    url_for('api.edit_profile',username = str(number),_external=True) ,
+                    headers = {
+                        "token" : TOKEN ,
+                        "Accpet" : "application/json" ,
+                        "Content_Type" : "application/json"
+                        } ,
+                    data = json.dumps({
+                        "info" : "2333" ,
+                        }) ,
+                    content_type = 'application/json' ,
+                    )
+        print response.status_code
+        self.assertTrue( response.status_code == 200 )
 
