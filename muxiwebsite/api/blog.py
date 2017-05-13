@@ -41,38 +41,14 @@ def index_blogs() :
     """
     page = request.args.get('page',1,type=int)
     sort = request.args.get('sort')
-    if sort == None :
-        blogs_pages = \
-        Share.query.order_by('-d').pagination(page,current_app.config['BLOGS_PER_PAGE'],False)
-        pages_count = blogs_pages.total . current_app.config['  SHARE_PER_PAGE'] + 1
-        if page > page_count :
-            return jsonify({
-                "message" : "can not find the page"
-                }) , 404
-
-    elif sort == "hot" :
-        page = 1
-        pages_count = {}
-        blogs = []
-        for blog in Blog,query.all() :
-            blogs_count[blog] = blog.comment.count()
-        blogs_count = sorted(blogs_count.item() , lambda x , y : cmp (y[1] ,x[1]))
-        for item in blogs_count :
-            blogs.append(item[0])
-        blogs = blogs[:5]
-        pages_count = 1
-        blogs_pages = None
-
-    elif sort in tags :
-        blogs = []
-        item = Blog.query,filter_by(tag=sort)
-        blogs_pages = item.order_by('-id').paginate(page,current_app.config['BLOGS_PER_PAGES'],False)
-        pages_count = blogs_pages.total . current_app.config['BLOGS_PER_PAGES'] + 1
-        blogs = blogs_pages.items
-        if page > pages_count :
-            return jsonfy({
-                "message" : "can not find the page!"
-                }) , 404
+    sort_item = Type.query.filter_by(value=sort).first()
+    blog_list = Blog.qurty.filter_by(type_id=sort_item.id).paginate(page,current_app.config['BLOG_PER_PAGE',False])
+    pages_count = blog_item.total/current_app.config['BLOG_PER_PAGE'] + 1
+    if page > pages_count :
+        return jsonify({
+            "message" : "can not find the page"
+            }) , 404
+    blogs = blog_list.items
     return jsonify({
         "pages_count" : pages_count ,
         "page" : page ,
@@ -94,7 +70,6 @@ def add_blog() :
     blog = Blog()
     blog.title = request.get_json().get("title")
     blog.body = request.get_json().get("body")
-    blog.tag = request.get_json().get("tag")
     blog.img_url = request.get_json().get("img_url")
     blog.summary = request.get_json().get("summary")
     blog.author_id = current_user_id
@@ -104,7 +79,6 @@ def add_blog() :
 
     return jsonify({
             "title" : blog.title ,
-            "tag" : blog.tag ,
             "id" : blog.id ,
             "author_id" : blog.author_id
         }) , 200
@@ -123,7 +97,7 @@ def deleted(id) :
             "message" : "login first"
             }) , 404
 
-    author_id = Blog.query_filter_by(id=id).first().author_id
+    author_id = Blog.query.filter_by(id=id).first().author_id
     if current_user_id != author_id :
         return jsonify({
             "message" : " can not delete it !"
@@ -132,7 +106,7 @@ def deleted(id) :
     db.session.delete(blog)
     db.session.commit()
     return jsonify({
-        "delete" : share.id ,
+        "delete" : blog.id ,
         }) , 200
 
 @api.route('/blogs/<int:id>/add_comment/',methods=['POST'])
@@ -161,14 +135,27 @@ def comment(id) :
         }) , 200
 
 
+@api.route('/blogs/<int:id>/comment/',methods=['GET'])
+def view_comment(id) :
+    """
+    查看评论
+    """
+    comments= Comment.query.filter_by(blog_id=id).all()
+    return jsonify({
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        })  , 200
 
 
-
-
-
-
-
-
-
+@api.route('/blogs/<int:id>/views/',methods=['GET'])
+def view(id) :
+    """
+    查看单个博客和他的评论
+    """
+    blog = Blog.query.get_or_404(id)
+    comments= Comment.query.filter_by(blog_id=id).all()
+    return jsonify({
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        'blog' : blog.to_json()
+        })  , 200
 
 

@@ -16,7 +16,7 @@ from flask_login import AnonymousUserMixin
 from datetime import datetime
 import sys
 import bleach
-import markdown
+from markdown import markdown
 import hashlib
 import base64
 
@@ -283,7 +283,7 @@ class Share(db.Model):
             'share' : self.share,
             'date' : self.timestamp,
             'username' : username,
-            'comment' : url_for('api.get_shares_id_comments', id=self.id),
+            'comment' : url_for('api.view_share', id=self.id),
             'content' : self.content,
             'avatar' : author.avatar_url ,
         }
@@ -407,6 +407,25 @@ class Blog(db.Model):
             )
             db.session.add(b)
             db.session.commit()
+
+    def to_json(self):
+        author = User.query.filter_by(id=self.author_id).first()
+        if not author:
+            username = ""
+        else:
+            username = author.username
+
+        json_blog = {
+            'id' : self.id,
+            'title' : self.title,
+            'body' : self.body,
+            'date' : self.timestamp,
+            'username' : username,
+            'comment' : url_for('api.view_comment', id=self.id),
+            'avatar' : author.avatar_url ,
+            'summary' : self.summary ,
+        }
+        return json_blog
 
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
