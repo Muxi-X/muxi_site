@@ -21,9 +21,9 @@
 
   *  clone fork的项目仓库
     
-    ```
-    $ git clone https://github.com/<your_username>/muxi_site.git
-    ```
+```
+$ git clone https://github.com/<your_username>/muxi_site.git
+```
 
   * 从develop分支开出功能分支(以feature为例)
   **注意⚠️  : develop分支为主分支！！！**
@@ -95,12 +95,12 @@
 * 设置测试域名,在文件后面添加
     
     ```
-    127.0.0.1 blog.flask.dev
-    127.0.0.1 share.flask.dev
-    127.0.0.1 book.flask.dev
-    127.0.0.1 auth.flask.dev
-    127.0.0.1 profile.flask.dev
-    127.0.0.1 i.flask.dev
+    127.0.0.1 blog.muxixyz.dev
+    127.0.0.1 share.muxixyz.dev
+    127.0.0.1 book.muxixyz.dev
+    127.0.0.1 auth.muxixyz.dev
+    127.0.0.1 profile.muxixyz.dev
+    127.0.0.1 i.muxixyz.dev
     ```
     
 4.设置环境变量
@@ -114,7 +114,7 @@
 
     ```
     set MUXI_WEBSITE_SERVERNAME
-    export MUXI_WEBSITE_SERVERNAME="flask.dev:5000"
+    export MUXI_WEBSITE_SERVERNAME="muxixyz.dev:5000"
     ```
   * 重新加载配置文件
 
@@ -158,32 +158,75 @@
   ```
   确定每个页面都没有问题之后就可以开始开发了。🐳
 
-#### 2⃣️开发完成之后
+#### 2⃣️本地开发流程
 
+1. 写单元测试
 
-1. Docker测试
+2. 写业务逻辑
+
+3. 确保业务逻辑通过单元测试
+
+4. 提交Pull Request。在CI通过，负责人Review之后Merge
+  
+  
+#### 3️测试环境部署
+
+> 本应用的测试环境部署在112.74.88.136服务器上。测试域名为muxixyz.test
+
+1. Docker相关（仅初次部署需要）
    
   * 编写 muxiwebsite.env
   
     ```
     MUXI_WEBSITE_SQL=mysql://<username>:<password>@<url-to-rds>/<database-name>
-    MUXI_WEBSITE_SERVERNAME=muxixyz.com
+    MUXI_WEBSITE_SERVERNAME=muxixyz.test
     ```
 
-  * 运行
+  * 
+
+2. 设置本机Hosts解析（仅初次部署需要）
+
+在本机的hosts文件中加入：
+
+```
+    112.74.88.136 blog.muxixyz.test
+    112.74.88.136 share.muxixyz.test
+    112.74.88.136 book.muxixyz.test
+    112.74.88.136 auth.muxixyz.test
+    112.74.88.1361 profile.muxixyz.test
+    112.74.88.136 i.muxixyz.test
+```
+
+
+3.  在服务器上该仓库目录下`git pull origin develop`拉取最新代码，并运行：
   
     ```
     $ docker-compose build;docker-compose up
     ```
 
-2. 提交到Github，等待管理员merge⌛️
+4. 初始化数据库（仅初次部署需要）
 
-3. 根据情况修改 muxiwebsite.env并上传到部署服务器
+ 在服务器上运行：
+ 
+ ```
+    $ docker exec <container id> python manage.py db init
+	$ docker exec <container id> python manage.py db migrate
+	$ docker exec <container id> python manage.py db upgrade
+	$ docker exec <container id> python manage.py insert_roles
+ ```
+    
+5. 迁移数据库（如果后续部署中修改了数据模型结构）
 
-   ```
-   scp /url/to/muxiwebsite.env <username>@<host>:/url/to/destination/directory
-   ```
-4. 等待管理员部署⌛️
+ 在服务器上运行：
+ 
+ ```
+	$ docker exec <container id> python manage.py db migrate
+	$ docker exec <container id> python manage.py db upgrade
+ ```
+ 
+	
+6. 等待提测，通过测试之后正式在MAE发布一次部署
+
 
 ### ToDo
 
@@ -230,3 +273,5 @@
     2016年7月7日: 木犀分享、图书、个人页更新完成
     ----------------------------------------------------
     2016年11月1日: Docker部署
+	----------------------------------------------------
+	2017年6月1日: 向微服务架构迁移，2.0版本预计暑假上线
