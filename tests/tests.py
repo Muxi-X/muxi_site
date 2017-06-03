@@ -27,7 +27,7 @@ class BasicTestCase(unittest.TestCase) :
     def test_app_exist(self) :
         self.assertFalse(current_app is None)
 
-    def test_signup(self) :
+    def test_a_signup(self) :
         response = self.client.post(
                     url_for('api.signup',_external=True),
                     data = json.dumps({
@@ -41,8 +41,8 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.post(
                     url_for('api.login',_external=True),
                     data = json.dumps({
-                        "password" : "1" ,
-                        "email" : "1"
+                        "password" : str(number) ,
+                        "email" : str(number)
                         }) ,
                     content_type = 'application/json'
                     )
@@ -107,7 +107,7 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
-    def test_wedit_share(self) :
+    def test_w_edit_share(self) :
         response = self.client.put(
                     url_for('api.edit',id=SHARE_ID,_external=True),
                     headers = {
@@ -122,7 +122,7 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
-    def test_zzdelete_share(self) :
+    def test_z_delete_share(self) :
         response = self.client.delete(
                     url_for('api.delete',id=SHARE_ID,_external=True),
                     headers = {
@@ -134,7 +134,7 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
-    def test_zget_profile(self) :
+    def test_z_get_profile(self) :
         response = self.client.get(
                     url_for('api.show_profile',username = str(number),_external=True) ,
                     headers = {
@@ -145,7 +145,7 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue ( response.status_code == 200 )
 
-    def test_zedit_profile(self) :
+    def test_z_edit_profile(self) :
         response = self.client.post(
                     url_for('api.edit_profile',username = str(number),_external=True) ,
                     headers = {
@@ -158,6 +158,5 @@ class BasicTestCase(unittest.TestCase) :
                         }) ,
                     content_type = 'application/json' ,
                     )
-        print response.status_code
-        self.assertTrue( response.status_code == 200 )
+        self.assertTrue( response.status_code == 201 )
 
