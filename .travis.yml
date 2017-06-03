@@ -1,0 +1,25 @@
+sudo: required
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
+services:
+  - docker
+  - mysql
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - echo "MUXI_WEBSITE_SQL=mysql://root:@127.0.0.1/MUXIWEBSITE" > muxiwebsite.env
+  - echo "MUXI_WEBSITE_SERVERNAME=muxixyz.test" >> muxiwebsite.env
+
+
+before_script:
+- mysql -u root -e 'CREATE DATABASE MUXIWEBSITE;'
+
+script:
+- docker-compose -f docker-compose-ci.yml build 
+- docker-compose -f docker-compose-ci.yml up
+- docker exec -n muxiwebsite python manage.py test
