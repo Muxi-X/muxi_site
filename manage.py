@@ -112,6 +112,7 @@ def insert_roles():
         db.session.add(role)
     db.session.commit()
     return 'roles has been inserted!'
+    sys.exit(0)
 
 @manager.command
 def test() :
