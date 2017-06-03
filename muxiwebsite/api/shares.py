@@ -20,7 +20,6 @@ tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @api.route('/shares/all/', methods=['GET'])
 def get_shares():
-
     """
     获取所有分享
     """
@@ -35,26 +34,14 @@ def get_shares():
     pages_count = pagination.total / per_page + 1
     if page > pages_count :
         return jsonify({}),  404
-    prev = None
-    if pagination.has_prev:
-        prev = url_for('api.get_shares', page=page-1, _external=True)
-    next = None
-    if pagination.has_next:
-        next = url_for('api.get_shares', page=page+1, _external=True)
     shares_count = len(Share.query.all())
-    page_count = shares_count//current_app.config['MUXI_SHARES_PER_PAGE']
-    if not isinstance(page_count, int) \
-            or page_count == 0:
-        page_count = page_count + 1
-    last = url_for('api.get_shares', page=page_count, _external=True)
-    author_name = []
 
     return jsonify({
         'shares': [ share.to_json()  for share in shares ],
         'count': pagination.total ,
         'page' : page , # 当前页数
         'pages_count' : pages_count ,
-    }), 200, {'link': '<%s>; rel="next", <%s>; rel="last"' % (next, last)}
+    }), 200
 
 
 @api.route('/shares/<int:id>/comments/',methods=["GET"])
@@ -177,7 +164,6 @@ def edit(id) :
         return jsonify({
             'message' : 'login first! '
             }) , 400
-
     author_id = Share.query.filter_by(id=id).first().author_id
     if  current_user_id != author_id :
         return jsonify({

@@ -32,11 +32,11 @@ tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @shares.route('/')
 def index():
-    """    
+    """
     muxi_share 分享你的知识
 	主页，默认显示最新的分享
 	添加分页，默认显示第一页
-    """	
+    """
 
     flag = 0
     # 添加分页, share变为分页对象
@@ -84,7 +84,7 @@ def index():
 
 @shares.route('/view/<int:id>/', methods=["GET", "POST"])
 def view_share(id):
-    
+
     """
     显示特定id的分享，相关信息以及评论
     实现评论表单发表自己的评论

@@ -7,135 +7,155 @@ from ..models import Blog, Comment, Tag, User, Type
 from muxiwebsite import db, auth
 from . import api
 
+tags = ['frontend','backend','android','design','product']
 
-@api.route('/')
-def index():
-    return "hi"
-
-@api.route('/blog/',methods=['GET'])
-def get_blog():
+@api.route('/blogs/all/',methods=['GET'])
+def get_blogs() :
     """
-    木犀博客首页
+    获取所有博客
     """
-    page = int(request.args.get('page') or 1)
-    article_tag = Tag.query.all()
-    blog_all = Blog.query.order_by('-id').all()
-    pagination = Blog.query.order_by('-id').paginate(page, current_app.config['BLOG_PER_PAGE'], False)
-    blog_list = pagination.items
-    for blog in blog_all:
-        blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
-        try:
-            blog.avatar = User.query.filter_by(id=blog.author_id).first().avatar_url
-        except AttributeError:
-            blog.avatar = ""
-        blog.content = blog.body
-        blog.intro = blog.summary
-    article_date = []
+    page = request.args.get('page',1,type=int)
+    pagination = Blog.query.paginate(
+            page ,
+            per_page=current_app.config['MUXI_SHARES_PER_PAGE'] ,
+            error_out = False
+    )
+    blogs = pagination.items
+    per_page=current_app.config['MUXI_SHARES_PER_PAGE']
+    pages_count = pagination.total / per_page + 1
+    if page > pages_count :
+        return jsonify({}) , 404
+    blogs_count = len(Blog.query.all())
 
-    return jsonify([{
-                   'blog_tag':blog.tag.value,
-                   'blog_date':"%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day),
-                   'blog_avatar':User.query.filter_by(id=blog.author_id).first().avatar_url,
-                   'blog_body':blog.body}
-                    for blog in blog_list]) , 200
+    return jsonify({
+        'blogs' : [ blog.to_json()  for blog in blogs ] ,
+        'count' : pagination.total ,
+        'page'  : page ,
+        'pages_count' : pages_count ,
+        }) , 200
 
-
-@api.route('/blog/index/<string:index>/', methods=["GET"])
-def ym(index):
+@api.route('/blogs/',methods=['GET'])
+def index_blogs() :
     """
-    博客归档页面return:
+    博客首页,根据所选的标签显现博客
     """
-    blog_list = []
-    for blog in Blog.query.all():
-        if blog.index == index:
-            blog_list.append(blog)
-        article_date = []
-    for blog in Blog.query.all():
-        if blog.index not in article_date:
-            article_date.append(blog.index)
-    return jsonify([{
-                   'index':blog.index,
-                   'blog_date': "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day),
-                   'blog_avatar':User.query.filter_by(id=blog.author_id).first().avatar_url,
-                   'blog_content':blog.body}
-                    for blog in blog_list]) , 200
+    page = request.args.get('page',1,type=int)
+    sort = request.args.get('sort')
+    sort_item = Type.query.filter_by(value=sort).first()
+    blog_list = Blog.qurty.filter_by(type_id=sort_item.id).paginate(page,current_app.config['BLOG_PER_PAGE',False])
+    pages_count = blog_item.total/current_app.config['BLOG_PER_PAGE'] + 1
+    if page > pages_count :
+        return jsonify({
+            "message" : "can not find the page"
+            }) , 404
+    blogs = blog_list.items
+    return jsonify({
+        "pages_count" : pages_count ,
+        "page" : page ,
+        "blogs" : [blog.to_json() for blog in blogs ]
+        })
 
-
-@api.route('/blog/post/<int:id>/', methods=["GET"])
-def post(id):
+@api.route('/blogs/send/',methods=['POST'])
+def add_blog() :
     """
-    博客文章页面
+    登录用户发博客
+    """
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except AttributeError :
+        return jsonify({
+            "message" : "You can not send a blog!"
+            }) , 404
+    blog = Blog()
+    blog.title = request.get_json().get("title")
+    blog.body = request.get_json().get("body")
+    blog.img_url = request.get_json().get("img_url")
+    blog.summary = request.get_json().get("summary")
+    blog.author_id = current_user_id
+
+    db.session.add(blog)
+    db.session.commit()
+
+    return jsonify({
+            "title" : blog.title ,
+            "id" : blog.id ,
+            "author_id" : blog.author_id
+        }) , 200
+
+@api.route('/blogs/<int:id>/delete/',methods=['DELETE'])
+def deleted(id) :
+    """
+    删除博客
     """
     blog = Blog.query.get_or_404(id)
-    comment_list =Comment.query.filter_by(blog_id=id).all()
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except AttributeError :
+        return jsonify({
+            "message" : "login first"
+            }) , 404
+
+    author_id = Blog.query.filter_by(id=id).first().author_id
+    if current_user_id != author_id :
+        return jsonify({
+            "message" : " can not delete it !"
+            }) , 404
+
+    db.session.delete(blog)
+    db.session.commit()
     return jsonify({
-                   'body':blog.body,
-                   'index':blog.index,
-                   'author_id':blog.author_id,
-                   'blog_id':blog.id,
-                   'blog_date': "%d年%d月%d日 %d:%d" % (blog.timestamp.year,
-                           blog.timestamp.month, blog.timestamp.day, blog.timestamp.hour,
-                           blog.timestamp.minute),
-                   'comment': [comment.to_json() for comment in comment_list ]}) , 200
+        "delete" : blog.id ,
+        }) , 200
 
-
-@api.route('/blog/post/<int:id>/', methods=["POST"])
-def comment(id):
-
+@api.route('/blogs/<int:id>/add_comment/',methods=['POST'])
+def comment(id) :
     """
-    提交评论
+    发送评论
     """
-    if request.method == 'POST' :
-        blog = Blog.query.get_or_404(id)
-        comments = Comment.query.filter_by(blog_id=id).all()
-        comment = Comment()
-        comment.comment = request.get_json().get("comment")
-        comment.blog_id = request.get_json().get("id")
+    token = request.headers.get("token")
+    try :
+        current_user_id = User.verify_auth_token(token).id
+    except AttributeError :
+        return jsonify({
+            "message" : "login first!"
+            }) , 400
 
-        comment.author_id = request.get_json().get("author_id")
-        db.session.add(comment)
-        db.session.commit()
-        blog.avatar = \
-                User.query.filter_by(id=blog.author_id).first().avatar_url
+    comment = Comment()
+    comment.comment = request.get_json().get("comment")
+    comment.blog_id = id
+    comment.author_id = current_user_id
 
-        for comment in comments :
-            comment.avatar = \
-                User.query.filter_by(id=comment.author_id).first().avatar_url
-            comment.username = \
-                User.query.filter_by(id=comment.author_id).first().username
-            comment.content  = comment.comment
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify({
+        "message" : " added a  comment!"
+        }) , 200
 
 
-        blog.comment_number += 1
-        db.session.add(blog)
-        db.session.commit()
-        return jsonify(comment.to_json())
-
-@api.route('/blog/type/<string:type>/',methods=['GET'])
-def types(type):
+@api.route('/blogs/<int:id>/comment/',methods=['GET'])
+def view_comment(id) :
     """
-    返回对应分类下的文章,分类: WEB, 设计, 安卓, 产品, 关于
+    查看评论
     """
-    page = int(request.args.get('page') or 1)
-    blog_all = Blog.query.all()
-    type_item = Type.query.filter_by(value=type).first()
-    pagination = Blog.query.filter_by(type_id=type_item.id).paginate(page, current_app.config['BLOG_PER_PAGE'], False)
-    blog_list = pagination.items
-    for blog in blog_all:
-        blog.date = "%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day)
-        blog.avatar = User.query.filter_by(id=blog.author_id).first().avatar_url
-        blog.content = blog.body
+    comments= Comment.query.filter_by(blog_id=id).all()
+    return jsonify({
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        })  , 200
 
-    article_date = []
-    for blog in blog_all:
-        if blog.index not in article_date:
-            article_date.append(blog.index)
 
-    return jsonify([{
-                    'blog_tag':[t.value for t in blog.tags],
-                    'blog_date':"%d/%02d/%02d" % (blog.timestamp.year, blog.timestamp.month, blog.timestamp.day),
-                    'blog_avatar':User.query.filter_by(id=blog.author_id).first().avatar_url,
-                    'blog_body':blog.body,
-                    'type_item':type_item.value,
-                    'page':page}
-                    for blog in blog_list]) , 200
+@api.route('/blogs/<int:id>/views/',methods=['GET'])
+def view(id) :
+    """
+    查看单个博客和他的评论
+    """
+    blog = Blog.query.get_or_404(id)
+    comments= Comment.query.filter_by(blog_id=id).all()
+    return jsonify({
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        'blog' : blog.to_json()
+        })  , 200
+
+

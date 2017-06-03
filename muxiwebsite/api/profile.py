@@ -69,7 +69,7 @@ def edit_profile():
     user = User.query.filter_by(username=un).first()
 
     if not user :
-        return jsonify({"message":"1"}) , 403
+        return jsonify({"message":"1"}) , 402
     if   user.id != User.verify_auth_token(token).id :
         return jsonify({"messsage":"2" }), 403
 
