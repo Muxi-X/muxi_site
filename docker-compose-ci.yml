@@ -1,10 +1,7 @@
 #-------------------- muxiwebsite------------------------
 muxiwebsite:
-    build: 
-      context: .
-      args:
-        name: muxiwebsite
-        network: host
+    build: .
+    container_name: muxiwebsite
     env_file:
         - muxiwebsite.env
     command: gunicorn --name muxiwebsite -b 0.0.0.0:5488 -w 2 wsgi:app
