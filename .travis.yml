@@ -22,8 +22,8 @@ before_script:
 script:
 - docker-compose -f docker-compose-ci.yml build 
 - docker-compose -f docker-compose-ci.yml up -d
-- docker exec -n muxiwebsite python manage.py db init
-- docker exec -n muxiwebsite python manage.py db migrate
-- docker exec -n muxiwebsite python manage.py db upgrade
-- docker exec -n muxiwebsite python manage.py insert_roles
-- docker exec -n muxiwebsite python manage.py test
+- docker exec muxiwebsite python manage.py db init
+- docker exec muxiwebsite python manage.py db migrate
+- docker exec muxiwebsite python manage.py db upgrade
+- docker exec muxiwebsite python manage.py insert_roles
+- docker exec muxiwebsite python manage.py test
