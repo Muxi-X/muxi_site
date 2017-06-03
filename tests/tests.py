@@ -37,7 +37,7 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
-    def test_s_login(self) :
+    def test_b_login(self) :
         response = self.client.post(
                     url_for('api.login',_external=True),
                     data = json.dumps({
@@ -59,13 +59,13 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_get_comment(self) :
         response = self.client.get(
-                    url_for('api.view_share',id=1,_external=True),
+                    url_for('api.view_share',id=SHARE_ID,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200  )
 
     def test_get_comment_and_share(self) :
         response = self.client.get(
-                    url_for('api.views',id=1,_external=True),
+                    url_for('api.views',id=SHARE_ID,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
@@ -75,7 +75,7 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
-    def test_send_share(self) :
+    def test_b_send_share(self) :
         response = self.client.post(
                     url_for('api.add_share',_external=True),
                     headers = {
@@ -94,7 +94,7 @@ class BasicTestCase(unittest.TestCase) :
         SHARE_ID = int(t)
         self.assertTrue( response.status_code == 200 )
 
-    def test_send_comment(self) :
+    def test_c_send_comment(self) :
         response = self.client.post(
                 url_for('api.add_comment',id=1,_external=True),
                 headers = {
