@@ -117,7 +117,7 @@ def insert_roles():
 def test() :
     import unittest
     tests = unittest.TestLoader().discover('tests')
-    ret = unittest.TextTestRunner(verbosity=2).run(tests)
+    ret = not  unittest.TextTestRunner(verbosity=2).run(tests).wasSuccessful()
     sys.exit(ret)
 
 if __name__ == '__main__':
