@@ -8,6 +8,7 @@ from muxiwebsite.models import Share
 import json
 TOKEN = str(0)
 SHARE_ID = 1
+BLOG_ID = 1
 db = SQLAlchemy()
 number = random.randint(501,900)
 
@@ -159,4 +160,76 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json' ,
                     )
         self.assertTrue( response.status_code == 201 )
+
+    def test_zz_add_blog(self) :
+        response = self.client.post(
+                    url_for('api.add_blog',_external=True) ,
+                    headers = {
+                        "token" : TOKEN ,
+                        "Accpet" : "application/json" ,
+                        "Content_Type" : "application/json"
+                        } ,
+                     data = json.dumps({
+                        "title" : "####" ,
+                        "body" : "###" ,
+                        "tpye" : "aa" ,
+                        "img_url" : "dnfij" ,
+                        "summary" : "bf"  ,
+                        "tag" : "fbd" }) ,
+                    content_type = 'application/json' ,
+                    )
+        t = json.loads(response.data)['id']
+        global BLOG_ID
+        BLOG_ID = int(t)
+        self.assertTrue (response.status_code == 200 )
+
+    def test_zz_send_comment(self) :
+        response = self.client.post(
+                    url_for('api.comment',id=BLOG_ID,_external=True),
+                    headers = {
+                        "token": TOKEN ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
+                    data = json.dumps(dict(comment="###")),
+                    content_type = 'application/json'
+                    )
+        self.assertTrue( response.status_code == 200 )
+
+    def test_zz_s_get_comment(self) :
+        response = self.client.get(
+                    url_for('api.view_comment',id=BLOG_ID,_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200  )
+
+    def test_zz_s_get_comment_and_share(self) :
+        response = self.client.get(
+                    url_for('api.view',id=BLOG_ID,_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
+    def test_zz_s_get_sorted_blogs(self) :
+        response = self.client.get(
+                    url_for('api.index_blogs',sort="aa",_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
+    def test_zz_s_get_all_blogs(self) :
+        response = self.client.get(
+                    url_for('api.get_blogs',_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
+    def test_zzz_delete_blog(self) :
+        response = self.client.delete(
+                    url_for('api.deleted',id=BLOG_ID,_external=True),
+                    headers = {
+                        "token": TOKEN ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
+                    content_type = 'application/json'
+                    )
+        self.assertTrue( response.status_code == 200 )
+
 

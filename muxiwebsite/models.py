@@ -414,7 +414,6 @@ class Blog(db.Model):
             username = ""
         else:
             username = author.username
-
         json_blog = {
             'id' : self.id,
             'title' : self.title,
@@ -424,6 +423,7 @@ class Blog(db.Model):
             'comment' : url_for('api.view_comment', id=self.id),
             'avatar' : author.avatar_url ,
             'summary' : self.summary ,
+            'type' :  self.type_id ,
         }
         return json_blog
 
