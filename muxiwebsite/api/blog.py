@@ -15,21 +15,15 @@ def get_blogs() :
     获取所有博客
     """
     page = request.args.get('page',1,type=int)
-    pagination = Blog.query.paginate(
-            page ,
-            per_page=current_app.config['MUXI_SHARES_PER_PAGE'] ,
-            error_out = False
-    )
-    blogs = pagination.items
-    per_page=current_app.config['MUXI_SHARES_PER_PAGE']
-    pages_count = pagination.total / per_page + 1
+    blog_list = Blog.query.order_by('id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = len(Blog.query.all())/current_app.config['BLOG_PER_PAGE'] + 1
     if page > pages_count :
         return jsonify({}) , 404
     blogs_count = len(Blog.query.all())
 
     return jsonify({
-        'blogs' : [ blog.to_json()  for blog in blogs ] ,
-        'count' : pagination.total ,
+        'blogs' : [ blog.to_json()  for blog in blog_list.items ] ,
+        'count' : blogs_count ,
         'page'  : page ,
         'pages_count' : pages_count ,
         }) , 200
@@ -41,9 +35,9 @@ def index_blogs() :
     """
     page = request.args.get('page',1,type=int)
     sort = request.args.get('sort')
-    sort_item = Type.query.filter_by(value=sort).first()
-    blog_list = Blog.qurty.filter_by(type_id=sort_item.id).paginate(page,current_app.config['BLOG_PER_PAGE',False])
-    pages_count = blog_item.total/current_app.config['BLOG_PER_PAGE'] + 1
+    item = Blog.query.filter_by(type_id=sort)
+    blog_list = item.order_by('id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = blog_list.total/current_app.config['BLOG_PER_PAGE'] + 1
     if page > pages_count :
         return jsonify({
             "message" : "can not find the page"
@@ -53,7 +47,7 @@ def index_blogs() :
         "pages_count" : pages_count ,
         "page" : page ,
         "blogs" : [blog.to_json() for blog in blogs ]
-        })
+        }), 200
 
 @api.route('/blogs/send/',methods=['POST'])
 def add_blog() :
@@ -78,7 +72,6 @@ def add_blog() :
     db.session.commit()
 
     return jsonify({
-            "title" : blog.title ,
             "id" : blog.id ,
             "author_id" : blog.author_id
         }) , 200

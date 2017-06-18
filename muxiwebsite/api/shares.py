@@ -189,7 +189,7 @@ def index() :
     sort_args = request.args.get("sort")
     if sort_args == None :
         shares_pages = \
-        Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        Share.query.order_by('id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
         pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
         if page > pages_count :
             return jsonify({
@@ -213,7 +213,7 @@ def index() :
     elif sort_args in tags :
         shares = []
         item = Share.query.filter_by(tag=sort_args)
-        shares_pages = item.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        shares_pages = item.order_by('id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
         pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
         shares = shares_pages.items
         if page > pages_count :
