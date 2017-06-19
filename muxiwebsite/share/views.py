@@ -26,6 +26,8 @@ from ..decorators import permission_required
 from sqlalchemy import desc
 from sqlalchemy import func
 import markdown
+import json
+
 URL = "https://oapi.dingtalk.com/robot/send?access_token=4d71e79a83886db61b2774e610b0e7d3b4a40d55d2660c305a8092c64ac1e77f"
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
 tags = ['frontend', 'backend', 'android', 'design', 'product']
@@ -148,11 +150,12 @@ def add_share():
                 "link" : {
                 "title" : share.title ,
                 "text" : share.share[:10]  ,
-                "picUrl": "" , "messageUrl" : url_for("shares.view_share",id=share.id,_external=True) ,
+                "picUrl": "" ,
+                "messageUrl" : url_for("shares.view_share",id=share.id,_external=True) ,
                 }
             }
         headers = { "Content-Type" : "application/json" }
-        r = requests.post(URL,data=json.dumps(link),headers=headers)))
+        r = requests.post(URL,data=json.dumps(link),headers=headers)
         return redirect(url_for('.index', page = 1))
     return render_template("share_send.html", form=form, tags = tags)
 
