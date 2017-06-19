@@ -17,8 +17,8 @@ from ..decorators import permission_required
 from . import api
 import requests
 import json
-URL = "https://oapi.dingtalk.com/robot/send?access_token=4d71e79a83886db61b2774e610b0e7d3b4a40d55d2660c305a8092c64ac1e77f"
 
+URL = "https://oapi.dingtalk.com/robot/send?access_token=7a615ad9f5dc6f040cb32f23f21919c9eb5b764189ce16a7023d9db607cc4119"
 tags = list(['frontend', 'backend', 'android', 'design', 'product'])
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
 
