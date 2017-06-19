@@ -15,13 +15,11 @@ from .authentication import auth
 from flask_login import current_user
 from ..decorators import permission_required
 from . import api
-import requests
-import json
-URL = "https://oapi.dingtalk.com/robot/send?access_token=4d71e79a83886db61b2774e610b0e7d3b4a40d55d2660c305a8092c64ac1e77f"
+import requests 
+URL = https://oapi.dingtalk.com/robot/send?access_token=4d71e79a83886db61b2774e610b0e7d3b4a40d55d2660c305a8092c64ac1e77f
 
-tags = list(['frontend', 'backend', 'android', 'design', 'product'])
-tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
-
+tags = ['frontend', 'backend', 'android', 'design', 'product']
+tags2 = ['前端'，'后端'，'安卓','设计'，'产品'
 @api.route('/shares/all/', methods=['GET'])
 def get_shares():
     """
@@ -102,23 +100,24 @@ def add_share() :
     share = Share()
     share.title =  request.get_json().get("title")
     share.share = request.get_json().get("share")
-    share.tag = request.get_json().get("tags")
+    tag_id = request.get_json().get("tags")
+    share.tag = tags[int(tag_id)]
+    tag_name = tags2[int(tag_id)]
     share.author_id = current_user_id
-    db.session.add(share)
-    db.session.commit()
-    share_tag = tags2[share.tag]
+
     link  = {
             "msgtype" : "link" ,
             "link" : {
+                "text" : "这里是 %s 组早读\n"  % tag_name ,
                 "title" : share.title ,
-                "text" : share.share[:10]  ,
-                "picUrl": "" ,
-                "messageUrl" : url_for("api.views",id=share.id,_external=True) ,
+                "picUrl": "",
+                "messageUrl" : url_for('api.views',id=id,_external=True) ,
                 }
             }
 
-    headers = { "Content-Type" : "application/json" }
-    r = requests.post(URL,data=json.dumps(link),headers=headers)
+    db.session.add(share)
+    db.session.commit()
+    r = requests.post(URL,body=link)
     return jsonify( {
                     "share" : share.share ,
                     "title" : share.title ,
