@@ -15,8 +15,12 @@ from .authentication import auth
 from flask_login import current_user
 from ..decorators import permission_required
 from . import api
+import requests
+import json
+URL = "https://oapi.dingtalk.com/robot/send?access_token=4d71e79a83886db61b2774e610b0e7d3b4a40d55d2660c305a8092c64ac1e77f"
 
-tags = ['frontend', 'backend', 'android', 'design', 'product']
+tags = list(['frontend', 'backend', 'android', 'design', 'product'])
+tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
 
 @api.route('/shares/all/', methods=['GET'])
 def get_shares():
@@ -100,10 +104,21 @@ def add_share() :
     share.share = request.get_json().get("share")
     share.tag = request.get_json().get("tags")
     share.author_id = current_user_id
-
     db.session.add(share)
     db.session.commit()
+    share_tag = tags2[share.tag]
+    link  = {
+            "msgtype" : "link" ,
+            "link" : {
+                "title" : share.title ,
+                "text" : share.share[:10]  ,
+                "picUrl": "" ,
+                "messageUrl" : url_for("api.views",id=share.id,_external=True) ,
+                }
+            }
 
+    headers = { "Content-Type" : "application/json" }
+    r = requests.post(URL,data=json.dumps(link),headers=headers)
     return jsonify( {
                     "share" : share.share ,
                     "title" : share.title ,
@@ -189,7 +204,7 @@ def index() :
     sort_args = request.args.get("sort")
     if sort_args == None :
         shares_pages = \
-        Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        Share.query.order_by('id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
         pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
         if page > pages_count :
             return jsonify({
@@ -213,7 +228,7 @@ def index() :
     elif sort_args in tags :
         shares = []
         item = Share.query.filter_by(tag=sort_args)
-        shares_pages = item.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        shares_pages = item.order_by('id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
         pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
         shares = shares_pages.items
         if page > pages_count :
