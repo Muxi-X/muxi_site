@@ -1,11 +1,12 @@
 # coding: utf-8
 from flask import render_template, render_template_string, redirect, url_for, request, \
-        current_app,jsonify
+        current_app,jsonify , g
 from flask_login import current_user, login_required
 from sqlalchemy import desc
 from ..models import Blog, Comment, Tag, User, Type
 from muxiwebsite import db, auth
 from . import api
+from .decorators import login_required
 
 tags = ['frontend','backend','android','design','product']
 
@@ -50,48 +51,33 @@ def index_blogs() :
         }), 200
 
 @api.route('/blogs/send/',methods=['POST'])
+@login_required
 def add_blog() :
     """
     登录用户发博客
     """
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            "message" : "You can not send a blog!"
-            }) , 404
     blog = Blog()
     blog.title = request.get_json().get("title")
     blog.body = request.get_json().get("body")
     blog.img_url = request.get_json().get("img_url")
     blog.summary = request.get_json().get("summary")
-    blog.author_id = current_user_id
-
+    blog.author_id = g.current_user.id
     db.session.add(blog)
     db.session.commit()
-
     return jsonify({
             "id" : blog.id ,
             "author_id" : blog.author_id
         }) , 200
 
 @api.route('/blogs/<int:id>/delete/',methods=['DELETE'])
+@login_required
 def deleted(id) :
     """
     删除博客
     """
     blog = Blog.query.get_or_404(id)
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            "message" : "login first"
-            }) , 404
-
     author_id = Blog.query.filter_by(id=id).first().author_id
-    if current_user_id != author_id :
+    if g.current_user.id != author_id :
         return jsonify({
             "message" : " can not delete it !"
             }) , 404
@@ -103,22 +89,15 @@ def deleted(id) :
         }) , 200
 
 @api.route('/blogs/<int:id>/add_comment/',methods=['POST'])
+@login_required
 def comment(id) :
     """
     发送评论
     """
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            "message" : "login first!"
-            }) , 400
-
     comment = Comment()
     comment.comment = request.get_json().get("comment")
     comment.blog_id = id
-    comment.author_id = current_user_id
+    comment.author_id = g.current_user.id
 
     db.session.add(comment)
     db.session.commit()

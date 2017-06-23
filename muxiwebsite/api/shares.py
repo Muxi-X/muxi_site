@@ -9,14 +9,14 @@
 """
 
 from flask import url_for, jsonify, request, g, current_app
-from muxiwebsite.models import Share, AnonymousUser , User , Comment
-from muxiwebsite import db
+from muxiwebsite.models import Share, AnonymousUser , User , Comment , Permission , db
 from .authentication import auth
 from flask_login import current_user
-from ..decorators import permission_required
+from .decorators import permission_required
 from . import api
 import requests
 import json
+from .decorators import login_required
 
 URL = "https://oapi.dingtalk.com/robot/send?access_token=7a615ad9f5dc6f040cb32f23f21919c9eb5b764189ce16a7023d9db607cc4119"
 tags = list(['frontend', 'backend', 'android', 'design', 'product'])
@@ -61,49 +61,33 @@ def view_share(id) :
         }) ,200
 
 @api.route('/shares/<int:id>/add_comment/',methods=['POST'])
+@login_required
 def add_comment(id) :
     '''
     登录用户发表评论
     '''
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            'message':'You can not send a comment '
-            }),400
-
     comment = Comment()
     comment.comment = request.get_json().get("comment")
     comment.share_id = id
-    comment.author_id = current_user_id
-
+    comment.author_id = g.current_user.id
     db.session.add(comment)
     db.session.commit()
-
     return jsonify({
         'message' : 'You add a comment successfully!'
         }) , 200
 
 
 @api.route('/shares/send/',methods=['POST'])
+@login_required
 def add_share() :
     '''
     登录用户发送分享
     '''
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            'message' : 'You can not send a share'
-            }) , 404
-
     share = Share()
     share.title =  request.get_json().get("title")
     share.share = request.get_json().get("share")
     share.tag = request.get_json().get("tags")
-    share.author_id = current_user_id
+    share.author_id = g.current_user.id
     db.session.add(share)
     db.session.commit()
     share_tag = tags2[share.tag]
@@ -128,25 +112,13 @@ def add_share() :
                     } ) , 200
 
 @api.route('/shares/<int:id>/delete/',methods=['DELETE'])
+@login_required
+@permission_required(Permission.WRITE_ARTICLES)
 def delete(id) :
     '''
     删除分享(发送分享的用户)
     '''
     share = Share.query.get_or_404(id)
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            'message': 'login first'
-            }) , 404
-
-    author_id = Share.query.filter_by(id=id).first().author_id
-    if  current_user_id != author_id :
-        return jsonify({
-            'message' : 'you can not delete it!'
-            }) , 404
-
     db.session.delete(share)
     db.session.commit()
     return jsonify({
@@ -167,27 +139,19 @@ def views(id) :
 
 
 @api.route('/shares/<int:id>/edit/', methods=["PUT"])
+@login_required
 def edit(id) :
     '''
     编辑已经发送的分享(发送该分享的用户)
     '''
     share = Share.query.get_or_404(id)
-    token = request.headers.get("token")
-    try :
-        current_user_id = User.verify_auth_token(token).id
-    except AttributeError :
-        return jsonify({
-            'message' : 'login first! '
-            }) , 400
     author_id = Share.query.filter_by(id=id).first().author_id
-    if  current_user_id != author_id :
+    if  g.current_user.id != author_id :
         return jsonify({
             'message': 'You can not edit!'
             }) , 404
-
     share.share = request.get_json().get("share")
     share.title = request.get_json().get("title")
-
     db.session.add(share)
     db.session.commit()
     return jsonify({
