@@ -28,8 +28,9 @@ from sqlalchemy import func
 import markdown
 import json
 import requests
+import os
 
-URL = "https://oapi.dingtalk.com/robot/send?access_token=7a615ad9f5dc6f040cb32f23f21919c9eb5b764189ce16a7023d9db607cc4119"
+URL = os.environ.get("SEND_URL")
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
 tags = ['frontend', 'backend', 'android', 'design', 'product']
 

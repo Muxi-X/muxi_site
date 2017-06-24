@@ -233,4 +233,3 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
-

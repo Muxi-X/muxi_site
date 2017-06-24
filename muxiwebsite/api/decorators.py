@@ -3,11 +3,12 @@ from functools import wraps
 from flask import abort , g , jsonify , request
 from muxiwebsite.models import Permission , User
 
-def permission_required(Permission) :
+def permission_required(permission) :
     def decorator(f) :
         @wraps(f)
         def decorated(*args,**kwargs):
-            if not g.current_user.can(Permission) :
+            if not g.current_user.can(permission) :
+                print g.current_user.role
                 abort(403)
             return f(*args,**kwargs)
         return decorated

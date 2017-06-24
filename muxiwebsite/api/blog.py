@@ -3,10 +3,10 @@ from flask import render_template, render_template_string, redirect, url_for, re
         current_app,jsonify , g
 from flask_login import current_user, login_required
 from sqlalchemy import desc
-from ..models import Blog, Comment, Tag, User, Type
+from ..models import Blog, Comment, Tag, User, Type , Permission
 from muxiwebsite import db, auth
 from . import api
-from .decorators import login_required
+from .decorators import login_required , permission_required
 
 tags = ['frontend','backend','android','design','product']
 
@@ -71,17 +71,12 @@ def add_blog() :
 
 @api.route('/blogs/<int:id>/delete/',methods=['DELETE'])
 @login_required
+@permission_required(Permission.WRITE_ARTICLES)
 def deleted(id) :
     """
     删除博客
     """
     blog = Blog.query.get_or_404(id)
-    author_id = Blog.query.filter_by(id=id).first().author_id
-    if g.current_user.id != author_id :
-        return jsonify({
-            "message" : " can not delete it !"
-            }) , 404
-
     db.session.delete(blog)
     db.session.commit()
     return jsonify({

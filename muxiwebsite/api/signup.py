@@ -33,7 +33,6 @@ def signup():
         email = email,
         password = base64.b64encode(password),
         avatar_url = "http://7xrvvt.com1.z0.glb.clouddn.com/shakedog.gif",
-        role_id = 3
         )
 
     db.session.add(user)

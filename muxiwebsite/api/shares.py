@@ -12,13 +12,13 @@ from flask import url_for, jsonify, request, g, current_app
 from muxiwebsite.models import Share, AnonymousUser , User , Comment , Permission , db
 from .authentication import auth
 from flask_login import current_user
-from .decorators import permission_required
+from .decorators import permission_required , login_required
 from . import api
 import requests
 import json
-from .decorators import login_required
+import os
 
-URL = "https://oapi.dingtalk.com/robot/send?access_token=7a615ad9f5dc6f040cb32f23f21919c9eb5b764189ce16a7023d9db607cc4119"
+URL = os.environ.get("SEND_URL")
 tags = list(['frontend', 'backend', 'android', 'design', 'product'])
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
 
@@ -102,7 +102,7 @@ def add_share() :
             }
 
     headers = { "Content-Type" : "application/json" }
-    r = requests.post(URL,data=json.dumps(link),headers=headers)
+    #    r = requests.post(URL,data=json.dumps(link),headers=headers)
     return jsonify( {
                     "share" : share.share ,
                     "title" : share.title ,
@@ -137,19 +137,14 @@ def views(id) :
         'comments' : [ comment.to_json() for comment in comments ] ,
         }) ,200
 
-
 @api.route('/shares/<int:id>/edit/', methods=["PUT"])
 @login_required
+@permission_required(Permission.WRITE_ARTICLES)
 def edit(id) :
     '''
     编辑已经发送的分享(发送该分享的用户)
     '''
     share = Share.query.get_or_404(id)
-    author_id = Share.query.filter_by(id=id).first().author_id
-    if  g.current_user.id != author_id :
-        return jsonify({
-            'message': 'You can not edit!'
-            }) , 404
     share.share = request.get_json().get("share")
     share.title = request.get_json().get("title")
     db.session.add(share)

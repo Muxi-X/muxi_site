@@ -91,7 +91,6 @@ class Role(db.Model):
         """该类的'官方'表示方法"""
         return '<Role %r>' % self.name
 
-
 class Book(db.Model):
     """图书类"""
     __searchable__ = ['name', 'tag', 'summary', 'bid']
