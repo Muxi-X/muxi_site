@@ -133,6 +133,7 @@ class BasicTestCase(unittest.TestCase) :
                         },
                     content_type = 'application/json'
                     )
+        print response.status_code
         self.assertTrue( response.status_code == 200 )
 
     def test_z_get_profile(self) :
@@ -231,5 +232,4 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json'
                     )
         self.assertTrue( response.status_code == 200 )
-
 
