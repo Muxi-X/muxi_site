@@ -102,7 +102,7 @@ def add_share() :
             }
 
     headers = { "Content-Type" : "application/json" }
-    #    r = requests.post(URL,data=json.dumps(link),headers=headers)
+    r = requests.post(URL,data=json.dumps(link),headers=headers)
     return jsonify( {
                     "share" : share.share ,
                     "title" : share.title ,
