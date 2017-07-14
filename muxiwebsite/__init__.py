@@ -55,7 +55,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # Get from Environment
 app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
-
+app.config['SEND_URL']=os.environ.get("SEND_URL2")
 
 # 初始化扩展(app全局属性)
 db = SQLAlchemy(app)
@@ -154,6 +154,7 @@ def create_app() :
     # Get from Environment
     app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
+    app.config['SEND_URL']=os.environ.get("SEND_URL2")
 
 
     # 初始化扩展(app全局属性)

@@ -70,6 +70,8 @@ def add_comment(id) :
     comment.comment = request.get_json().get("comment")
     comment.share_id = id
     comment.author_id = g.current_user.id
+    comment.author_name = g.current_user.username
+    comment.blog_id = 0
     db.session.add(comment)
     db.session.commit()
     return jsonify({

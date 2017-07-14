@@ -2,13 +2,17 @@
 
 from . import blogs
 from flask import render_template, render_template_string, redirect, url_for, request, \
-        current_app
+        current_app , g  , jsonify
 from flask_login import current_user, login_required
 from sqlalchemy import desc
-from ..models import Blog, Comment, Tag, User, Type
+from ..models import Blog, Comment, Tag, User, Type , Permission
 from .forms import CommentForm
 from muxiwebsite import db, auth
-
+from ..decorators import login_required , permission_required
+from ..login import Login
+from ..signup import Signup
+from werkzeug.security import generate_password_hash
+import base64
 
 @blogs.route('/')
 def index():
@@ -121,4 +125,145 @@ def types(type):
 
     return render_template('pages/type.html', blog_list=blog_list, type=type,
             article_date=article_date)
+
+
+
+tags = ['frontend','backend','android','design','product']
+
+@blogs.route('/api/v2.0/all/',methods=['GET'])
+def get_blogs2() :
+    """
+    获取所有博客
+    """
+    page = request.args.get('page',1,type=int)
+    blog_list = Blog.query.order_by('id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = len(Blog.query.all())/current_app.config['BLOG_PER_PAGE'] + 1
+    if page > pages_count :
+        return jsonify({}) , 404
+    blogs_count = len(Blog.query.all())
+
+    return jsonify({
+        'blogs' : [ blog.to_json()  for blog in blog_list.items ] ,
+        'count' : blogs_count ,
+        'page'  : page ,
+        'pages_count' : pages_count ,
+        }) , 200
+
+@blogs.route('/api/v2.0/',methods=['GET'])
+def index_blogs2() :
+    """
+    博客首页,根据所选的标签显现博客
+    """
+    page = request.args.get('page',1,type=int)
+    sort = request.args.get('sort')
+    item = Blog.query.filter_by(type_id=sort)
+    blog_list = item.order_by('id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = blog_list.total/current_app.config['BLOG_PER_PAGE'] + 1
+    if page > pages_count :
+        return jsonify({
+            "message" : "can not find the page"
+            }) , 404
+    blogs = blog_list.items
+    return jsonify({
+        "pages_count" : pages_count ,
+        "page" : page ,
+        "blogs" : [blog.to_json() for blog in blogs ]
+        }), 200
+
+@blogs.route('/api/v2.0/send/',methods=['POST'])
+@login_required
+def add_blog2() :
+    """
+    登录用户发博客
+    """
+    blog = Blog()
+    blog.title = request.get_json().get("title")
+    blog.body = request.get_json().get("body")
+    blog.img_url = request.get_json().get("img_url")
+    blog.summary = request.get_json().get("summary")
+    blog.author_id = g.current_user.id
+    db.session.add(blog)
+    db.session.commit()
+    return jsonify({
+            "id" : blog.id ,
+            "author_id" : blog.author_id
+        }) , 200
+
+@blogs.route('/api/v2.0/<int:id>/delete/',methods=['DELETE'])
+@login_required
+@permission_required(Permission.WRITE_ARTICLES)
+def deleted2(id) :
+    """
+    删除博客
+    """
+    blog = Blog.query.get_or_404(id)
+    db.session.delete(blog)
+    db.session.commit()
+    return jsonify({
+        "delete" : blog.id ,
+        }) , 200
+
+@blogs.route('/api/v2.0/<int:id>/add_comment/',methods=['POST'])
+@login_required
+def comment2(id) :
+    """
+    发送评论
+    """
+    comment = Comment()
+    comment.comment = request.get_json().get("comment")
+    comment.blog_id = id
+    comment.author_id = g.current_user.id
+
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify({
+        "message" : " added a  comment!"
+        }) , 200
+
+
+@blogs.route('/api/v2.0/<int:id>/comment/',methods=['GET'])
+def view_comment2(id) :
+    """
+    查看评论
+    """
+    comments= Comment.query.filter_by(blog_id=id).all()
+    return jsonify({
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        })  , 200
+
+
+@blogs.route('/api/v2.0/<int:id>/views/',methods=['GET'])
+def view2(id) :
+    """
+    查看单个博客和他的评论
+    """
+    blog = Blog.query.get_or_404(id)
+    comments= Comment.query.filter_by(blog_id=id).all()
+    return jsonify({
+        'comments' : [ comment.to_json() for comment in comments ] ,
+        'blog' : blog.to_json()
+        })  , 200
+
+@blogs.route('/api/v2.0/login/',methods=['POST'])
+def login_for_blog() :
+    email  = request.get_json().get("email")
+    pwd = request.get_json().get("password")
+    l = Login(email,pwd)
+    res = l.login()
+    return jsonify ({
+        'token' : res[0]
+        }) , res[1]
+
+@blogs.route('/api/v2.0/signup/',methods=['POST'])
+def signup_for_blog() :
+    un = request.get_json().get("username")
+    email = request.get_json().get("email")
+    password = request.get_json().get("password")
+    s = Signup(un,email,password)
+    res =  s.signup()
+    return jsonify ({
+        'created' : res[0]
+        }) , res[1]
+
 
