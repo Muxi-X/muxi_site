@@ -247,6 +247,7 @@ def add_comment2(id) :
     '''
     comment = Comment()
     comment.comment = request.get_json().get("comment")
+    comment.blog_id = request.get_json().get("blog_id")
     comment.share_id = id
     comment.author_id = g.current_user.id
     comment.author_name = g.current_user.username

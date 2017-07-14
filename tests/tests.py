@@ -155,6 +155,7 @@ class BasicTestCase(unittest.TestCase) :
                 headers = {
                     "token": TOKEN2 ,
                     "Accept" : "application/json" ,
+                    "blog_id" : BLOG_ID ,
                     "Content_Type" :"application/json"
                     },
                 data = json.dumps(dict(comment="###")),
@@ -215,7 +216,7 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 201 )
 
-    def test_zz_add_blog(self) :
+    def test_p_add_blog(self) :
         response = self.client.post(
                     url_for('blogs.add_blog2',_external=True) ,
                     headers = {
