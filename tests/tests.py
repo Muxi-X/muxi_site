@@ -155,7 +155,6 @@ class BasicTestCase(unittest.TestCase) :
                 headers = {
                     "token": TOKEN2 ,
                     "Accept" : "application/json" ,
-                    "blog_id" : BLOG_ID ,
                     "Content_Type" :"application/json"
                     },
                 data = json.dumps(dict(comment="###")),
