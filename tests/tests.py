@@ -7,10 +7,14 @@ import random
 from muxiwebsite.models import Share
 import json
 TOKEN = str(0)
+TOKEN2 = str(0)
+TOKEN1 = str(0)
 SHARE_ID = 1
 BLOG_ID = 1
 db = SQLAlchemy()
-number = random.randint(501,900)
+number = random.randint(900,2000)
+num_blog = random.randint(2000,3000)
+num_share = random.randint(3000,4000)
 
 class BasicTestCase(unittest.TestCase) :
     def setUp(self) :
@@ -52,35 +56,85 @@ class BasicTestCase(unittest.TestCase) :
         TOKEN = s
         self.assertTrue( response.status_code == 200 )
 
-    def test_get_shares(self) :
-        response = self.client.get(
-                    url_for('api.get_shares',_external=True),
+    def test_b_signup_for_blog(self) :
+        response = self.client.post(
+                    url_for('blogs.signup_for_blog',_external=True),
+                    data = json.dumps({
+                        "username" : str(num_blog) ,
+                        "email" : str(num_blog) ,
+                        "password" : str(num_blog) }) ,
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
-    def test_get_comment(self) :
+    def test_c_login_for_blog(self) :
+        response = self.client.post(
+                    url_for('blogs.login_for_blog',_external=True),
+                    data = json.dumps({
+                        "password" : str(num_blog) ,
+                        "email" : str(num_blog)
+                        }) ,
+                    content_type = 'application/json'
+                    )
+        s = json.loads(response.data)['token']
+        global TOKEN1
+        TOKEN1 = s
+        self.assertTrue( response.status_code == 200 )
+
+
+    def test_b_signup_for_share(self) :
+        response = self.client.post(
+                    url_for('shares.signup_for_share',_external=True),
+                    data = json.dumps({
+                        "username" : str(num_share) ,
+                        "email" : str(num_share) ,
+                        "password" : str(num_share) }) ,
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
+    def test_c_login_for_share(self) :
+        response = self.client.post(
+                    url_for('shares.login_for_share',_external=True),
+                    data = json.dumps({
+                        "password" : str(num_share) ,
+                        "email" : str(num_share)
+                        }) ,
+                    content_type = 'application/json'
+                    )
+        s = json.loads(response.data)['token']
+        global TOKEN2
+        TOKEN2 = s
+        self.assertTrue( response.status_code == 200 )
+
+
+    def test_get_shares(self) :
         response = self.client.get(
-                    url_for('api.view_share',id=SHARE_ID,_external=True),
+                    url_for('shares.get_shares2',_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
+    def test_qq_get_comment(self) :
+        response = self.client.get(
+                    url_for('shares.view_share2',id=SHARE_ID,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200  )
 
-    def test_get_comment_and_share(self) :
+    def test_qq_get_comment_and_share(self) :
         response = self.client.get(
-                    url_for('api.views',id=SHARE_ID,_external=True),
+                    url_for('shares.views2',id=SHARE_ID,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
     def test_get_sorted(self) :
         response = self.client.get(
-                    url_for('api.index',page=1,sort='frontend',_external=True),
+                    url_for('shares.index2',page=1,sort='frontend',_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
-    def test_b_send_share(self) :
+    def test_cs_send_share(self) :
         response = self.client.post(
-                    url_for('api.add_share',_external=True),
+                    url_for('shares.add_share2',_external=True),
                     headers = {
-                        "token": TOKEN ,
+                        "token": TOKEN2 ,
                         "Accept" : "application/json" ,
                         "Content_Type" :"application/json"
                         },
@@ -95,11 +149,11 @@ class BasicTestCase(unittest.TestCase) :
         SHARE_ID = int(t)
         self.assertTrue( response.status_code == 200 )
 
-    def test_c_send_comment(self) :
+    def test_q_send_comment(self) :
         response = self.client.post(
-                url_for('api.add_comment',id=1,_external=True),
+                url_for('shares.add_comment2',id=SHARE_ID,_external=True),
                 headers = {
-                    "token": TOKEN ,
+                    "token": TOKEN2 ,
                     "Accept" : "application/json" ,
                     "Content_Type" :"application/json"
                     },
@@ -110,9 +164,9 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_w_edit_share(self) :
         response = self.client.put(
-                    url_for('api.edit',id=SHARE_ID,_external=True),
+                    url_for('shares.edit2',id=SHARE_ID,_external=True),
                     headers = {
-                        "token": TOKEN ,
+                        "token": TOKEN2 ,
                         "Accept" : "application/json" ,
                         "Content_Type" :"application/json"
                         },
@@ -125,15 +179,14 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_z_delete_share(self) :
         response = self.client.delete(
-                    url_for('api.delete',id=SHARE_ID,_external=True),
+                    url_for('shares.delete2',id=SHARE_ID,_external=True),
                     headers = {
-                        "token": TOKEN ,
+                        "token": TOKEN2 ,
                         "Accept" : "application/json" ,
                         "Content_Type" :"application/json"
                         },
                     content_type = 'application/json'
                     )
-        print response.status_code
         self.assertTrue( response.status_code == 200 )
 
     def test_z_get_profile(self) :
@@ -162,11 +215,11 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 201 )
 
-    def test_zz_add_blog(self) :
+    def test_p_add_blog(self) :
         response = self.client.post(
-                    url_for('api.add_blog',_external=True) ,
+                    url_for('blogs.add_blog2',_external=True) ,
                     headers = {
-                        "token" : TOKEN ,
+                        "token" : TOKEN1 ,
                         "Accpet" : "application/json" ,
                         "Content_Type" : "application/json"
                         } ,
@@ -186,9 +239,9 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_zz_send_comment(self) :
         response = self.client.post(
-                    url_for('api.comment',id=BLOG_ID,_external=True),
+                    url_for('blogs.comment2',id=BLOG_ID,_external=True),
                     headers = {
-                        "token": TOKEN ,
+                        "token": TOKEN1 ,
                         "Accept" : "application/json" ,
                         "Content_Type" :"application/json"
                         },
@@ -199,33 +252,33 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_zz_s_get_comment(self) :
         response = self.client.get(
-                    url_for('api.view_comment',id=BLOG_ID,_external=True),
+                    url_for('blogs.view_comment2',id=BLOG_ID,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200  )
 
     def test_zz_s_get_comment_and_share(self) :
         response = self.client.get(
-                    url_for('api.view',id=BLOG_ID,_external=True),
+                    url_for('blogs.view2',id=BLOG_ID,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_sorted_blogs(self) :
         response = self.client.get(
-                    url_for('api.index_blogs',sort="aa",_external=True),
+                    url_for('blogs.index_blogs2',sort="aa",_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_all_blogs(self) :
         response = self.client.get(
-                    url_for('api.get_blogs',_external=True),
+                    url_for('blogs.get_blogs2',_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
     def test_zzz_delete_blog(self) :
         response = self.client.delete(
-                    url_for('api.deleted',id=BLOG_ID,_external=True),
+                    url_for('blogs.deleted2',id=BLOG_ID,_external=True),
                     headers = {
-                        "token": TOKEN ,
+                        "token": TOKEN1 ,
                         "Accept" : "application/json" ,
                         "Content_Type" :"application/json"
                         },
