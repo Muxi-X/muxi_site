@@ -251,6 +251,7 @@ def add_comment2(id) :
     comment.author_id = g.current_user.id
     comment.blog_id = 0
     comment.author_name = g.current_user.username
+    comment.count = 0
     db.session.add(comment)
     db.session.commit()
     return jsonify({
