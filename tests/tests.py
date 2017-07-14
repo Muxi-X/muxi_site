@@ -149,7 +149,7 @@ class BasicTestCase(unittest.TestCase) :
         SHARE_ID = int(t)
         self.assertTrue( response.status_code == 200 )
 
-    def test_c_send_comment(self) :
+    def test_ct_send_comment(self) :
         response = self.client.post(
                 url_for('shares.add_comment2',id=1,_external=True),
                 headers = {
