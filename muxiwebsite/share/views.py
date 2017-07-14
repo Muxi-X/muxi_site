@@ -249,6 +249,8 @@ def add_comment2(id) :
     comment.comment = request.get_json().get("comment")
     comment.share_id = id
     comment.author_id = g.current_user.id
+    comment.blog_id = 0
+    comment.author_name = g.current_user.username
     db.session.add(comment)
     db.session.commit()
     return jsonify({
@@ -281,7 +283,7 @@ def add_share2() :
             }
 
     headers = { "Content-Type" : "application/json" }
-   # r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+ #   r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
     return jsonify( {
                     "share" : share.share ,
                     "title" : share.title ,
