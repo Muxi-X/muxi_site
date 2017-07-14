@@ -151,7 +151,7 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_ct_send_comment(self) :
         response = self.client.post(
-                url_for('shares.add_comment2',id=1,_external=True),
+                url_for('shares.add_comment2',id=SHARE_ID,_external=True),
                 headers = {
                     "token": TOKEN2 ,
                     "Accept" : "application/json" ,
