@@ -11,6 +11,7 @@ TOKEN2 = str(0)
 TOKEN1 = str(0)
 SHARE_ID = 1
 BLOG_ID = 1
+type_blog = random.randint(0,5)
 db = SQLAlchemy()
 number = random.randint(900,2000)
 num_blog = random.randint(2000,3000)
@@ -226,7 +227,7 @@ class BasicTestCase(unittest.TestCase) :
                      data = json.dumps({
                         "title" : "####" ,
                         "body" : "###" ,
-                        "tpye" : "aa" ,
+                        "tpye_id" : type_blog ,
                         "img_url" : "dnfij" ,
                         "summary" : "bf"  ,
                         "tag" : "fbd" }) ,
@@ -264,7 +265,7 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_zz_s_get_sorted_blogs(self) :
         response = self.client.get(
-                    url_for('blogs.index_blogs2',sort="aa",_external=True),
+                    url_for('blogs.index_blogs2',sort=type_blog,page=1,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
