@@ -12,3 +12,4 @@ basedir.py
 uwsgi.py
 node_modules
 *.env
+*.swp 
