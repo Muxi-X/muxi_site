@@ -130,7 +130,7 @@ def types(type):
 
 tags = ['frontend','backend','android','design','product']
 
-@blogs.route('/api/v2.0/all/',methods=['GET'])
+@blogs.route('/api/v2.0/',methods=['GET'])
 def get_blogs2() :
     """
     获取所有博客
@@ -149,7 +149,7 @@ def get_blogs2() :
         'pages_count' : pages_count ,
         }) , 200
 
-@blogs.route('/api/v2.0/',methods=['GET'])
+@blogs.route('/api/v2.0/sort/',methods=['GET'])
 def index_blogs2() :
     """
     博客首页,根据所选的标签显现博客
@@ -181,6 +181,7 @@ def add_blog2() :
     blog.body = request.get_json().get("body")
     blog.img_url = request.get_json().get("img_url")
     blog.summary = request.get_json().get("summary")
+    blog.type_id = request.get_json().get("type_id")
     blog.author_id = g.current_user.id
     db.session.add(blog)
     db.session.commit()

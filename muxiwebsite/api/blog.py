@@ -10,7 +10,7 @@ from .decorators import login_required , permission_required
 
 tags = ['frontend','backend','android','design','product']
 
-@api.route('/blogs/all/',methods=['GET'])
+@api.route('/blogs/',methods=['GET'])
 def get_blogs() :
     """
     获取所有博客
@@ -29,7 +29,7 @@ def get_blogs() :
         'pages_count' : pages_count ,
         }) , 200
 
-@api.route('/blogs/',methods=['GET'])
+@api.route('/blogs/sort/',methods=['GET'])
 def index_blogs() :
     """
     博客首页,根据所选的标签显现博客
@@ -62,8 +62,10 @@ def add_blog() :
     blog.img_url = request.get_json().get("img_url")
     blog.summary = request.get_json().get("summary")
     blog.author_id = g.current_user.id
+    blog.type_id = request.get_json().get("type_id")
     db.session.add(blog)
     db.session.commit()
+
     return jsonify({
             "id" : blog.id ,
             "author_id" : blog.author_id
