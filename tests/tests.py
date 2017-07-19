@@ -192,7 +192,7 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_z_get_profile(self) :
         response = self.client.get(
-                    url_for('api.show_profile',username = str(number),_external=True) ,
+                    url_for('api.show_profile',_external=True) ,
                     headers = {
                         "token" : TOKEN ,
                         "Content_Type" : "application/json"
@@ -203,7 +203,7 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_z_edit_profile(self) :
         response = self.client.post(
-                    url_for('api.edit_profile',username = str(number),_external=True) ,
+                    url_for('api.edit_profile',_external=True) ,
                     headers = {
                         "token" : TOKEN ,
                         "Accpet" : "application/json" ,
