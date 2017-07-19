@@ -6,22 +6,19 @@
     木犀官网资料API
 """
 
-from flask import jsonify, request
+from flask import jsonify, request , g
 from . import api
 from muxiwebsite.models import User
 from muxiwebsite import db
+from .decorators import login_required
 import datetime
 
 @api.route('/show_profile/', methods=['GET'])
+@login_required
 def show_profile():
     """读取用户信息"""
-    un = request.args.get('username')
-    token = request.headers.get('token')
-
-    user = User.query.filter_by(username=un).first()
-
-    if not user or not user.verify_auth_token(token):
-        return jsonify({}), 403
+    ID = g.current_user.id
+    user = User.query.filter_by(id=ID).first()
 
     books = user.book
     book_ids = []
@@ -46,7 +43,7 @@ def show_profile():
         "group": user.group,
         "timejoin": user.timejoin,
         "timeleft": user.timeleft,
-        "username": un,
+        "username": user.username,
         "info": user.info,
         "avatar_url": user.avatar_url,
         "personal_blog": user.personal_blog,
@@ -61,17 +58,11 @@ def show_profile():
 
 
 @api.route('/edit_profile/', methods=['POST'])
+@login_required
 def edit_profile():
     """编辑用户信息"""
-    token = request.headers.get('token')
-    un = request.args.get('username')
-
-    user = User.query.filter_by(username=un).first()
-
-    if not user :
-        return jsonify({"message":"1"}) , 402
-    if   user.id != User.verify_auth_token(token).id :
-        return jsonify({"messsage":"2" }), 403
+    ID = g.current_user.id
+    user = User.query.filter_by(id=ID).first()
 
     user.avatar_url = request.get_json().get("avatar_url")
     user.birthday = request.get_json().get("birthday")
