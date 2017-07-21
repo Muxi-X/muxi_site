@@ -364,8 +364,10 @@ class Blog(db.Model):
     tags = db.relationship(
         "Tag",
         secondary=BTMap,
-        backref=db.backref("blogs", lazy='dynamic'),
-        passive_deletes=True ,
+        backref=db.backref("blogs", lazy='dynamic',cascade='all'),
+        passive_deletes = True ,
+        single_parent = True ,
+        cascade="all, delete-orphan" ,
         lazy="dynamic"
     )
 
