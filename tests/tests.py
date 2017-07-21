@@ -322,15 +322,3 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
-    def test_zzz_delete_blog(self) :
-        response = self.client.delete(
-                    url_for('blogs.deleted2',id=BLOG_ID,_external=True),
-                    headers = {
-                        "token": TOKEN1 ,
-                        "Accept" : "application/json" ,
-                        "Content_Type" :"application/json"
-                        },
-                    content_type = 'application/json'
-                    )
-        self.assertTrue( response.status_code == 200 )
-
