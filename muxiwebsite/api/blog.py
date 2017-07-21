@@ -148,6 +148,9 @@ def view(id) :
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def add_tag(id) :
+    """
+    添加标签
+    """
     tag = request.get_json().get("tag")
     tags = Tag.query.filter_by(value=tag).first()
     if  tags is None :
@@ -169,6 +172,9 @@ def add_tag(id) :
 
 @api.route('/blogs/<int:id>/view_tags/',methods=['GET'])
 def view_tag(id) :
+    """
+    查看某一篇博客的所有标签
+    """
     tag = Blog.query.filter_by(id=id).first().tags
     return jsonify({
         "tag_num" : len(list(tag)) ,
@@ -177,6 +183,9 @@ def view_tag(id) :
 
 @api.route('/blogs/<string:tag>/find_blogs/',methods=['GET'])
 def find_tag(tag) :
+    """
+    查看某种标签的所有博客
+    """
     blogs = Tag.query.filter_by(value=tag).first().blogs
     return jsonify({
         "blog_num" : len(list(blogs)) ,
@@ -189,7 +198,7 @@ def find_tag(tag) :
 @permission_required(Permission.WRITE_ARTICLES)
 def edit_blog(id) :
     """
-    登录用户发博客
+    登录用户修改
     """
     blog = Blog.query.filter_by(id=id).first()
     blog.title = request.get_json().get("title")
