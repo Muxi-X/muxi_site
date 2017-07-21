@@ -34,8 +34,8 @@ UBLike = db.Table(
 BTMap = db.Table(
     # 博客与标签的关联表
     "blog_tag_maps",
-    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id')),
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
+    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id',ondelete='cascade')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id',ondelete='cascade'))
 )
 
 
@@ -364,8 +364,10 @@ class Blog(db.Model):
     tags = db.relationship(
         "Tag",
         secondary=BTMap,
-        backref=db.backref("blogs", lazy='dynamic'),
-        passive_deletes=True ,
+        backref=db.backref("blogs", lazy='dynamic',cascade='all'),
+        passive_deletes = True ,
+        single_parent = True ,
+        cascade="all, delete-orphan" ,
         lazy="dynamic"
     )
 
