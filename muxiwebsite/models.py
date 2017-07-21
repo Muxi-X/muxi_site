@@ -365,6 +365,7 @@ class Blog(db.Model):
         "Tag",
         secondary=BTMap,
         backref=db.backref("blogs", lazy='dynamic'),
+        passive_deletes=True ,
         lazy="dynamic"
     )
 
@@ -409,6 +410,7 @@ class Blog(db.Model):
 
     def to_json(self):
         author = User.query.filter_by(id=self.author_id).first()
+        comment_num = len(Comment.query.filter_by(blog_id=self.id).all())
         if not author:
             username = ""
         else:
@@ -420,9 +422,13 @@ class Blog(db.Model):
             'date' : self.timestamp,
             'username' : username,
             'comment' : url_for('api.view_comment', id=self.id),
+            'comment_num' : comment_num ,
             'avatar' : author.avatar_url ,
             'summary' : self.summary ,
             'type' :  self.type_id ,
+            'img_url' : self.img_url ,
+            'tags' : [ item.value for item in self.tags ],
+            'tag_num' : len(list(self.tags)) ,
         }
         return json_blog
 

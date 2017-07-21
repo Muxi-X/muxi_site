@@ -136,7 +136,7 @@ def get_blogs2() :
     获取所有博客
     """
     page = request.args.get('page',1,type=int)
-    blog_list = Blog.query.order_by('id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    blog_list = Blog.query.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
     pages_count = len(Blog.query.all())/current_app.config['BLOG_PER_PAGE'] + 1
     if page > pages_count :
         return jsonify({}) , 404
@@ -157,7 +157,7 @@ def index_blogs2() :
     page = request.args.get('page',1,type=int)
     sort = request.args.get('sort')
     item = Blog.query.filter_by(type_id=sort)
-    blog_list = item.order_by('id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    blog_list = item.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
     pages_count = blog_list.total/current_app.config['BLOG_PER_PAGE'] + 1
     if page > pages_count :
         return jsonify({
@@ -183,9 +183,27 @@ def add_blog2() :
     blog.summary = request.get_json().get("summary")
     blog.type_id = request.get_json().get("type_id")
     blog.author_id = g.current_user.id
+    tag2 = request.get_json().get("tags")
+
     db.session.add(blog)
     db.session.commit()
-    return jsonify({
+
+    for item in tag2 :
+        tag = Tag.query.filter_by(value=str(item)).first()
+        if tag is None :
+            blogs = Blog.query.filter_by(id=blog.id).all()
+            tag = Tag(
+                blogs = blogs ,
+                value = str(item) ,
+            )
+        else :
+            blogs = Tag.query.filter_by(value=item).first().blogs
+            blogs.append(blog)
+            tag.blogs = set(blogs)
+        db.session.add(tag)
+        db.session.commit()
+
+	return jsonify({
             "id" : blog.id ,
             "author_id" : blog.author_id
         }) , 200
@@ -248,6 +266,9 @@ def view2(id) :
 
 @blogs.route('/api/v2.0/login/',methods=['POST'])
 def login_for_blog() :
+    """
+    登陆
+    """
     email  = request.get_json().get("email")
     pwd = request.get_json().get("password")
     l = Login(email,pwd)
@@ -258,6 +279,9 @@ def login_for_blog() :
 
 @blogs.route('/api/v2.0/signup/',methods=['POST'])
 def signup_for_blog() :
+    """
+    注册
+    """
     un = request.get_json().get("username")
     email = request.get_json().get("email")
     password = request.get_json().get("password")
@@ -266,5 +290,95 @@ def signup_for_blog() :
     return jsonify ({
         'created' : res[0]
         }) , res[1]
+
+
+@blogs.route("/api/v2.0/<int:id>/add_tag/",methods=['POST'])
+@login_required
+@permission_required(Permission.WRITE_ARTICLES)
+def add_tag2(id) :
+    """
+    添加标签
+    """
+    tag = request.get_json().get("tag")
+    tags = Tag.query.filter_by(value=tag).first()
+    if  tags is None :
+        blog = Blog.query.filter_by(id=id).all()
+        tags = Tag(
+                blogs = blog ,
+                value = tag
+            )
+    else :
+        blog = Blog.query.filter_by(id=id).first()
+        blogs = tags.blogs
+        blogs.append(blog)
+        tags.blogs = set(blogs)
+
+    db.session.add(tags)
+    db.session.commit()
+    return jsonify({
+    "tag" : tags.value ,
+    }) , 200
+
+@blogs.route('/api/v2.0/<int:id>/view_tags/',methods=['GET'])
+def view_tag2(id) :
+    """
+    查看某一篇博客的所有标签
+    """
+    tag = Blog.query.filter_by(id=id).first().tags
+    return jsonify({
+        "tag_num" : len(list(tag)) ,
+        "tags" : [ item.value for item in tag ]  ,
+        })  ,  200
+
+@blogs.route('/api/v2.0/<string:tag>/find_blogs/',methods=['GET'])
+def find_tag2(tag) :
+    """
+    查看某种标签的所有博客
+    """
+    blogs = Tag.query.filter_by(value=tag).first().blogs
+    return jsonify({
+        "blog_num" : len(list(blogs)) ,
+        "blogs" : [ item.to_json() for item in blogs ] ,
+        }) , 200
+
+
+@blogs.route('/api/v2.0/<int:id>/edit/',methods=['PUT'])
+@login_required
+@permission_required(Permission.WRITE_ARTICLES)
+def edit_blog2(id) :
+    """
+    登录用户修改
+    """
+    blog = Blog.query.filter_by(id=id).first()
+    blog.title = request.get_json().get("title")
+    blog.body = request.get_json().get("body")
+    blog.img_url = request.get_json().get("img_url")
+    blog.summary = request.get_json().get("summary")
+    blog.type_id = request.get_json().get("type_id")
+    tag2 = request.get_json().get("tags")
+
+    db.session.add(blog)
+    db.session.commit()
+
+    for item in tag2 :
+        tag = Tag.query.filter_by(value=str(item)).first()
+        if tag is None :
+            blogs = Blog.query.filter_by(id=blog.id).all()
+            tag = Tag(
+                blogs = blogs ,
+                value = str(item) ,
+            )
+        else :
+            blogs = Tag.query.filter_by(value=item).first().blogs
+            blogs.append(blog)
+            tag.blogs = set(blogs)
+        db.session.add(tag)
+        db.session.commit()
+
+    return jsonify({
+            "id" : blog.id ,
+            "author_id" : blog.author_id
+        }) , 200
+
 
 
