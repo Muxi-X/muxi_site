@@ -230,13 +230,60 @@ class BasicTestCase(unittest.TestCase) :
                         "tpye_id" : type_blog ,
                         "img_url" : "dnfij" ,
                         "summary" : "bf"  ,
-                        "tag" : "fbd" }) ,
+                        "tags" : ["1", "2" , "3" ] ,
+                        }) ,
                     content_type = 'application/json' ,
                     )
         t = json.loads(response.data)['id']
         global BLOG_ID
         BLOG_ID = int(t)
         self.assertTrue (response.status_code == 200 )
+
+    def test_p_edit_blog(self) :
+        response = self.client.put(
+                    url_for('blogs.edit_blog2',id=BLOG_ID,_external=True) ,
+                    headers = {
+                        "token" : TOKEN1 ,
+                        "Accpet" : "application/json" ,
+                        "Content_Type" : "application/json"
+                        } ,
+                     data = json.dumps({
+                        "title" : "##" ,
+                        "body" : "#" ,
+                        "tpye_id" : type_blog ,
+                        "img_url" : "dn" ,
+                        "summary" : "b"  ,
+                        "tags" : ["1", "2" , "3" ,"4"] ,
+                        }) ,
+                    content_type = 'application/json' ,
+                    )
+        self.assertTrue (response.status_code == 200 )
+
+    def test_p_ee_add_blog(self) :
+        response = self.client.post(
+                    url_for('blogs.add_tag2',id=BLOG_ID,_external=True) ,
+                    headers = {
+                        "token" : TOKEN1 ,
+                        "Accpet" : "application/json" ,
+                        "Content_Type" : "application/json"
+                        } ,
+                     data = json.dumps({
+                        "tag" : "5" ,
+                        }) ,
+                    content_type = 'application/json' ,
+                    )
+
+    def test_p_get_tag(self) :
+        response = self.client.get(
+                    url_for('blogs.view_tag2',id=BLOG_ID,_external=True) ,
+                    content_type = 'application/json' )
+        self.assertTrue( response.status_code == 200  )
+
+    def test_p_get_blog(self) :
+        response = self.client.get(
+                    url_for('blogs.find_tag2',tag="5",_external=True) ,
+                    content_type = 'application/json' )
+        self.assertTrue( response.status_code == 200  )
 
     def test_zz_send_comment(self) :
         response = self.client.post(

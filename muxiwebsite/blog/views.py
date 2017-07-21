@@ -312,6 +312,7 @@ def add_tag2(id) :
         blogs = tags.blogs
         blogs.append(blog)
         tags.blogs = set(blogs)
+
     db.session.add(tags)
     db.session.commit()
     return jsonify({

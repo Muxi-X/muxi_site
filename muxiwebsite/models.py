@@ -365,6 +365,7 @@ class Blog(db.Model):
         "Tag",
         secondary=BTMap,
         backref=db.backref("blogs", lazy='dynamic'),
+        passive_deletes=True ,
         lazy="dynamic"
     )
 
