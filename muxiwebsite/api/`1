@@ -69,18 +69,21 @@ def add_blog() :
     db.session.commit()
 
     for item in tag2 :
-        tag = Tag.query.filter_by(value=str(item)).first()
+        print item
+        tag = Tag.query.filter_by(value=item).first()
+        print "1"
         if tag is None :
             blogs = Blog.query.filter_by(id=blog.id).all()
-            tag = Tag(
+            new_tag = Tag(
                 blogs = blogs ,
-                value = str(item) ,
+                value = item ,
             )
+        print "2"
         else :
             blogs = Tag.query.filter_by(value=item).first().blogs
             blogs.append(blog)
             tag.blogs = set(blogs)
-        db.session.add(tag)
+        db.session.add(item)
         db.session.commit()
 
     return jsonify({
@@ -182,44 +185,3 @@ def find_tag(tag) :
         "blog_num" : len(list(blogs)) ,
         "blogs" : [ item.to_json() for item in blogs ] ,
         }) , 200
-
-
-@api.route('/blogs/<int:id>/edit/',methods=['PUT'])
-@login_required
-@permission_required(Permission.WRITE_ARTICLES)
-def edit_blog(id) :
-    """
-    登录用户发博客
-    """
-    blog = Blog.query.filter_by(id=id).first()
-    blog.title = request.get_json().get("title")
-    blog.body = request.get_json().get("body")
-    blog.img_url = request.get_json().get("img_url")
-    blog.summary = request.get_json().get("summary")
-    blog.type_id = request.get_json().get("type_id")
-    tag2 = request.get_json().get("tags")
-
-    db.session.add(blog)
-    db.session.commit()
-
-    for item in tag2 :
-        tag = Tag.query.filter_by(value=str(item)).first()
-        if tag is None :
-            blogs = Blog.query.filter_by(id=blog.id).all()
-            tag = Tag(
-                blogs = blogs ,
-                value = str(item) ,
-            )
-        else :
-            blogs = Tag.query.filter_by(value=item).first().blogs
-            blogs.append(blog)
-            tag.blogs = set(blogs)
-        db.session.add(tag)
-        db.session.commit()
-
-    return jsonify({
-            "id" : blog.id ,
-            "author_id" : blog.author_id
-        }) , 200
-
-
