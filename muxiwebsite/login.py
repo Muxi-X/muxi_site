@@ -12,6 +12,7 @@ class Login() :
 
     def login(self):
         user = User.query.filter_by(email=self.email).first()
+        token = " "
         if not user:
             return jsonify({}), 403
         if not user.verify_password(self.pwd):

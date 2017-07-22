@@ -383,6 +383,9 @@ def index2() :
 
 @shares.route('/api/v2.0/login/',methods=['POST'])
 def login_for_share() :
+    """
+    登陆
+    """
     email  = request.get_json().get("email")
     pwd = request.get_json().get("password")
     l = Login(email,pwd)
@@ -393,6 +396,9 @@ def login_for_share() :
 
 @shares.route('/api/v2.0/signup/',methods=['POST'])
 def signup_for_share() :
+    """
+    注册
+    """
     un = request.get_json().get("username")
     email = request.get_json().get("email")
     password = request.get_json().get("password")
