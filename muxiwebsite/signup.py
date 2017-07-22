@@ -16,6 +16,7 @@ class Signup() :
     def signup(self):
         """用户注册"""
 
+        ID = 0
         if User.query.filter_by(username=self.un).first() is not None:
             return jsonify ({}), 401
         if User.query.filter_by(email=self.email).first() is not None:
@@ -32,5 +33,6 @@ class Signup() :
 
         db.session.add(user)
         db.session.commit()
+        ID = user.id
 
-        return  user.id , 200
+        return  ID , 200
