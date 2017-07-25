@@ -408,3 +408,15 @@ def signup_for_share() :
         'created': res[0] ,
         }) , res[1]
 
+@shares.route('/api/v2.0/get_some/',methods=['GET'])
+def get_some() :
+    num =   request.args.get("num",type=int)
+    shares = Share.query.order_by("-id").all()
+    real_num = len(shares)
+    if real_num >= num  :
+        shares = shares[:num]
+
+    return jsonify({
+        'real_num' : real_num ,
+        'shares' : [ share.to_json() for share in shares ]
+        }) , 200
