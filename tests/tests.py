@@ -131,6 +131,12 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
+    def test_get_some_shares(self) :
+        response = self.client.get(
+                    url_for('shares.get_some',num=2,_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
     def test_cs_send_share(self) :
         response = self.client.post(
                     url_for('shares.add_share2',_external=True),
