@@ -59,7 +59,6 @@ def show_profile():
 
 @api.route('/edit_profile/', methods=['POST'])
 @login_required
-@permission_required(Permission.WRITE_ARTICLES)
 def edit_profile():
     """编辑用户信息"""
     ID = g.current_user.id
@@ -82,4 +81,4 @@ def edit_profile():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({}) , 201
+    return jsonify({ 'changed' : ID }) , 201

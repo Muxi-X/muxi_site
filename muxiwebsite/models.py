@@ -246,7 +246,7 @@ class Share(db.Model):
     share = db.Column(db.Text)
     tag = db.Column(db.Text)
     content = db.Column(db.Text)  # 存取markdown渲染以后的内容
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
 
@@ -315,7 +315,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
     count = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
@@ -344,7 +344,7 @@ class Blog(db.Model):
     body = db.Column(db.Text)
     summary = db.Column(db.Text)
     img_url = db.Column(db.String(164))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章分类: 一篇文章对应一个分类
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
