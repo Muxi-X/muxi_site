@@ -283,7 +283,6 @@ class Share(db.Model):
             'date' : self.timestamp,
             'username' : username,
             'comment' : url_for('shares.view_share2', id=self.id),
-            'content' : self.content,
             'avatar' : author.avatar_url ,
         }
         return json_share
