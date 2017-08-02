@@ -8,9 +8,9 @@
 
 from flask import jsonify, request , g
 from . import api
-from muxiwebsite.models import User
+from muxiwebsite.models import User , Permission
 from muxiwebsite import db
-from .decorators import login_required
+from .decorators import login_required , permission_required
 import datetime
 
 @api.route('/show_profile/', methods=['GET'])
@@ -59,11 +59,13 @@ def show_profile():
 
 @api.route('/edit_profile/', methods=['POST'])
 @login_required
+@permission_required(Permission.WRITE_ARTICLES)
 def edit_profile():
     """编辑用户信息"""
     ID = g.current_user.id
     user = User.query.filter_by(id=ID).first()
 
+    user.email = request.get_json().get("email")
     user.avatar_url = request.get_json().get("avatar_url")
     user.birthday = request.get_json().get("birthday")
     user.flickr = request.get_json().get("flickr")
