@@ -18,10 +18,10 @@ def login_required(f) :
     @wraps(f)
     def decorated(*args,**kwargs) :
         token = request.headers.get('token')
-        if token is not None :
+        if User.verify_auth_token(token) is not None :
             g.current_user = User.verify_auth_token(token)
             return f(*args,**kwargs)
-        return jsonify({"login first!"}) , 401
+        return jsonify({ }) , 401
     return decorated
 
 
