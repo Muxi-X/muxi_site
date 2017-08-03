@@ -273,9 +273,11 @@ def login_for_blog() :
     pwd = request.get_json().get("password")
     l = Login(email,pwd)
     res = l.login()
-    return jsonify ({
-        'token' : res[0]
-        }) , res[1]
+    if res[1] == 200 :
+        return jsonify ({
+            'token' : res[0]
+            }) , 200
+    return jsonify ({ }) , res[1]
 
 @blogs.route('/api/v2.0/signup/',methods=['POST'])
 def signup_for_blog() :
@@ -287,9 +289,11 @@ def signup_for_blog() :
     password = request.get_json().get("password")
     s = Signup(un,email,password)
     res =  s.signup()
-    return jsonify ({
-        'created' : res[0]
-        }) , res[1]
+    if res[1] == 200 :
+        return jsonify ({
+            'created' : res[0]
+            }) , 200
+    return jsonify({ }) , res[1]
 
 
 @blogs.route("/api/v2.0/<int:id>/add_tag/",methods=['POST'])

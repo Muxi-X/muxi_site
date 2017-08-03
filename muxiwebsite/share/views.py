@@ -390,9 +390,11 @@ def login_for_share() :
     pwd = request.get_json().get("password")
     l = Login(email,pwd)
     res = l.login()
-    return jsonify ({
-        'token' : res[0] ,
-        }) , res[1]
+    if res[1] == 200 :
+        return jsonify ({
+            'token' : res[0] ,
+            }) , res[1]
+    return jsonify ({ }) , res[1]
 
 @shares.route('/api/v2.0/signup/',methods=['POST'])
 def signup_for_share() :
@@ -404,9 +406,11 @@ def signup_for_share() :
     password = request.get_json().get("password")
     s = Signup(un,email,password)
     res =  s.signup()
-    return jsonify ({
-        'created': res[0] ,
-        }) , res[1]
+    if res[0] == 200 :
+        return jsonify ({
+            'created': res[0] ,
+            }) , res[1]
+    return jsonify({ }) , res[1]
 
 @shares.route('/api/v2.0/get_some/',methods=['GET'])
 def get_some() :
