@@ -406,7 +406,7 @@ def signup_for_share() :
     password = request.get_json().get("password")
     s = Signup(un,email,password)
     res =  s.signup()
-    if res[0] == 200 :
+    if res[1] == 200 :
         return jsonify ({
             'created': res[0] ,
             }) , res[1]
