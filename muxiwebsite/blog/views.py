@@ -202,7 +202,7 @@ def add_blog2() :
             blogs = Tag.query.filter_by(value=item).first().blogs
             blogs.append(blog)
             tag.blogs = list(set(blogs))
-            db.session.add(tag)
+        db.session.add(tag)
 
     if True :
         db.session.commit()
