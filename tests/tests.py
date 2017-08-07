@@ -108,6 +108,21 @@ class BasicTestCase(unittest.TestCase) :
         self.assertTrue( response.status_code == 200 )
 
 
+    def test_c_login_for_share_change_avatar(self) :
+        response = self.client.post(
+                    url_for('shares.change_avatar',_external=True),
+                    headers = {
+                        "token": TOKEN2 ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
+                    data = json.dumps({
+                        "avatar" : "123",
+                        }) ,
+                    content_type = 'application/json'
+                    )
+        self.assertTrue( response.status_code == 200 )
+
     def test_get_shares(self) :
         response = self.client.get(
                     url_for('shares.get_shares2',_external=True),

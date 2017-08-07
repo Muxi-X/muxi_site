@@ -395,6 +395,7 @@ def login_for_share() :
     if res[1] == 200 :
         return jsonify ({
             'token' : res[0] ,
+            "avatar" : User.query.filter_by(username=username).first().avatar_url ,
             }) , res[1]
     return jsonify ({ }) , res[1]
 
@@ -426,3 +427,16 @@ def get_some() :
         'real_num' : real_num ,
         'shares' : [ share.to_json() for share in shares ]
         }) , 200
+
+@shares.route('/api/v2.0/change_avatar/',methods=['POST'])
+@login_required
+def change_avatar() :
+    avatar = request.get_json().get("avatar")
+    user = g.current_user
+    user.avatar_url = avatar
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({
+        "changed" : user.id ,
+        }) , 200
+
