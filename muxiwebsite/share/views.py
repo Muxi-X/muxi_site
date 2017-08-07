@@ -293,12 +293,13 @@ def add_share2() :
 
 @shares.route('/api/v2.0/<int:id>/delete/',methods=['DELETE'])
 @login_required
-@permission_required(Permission.WRITE_ARTICLES)
 def delete2(id) :
     '''
     删除分享(发送分享的用户)
     '''
     share = Share.query.get_or_404(id)
+    if g.current_user.id != share.author_id :
+        return jsonify({ }) , 403
     db.session.delete(share)
     db.session.commit()
     return jsonify({
@@ -319,12 +320,13 @@ def views2(id) :
 
 @shares.route('/api/v2.0/<int:id>/edit/', methods=["PUT"])
 @login_required
-@permission_required(Permission.WRITE_ARTICLES)
 def edit2(id) :
     '''
     编辑已经发送的分享(发送该分享的用户)
     '''
     share = Share.query.get_or_404(id)
+    if g.current_user.id != share.author_id :
+        return jsonif({ }) , 403
     share.share = request.get_json().get("share")
     share.title = request.get_json().get("title")
     db.session.add(share)
@@ -386,9 +388,9 @@ def login_for_share() :
     """
     登陆
     """
-    email  = request.get_json().get("email")
+    username  = request.get_json().get("username")
     pwd = request.get_json().get("password")
-    l = Login(email,pwd)
+    l = Login(username,pwd)
     res = l.login()
     if res[1] == 200 :
         return jsonify ({

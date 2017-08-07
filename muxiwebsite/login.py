@@ -6,12 +6,12 @@ from muxiwebsite.models import User
 from muxiwebsite import db
 
 class Login() :
-    def __init__(self,email,pwd) :
-        self.email = email
+    def __init__(self,username,pwd) :
+        self.username = username
         self.pwd = pwd
 
     def login(self):
-        user = User.query.filter_by(email=self.email).first()
+        user = User.query.filter_by(username=self.username).first()
         token = " "
         if not user:
             return jsonify({}), 403

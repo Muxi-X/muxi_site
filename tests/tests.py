@@ -72,11 +72,12 @@ class BasicTestCase(unittest.TestCase) :
                     url_for('blogs.login_for_blog',_external=True),
                     data = json.dumps({
                         "password" : str(num_blog) ,
-                        "email" : str(num_blog)
+                        "username" : str(num_blog)
                         }) ,
                     content_type = 'application/json'
                     )
         s = json.loads(response.data)['token']
+        print response.status_code
         global TOKEN1
         TOKEN1 = s
         self.assertTrue( response.status_code == 200 )
@@ -97,7 +98,7 @@ class BasicTestCase(unittest.TestCase) :
                     url_for('shares.login_for_share',_external=True),
                     data = json.dumps({
                         "password" : str(num_share) ,
-                        "email" : str(num_share)
+                        "username" : str(num_share)
                         }) ,
                     content_type = 'application/json'
                     )
@@ -263,6 +264,7 @@ class BasicTestCase(unittest.TestCase) :
                         }) ,
                     content_type = 'application/json' ,
                     )
+        print response.status_code
         self.assertTrue (response.status_code == 200 )
 
     def test_p_ee_add_blog(self) :
@@ -282,6 +284,18 @@ class BasicTestCase(unittest.TestCase) :
     def test_p_get_tag(self) :
         response = self.client.get(
                     url_for('blogs.view_tag2',id=BLOG_ID,_external=True) ,
+                    content_type = 'application/json' )
+        self.assertTrue( response.status_code == 200  )
+
+    def test_p_get_tag_all(self) :
+        response = self.client.get(
+                    url_for('blogs.get_all_tag2',_external=True) ,
+                    content_type = 'application/json' )
+        self.assertTrue( response.status_code == 200  )
+
+    def test_p_get_t_index(self) :
+        response = self.client.get(
+                    url_for('blogs.ym2',_external=True) ,
                     content_type = 'application/json' )
         self.assertTrue( response.status_code == 200  )
 

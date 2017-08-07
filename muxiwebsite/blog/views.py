@@ -184,11 +184,13 @@ def add_blog2() :
     blog.type_id = request.get_json().get("type_id")
     blog.author_id = g.current_user.id
     tag2 = request.get_json().get("tags")
+    tag3 = [ str(item) for item in tag2 ]
+    tag3 = set(tag3)
 
     db.session.add(blog)
     db.session.commit()
 
-    for item in tag2 :
+    for item in tag3 :
         tag = Tag.query.filter_by(value=str(item)).first()
         if tag is None :
             blogs = Blog.query.filter_by(id=blog.id).all()
@@ -199,8 +201,10 @@ def add_blog2() :
         else :
             blogs = Tag.query.filter_by(value=item).first().blogs
             blogs.append(blog)
-            tag.blogs = set(blogs)
-        db.session.add(tag)
+            tag.blogs = list(set(blogs))
+            db.session.add(tag)
+
+    if True :
         db.session.commit()
 
 	return jsonify({
@@ -210,12 +214,13 @@ def add_blog2() :
 
 @blogs.route('/api/v2.0/<int:id>/delete/',methods=['DELETE'])
 @login_required
-@permission_required(Permission.WRITE_ARTICLES)
 def deleted2(id) :
     """
     删除博客
     """
     blog = Blog.query.get_or_404(id)
+    if g.current_user.id != blog.author_id :
+        return jsonify({ }) , 403
     db.session.delete(blog)
     db.session.commit()
     return jsonify({
@@ -269,9 +274,9 @@ def login_for_blog() :
     """
     登陆
     """
-    email  = request.get_json().get("email")
+    username = request.get_json().get("username")
     pwd = request.get_json().get("password")
-    l = Login(email,pwd)
+    l = Login(username,pwd)
     res = l.login()
     if res[1] == 200 :
         return jsonify ({
@@ -298,7 +303,6 @@ def signup_for_blog() :
 
 @blogs.route("/api/v2.0/<int:id>/add_tag/",methods=['POST'])
 @login_required
-@permission_required(Permission.WRITE_ARTICLES)
 def add_tag2(id) :
     """
     添加标签
@@ -334,6 +338,17 @@ def view_tag2(id) :
         "tags" : [ item.value for item in tag ]  ,
         })  ,  200
 
+@blogs.route('/api/v2.0/all_tags/',methods=['GET'])
+def get_all_tag2() :
+    """
+    查看所有标签
+    """
+    tags = Tag.query.all()
+    return jsonify ({
+        "tag_num" : len(list(tags)) ,
+        "tags" : [ item.value for item in tags ]
+        }) , 200
+
 @blogs.route('/api/v2.0/<string:tag>/find_blogs/',methods=['GET'])
 def find_tag2(tag) :
     """
@@ -348,12 +363,13 @@ def find_tag2(tag) :
 
 @blogs.route('/api/v2.0/<int:id>/edit/',methods=['PUT'])
 @login_required
-@permission_required(Permission.WRITE_ARTICLES)
 def edit_blog2(id) :
     """
     登录用户修改
     """
     blog = Blog.query.filter_by(id=id).first()
+    if g.current_user.id != blog.author_id :
+        return jsonify({ }) , 403
     blog.title = request.get_json().get("title")
     blog.body = request.get_json().get("body")
     blog.img_url = request.get_json().get("img_url")
@@ -384,5 +400,12 @@ def edit_blog2(id) :
             "author_id" : blog.author_id
         }) , 200
 
+@blogs.route('/api/v2.0/index/',methods=['GET'])
+def ym2() :
+    blog = Blog.query.all()
+    return jsonify({
+            "blogs" : [ item.to_json2()  for item in blog ] ,
+            "blog_num" : len(blog) ,
+        }) , 200
 
 

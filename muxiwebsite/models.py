@@ -422,7 +422,7 @@ class Blog(db.Model):
             'body' : self.body,
             'date' : self.timestamp,
             'username' : username,
-            'comment' : url_for('api.view_comment', id=self.id),
+            'comment' : url_for('blogs.view_comment2', id=self.id),
             'comment_num' : comment_num ,
             'avatar' : author.avatar_url ,
             'summary' : self.summary ,
@@ -433,6 +433,13 @@ class Blog(db.Model):
         }
         return json_blog
 
+    def to_json2(self) :
+        date = "%d/%02d/%02d" % (self.timestamp.year, self.timestamp.month, self.timestamp.day) ,
+        json_blog = {
+            "date" : date ,
+            "blog" : url_for('blogs.view2', id=self.id) ,
+        }
+        return json_blog
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
