@@ -8,7 +8,6 @@ def permission_required(permission) :
         @wraps(f)
         def decorated(*args,**kwargs):
             if not g.current_user.can(permission) :
-                print g.current_user.role
                 abort(403)
             return f(*args,**kwargs)
         return decorated
