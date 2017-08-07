@@ -13,3 +13,4 @@ uwsgi.py
 node_modules
 *.env
 *.swp 
+*.swo
