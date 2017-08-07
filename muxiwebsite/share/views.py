@@ -346,7 +346,9 @@ def index2() :
     if sort_args == None :
         shares_pages = \
         Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
-        pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
+        pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE']
+        if shares_pages.total % current_app.config['SHARE_PER_PAGE'] != 0 :
+            pages_count = pages_count + 1
         if page > pages_count :
             return jsonify({
                 'message' : 'can not find the page!'

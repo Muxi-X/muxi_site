@@ -137,7 +137,9 @@ def get_blogs2() :
     """
     page = request.args.get('page',1,type=int)
     blog_list = Blog.query.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
-    pages_count = len(Blog.query.all())/current_app.config['BLOG_PER_PAGE'] + 1
+    pages_count = len(Blog.query.all())/current_app.config['BLOG_PER_PAGE']
+    if len(Blog.query.all()) % current_app.config['BLOG_PER_PAGE'] != 0 :
+        pages_count = pages_count + 1
     if page > pages_count :
         return jsonify({}) , 404
     blogs_count = len(Blog.query.all())
