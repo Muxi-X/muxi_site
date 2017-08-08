@@ -442,3 +442,16 @@ def change_avatar() :
         "changed" : user.id ,
         }) , 200
 
+@shares.route('/api/v2.0/get_one_all/',methods=['GET'])
+@login_required
+def get_one_all() :
+    ID = g.current_user.id
+    shares = Share.query.filter_by(author_id=ID).all()
+    res = []
+    for item in shares :
+        res.append(item.id)
+    return jsonify({
+            'share_num' : len(res) ,
+            'shares_id' : res
+        }) , 200
+
