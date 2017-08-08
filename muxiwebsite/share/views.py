@@ -452,12 +452,9 @@ def change_avatar() :
 def get_one_all() :
     ID = g.current_user.id
     shares = Share.query.filter_by(author_id=ID).all()
-    res = []
-    for item in shares :
-        res.append(item.id)
     return jsonify({
-            'share_num' : len(res) ,
-            'shares_id' : res
+            'share_num' : len(shares) ,
+            'shares' : [ item.to_json() for item in shares ] ,
         }) , 200
 
 @shares.route('/api/v2.0/<int:id>/read_comment/',methods=['POST'])
