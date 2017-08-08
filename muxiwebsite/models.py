@@ -246,6 +246,7 @@ class Share(db.Model):
     share = db.Column(db.Text)
     tag = db.Column(db.Text)
     content = db.Column(db.Text)  # 存取markdown渲染以后的内容
+    read_num = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
@@ -281,6 +282,7 @@ class Share(db.Model):
             'title' : self.title,
             'share' : self.share,
             'date' : self.timestamp,
+            'read_num' : self.read_num,
             'username' : username,
             'comment' : url_for('shares.view_share2', id=self.id),
             'avatar' : author.avatar_url ,
