@@ -164,6 +164,17 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
+    def test_qq_read_comments(self) :
+        response = self.client.post(
+                    url_for('shares.read_comment',id=SHARE_ID,_external=True),
+                    headers = {
+                        "token": TOKEN2 ,
+                        "Accept" : "application/json" ,
+                        "Content_Type" :"application/json"
+                        },
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
     def test_cs_send_share(self) :
         response = self.client.post(
                     url_for('shares.add_share2',_external=True),

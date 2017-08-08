@@ -245,6 +245,10 @@ def add_comment2(id) :
     '''
     登录用户发表评论
     '''
+    share = Share.query.filter_by(id=id).first()
+    share.read_num = share.read_num + 1
+    db.session.add(share)
+    db.session.commit()
     comment = Comment()
     comment.comment = request.get_json().get("comment")
     comment.share_id = id
@@ -267,6 +271,7 @@ def add_share2() :
     share.title =  request.get_json().get("title")
     share.share = request.get_json().get("share")
     share.tag = request.get_json().get("tags")
+    share.read_num = 0
     share.author_id = g.current_user.id
     db.session.add(share)
     db.session.commit()
@@ -455,3 +460,13 @@ def get_one_all() :
             'shares_id' : res
         }) , 200
 
+@shares.route('/api/v2.0/<int:id>/read_comment/',methods=['POST'])
+@login_required
+def read_comment(id) :
+    share = Share.query.filter_by(id=id).first()
+    if g.current_user.id != share.author_id :
+        return jsonify({ }) , 403
+    share.read_num = 0
+    db.session.add(share)
+    db.session.commit()
+    return jsonify({ }) , 200
