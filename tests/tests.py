@@ -62,7 +62,6 @@ class BasicTestCase(unittest.TestCase) :
                     url_for('blogs.signup_for_blog',_external=True),
                     data = json.dumps({
                         "username" : str(num_blog) ,
-                        "email" : str(num_blog) ,
                         "password" : str(num_blog) }) ,
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
@@ -88,7 +87,6 @@ class BasicTestCase(unittest.TestCase) :
                     url_for('shares.signup_for_share',_external=True),
                     data = json.dumps({
                         "username" : str(num_share) ,
-                        "email" : str(num_share) ,
                         "password" : str(num_share) }) ,
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )

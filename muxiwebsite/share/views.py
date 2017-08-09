@@ -412,9 +412,8 @@ def signup_for_share() :
     注册
     """
     un = request.get_json().get("username")
-    email = request.get_json().get("email")
     password = request.get_json().get("password")
-    s = Signup(un,email,password)
+    s = Signup(un,password)
     res =  s.signup()
     if res[1] == 200 :
         return jsonify ({
