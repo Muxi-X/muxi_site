@@ -233,10 +233,11 @@ def view_share2(id) :
     查看某一篇分享的评论
     '''
     share = Share.query.get_or_404(id)
-    comments = Comment.query.filter_by(share_id=id).all()
+    comments = Comment.query.order_by('-id').filter_by(share_id=id).all()
 
     return jsonify({
         "comment" :  [ comment.to_json() for comment in comments ] ,
+        "comment_num" : len(comments) ,
         }) ,200
 
 @shares.route('/api/v2.0/<int:id>/add_comment/',methods=['POST'])
@@ -246,7 +247,7 @@ def add_comment2(id) :
     登录用户发表评论
     '''
     share = Share.query.filter_by(id=id).first()
-    share.read_num = share.read_num + 1
+    share.read_num = 1
     db.session.add(share)
     db.session.commit()
     comment = Comment()
@@ -317,10 +318,11 @@ def views2(id) :
     查看单个分享,和它所有的评论
     '''
     share = Share.query.get_or_404(id)
-    comments = Comment.query.filter_by(share_id=id).all()
+    comments = Comment.query.order_by('-id').filter_by(share_id=id).all()
     return jsonify ({
         'share' : share.to_json() ,
         'comments' : [ comment.to_json() for comment in comments ] ,
+        'comment_num' : len(comments) ,
         }) ,200
 
 @shares.route('/api/v2.0/<int:id>/edit/', methods=["PUT"])
