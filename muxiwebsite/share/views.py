@@ -405,6 +405,7 @@ def login_for_share() :
         return jsonify ({
             'token' : res[0] ,
             "avatar" : User.query.filter_by(username=username).first().avatar_url ,
+            'user_id' : User.query.filter_by(username=username).first().id
             }) , res[1]
     return jsonify ({ }) , res[1]
 
