@@ -78,7 +78,6 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json'
                     )
         s = json.loads(response.data)['token']
-        print response.status_code
         global TOKEN1
         TOKEN1 = s
         self.assertTrue( response.status_code == 200 )
@@ -371,13 +370,6 @@ class BasicTestCase(unittest.TestCase) :
                     url_for('blogs.get_month',year=YEAR,month=MONTH,_external=True),
                     content_type = 'application/json')
         return  self.assertTrue( response.status_code == 200 )
-
-    def test_zz_s_get_sorted_blogs(self) :
-        response = self.client.get(
-                    url_for('blogs.index_blogs2',sort=type_blog,_external=True),
-                    content_type = 'application/json')
-        print response.status_code
-        self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_all_blogs(self) :
         response = self.client.get(
