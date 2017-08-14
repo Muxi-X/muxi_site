@@ -1,6 +1,6 @@
 #coding: utf-8
 import unittest
-from flask import current_app , url_for,jsonify
+from flask import current_app , url_for,jsonify , current_app
 from muxiwebsite import create_app
 from flask_sqlalchemy import SQLAlchemy
 import random
@@ -15,9 +15,9 @@ YEAR = 1
 MONTH = 1
 type_blog = random.randint(0,5)
 db = SQLAlchemy()
-number = random.randint(900,2000)
-num_blog = random.randint(2000,3000)
-num_share = random.randint(3000,4000)
+number = random.randint(9000,20000)
+num_blog = random.randint(20000,30000)
+num_share = random.randint(30000,40000)
 
 class BasicTestCase(unittest.TestCase) :
     def setUp(self) :
@@ -372,13 +372,13 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.get(
                     url_for('blogs.get_month',year=YEAR,month=MONTH,_external=True),
                     content_type = 'application/json')
-        num = json.loads(response.data)['blog_num']
         return  self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_sorted_blogs(self) :
         response = self.client.get(
-                    url_for('blogs.index_blogs2',sort=type_blog,page=1,_external=True),
+                    url_for('blogs.index_blogs2',sort=type_blog,_external=True),
                     content_type = 'application/json')
+        print response.status_code
         self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_all_blogs(self) :
