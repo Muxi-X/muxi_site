@@ -362,7 +362,6 @@ def find_tag2(tag) :
     """
     page = request.args.get('page',1,type=int)
     blogs = Tag.query.filter_by(value=tag).first().blogs
-    print type(blogs)
     blogs_page = blogs.paginate(page,current_app.config['BLOG_PER_PAGE'],False)
     pages_count = len(list(blogs)) / current_app.config['BLOG_PER_PAGE']
     if len(list(blogs)) % current_app.config['BLOG_PER_PAGE'] != 0 :
