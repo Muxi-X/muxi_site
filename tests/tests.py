@@ -387,6 +387,12 @@ class BasicTestCase(unittest.TestCase) :
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
 
+    def test_zz_s_get_all_time(self) :
+        response = self.client.get(
+                    url_for('blogs.get_time',_external=True),
+                    content_type = 'application/json')
+        self.assertTrue( response.status_code == 200 )
+
     def test_zzz_delete_blog(self) :
         response = self.client.delete(
                     url_for('blogs.deleted2',id=BLOG_ID,_external=True),
