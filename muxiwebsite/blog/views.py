@@ -360,10 +360,18 @@ def find_tag2(tag) :
     """
     查看某种标签的所有博客
     """
+    page = request.args.get('page',1,type=int)
     blogs = Tag.query.filter_by(value=tag).first().blogs
+    blogs_page = blogs.paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = len(list(blogs)) / current_app.config['BLOG_PER_PAGE']
+    if len(list(blogs)) % current_app.config['BLOG_PER_PAGE'] != 0 :
+        pages_count += 1
+    if page > pages_count :
+        return jsonify({ }) , 404
     return jsonify({
-        "blog_num" : len(list(blogs)) ,
-        "blogs" : [ item.to_json() for item in blogs ] ,
+        "pages_count" : pages_count ,
+        "blog_num" : len(blogs_page.items) ,
+        "blogs" : [ item.to_json() for item in blogs_page.items ] ,
         }) , 200
 
 
