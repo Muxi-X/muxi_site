@@ -11,6 +11,8 @@ TOKEN2 = str(0)
 TOKEN1 = str(0)
 SHARE_ID = 1
 BLOG_ID = 1
+YEAR = 1
+MONTH = 1
 type_blog = random.randint(0,5)
 db = SQLAlchemy()
 number = random.randint(900,2000)
@@ -363,7 +365,15 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.get(
                     url_for('blogs.view2',id=BLOG_ID,_external=True),
                     content_type = 'application/json')
+        blog = json.loads(response.data)['blog']
         self.assertTrue( response.status_code == 200 )
+
+    def test_zz_s_get_month(self) :
+        response = self.client.get(
+                    url_for('blogs.get_month',year=YEAR,month=MONTH,_external=True),
+                    content_type = 'application/json')
+        num = json.loads(response.data)['blog_num']
+        return  self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_sorted_blogs(self) :
         response = self.client.get(

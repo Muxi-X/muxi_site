@@ -401,6 +401,21 @@ def edit_blog2(id) :
             "author_id" : blog.author_id
         }) , 200
 
+@blogs.route('/api/v2.0/get_month/<int:year>/<int:month>/',methods=['GET'])
+def get_month(year,month) :
+    """
+    归档博客，获取某年某年月的所有博客
+    """
+    blogs = Blog.query.all()
+    real_blog = []
+    for blog in blogs :
+        if blog.find_month(year,month) == True :
+            real_blog.append(blog)
+    return  jsonify({
+            "blogs" : [ item.to_json() for item in real_blog ] ,
+            "blog_num" : len(real_blog) ,
+        }) , 200
+
 @blogs.route('/api/v2.0/index/',methods=['GET'])
 def ym2() :
     blog = Blog.query.all()
@@ -408,5 +423,6 @@ def ym2() :
             "blogs" : [ item.to_json2()  for item in blog ] ,
             "blog_num" : len(blog) ,
         }) , 200
+
 
 

@@ -442,6 +442,12 @@ class Blog(db.Model):
             "blog" : url_for('blogs.view2', id=self.id) ,
         }
         return json_blog
+
+    def find_month(self,year,month) :
+        if int(self.timestamp.year) == int(year) and int(self.timestamp.month) == int(month) :
+            return True
+        return False
+
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
