@@ -147,6 +147,7 @@ def get_blogs2() :
 
     return jsonify({
         'blogs' : [ blog.to_json()  for blog in blog_list.items ] ,
+        'blog_num' : len(blog_list.items) ,
         'count' : blogs_count ,
         'page'  : page ,
         'pages_count' : pages_count ,
@@ -159,9 +160,11 @@ def index_blogs2() :
     """
     page = request.args.get('page',1,type=int)
     sort = request.args.get('sort')
-    item = Blog.query.filter_by(type_id=sort)
-    blog_list = item.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
-    pages_count = blog_list.total/current_app.config['BLOG_PER_PAGE'] + 1
+    blog_list = Blog.query.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    blog_list = Blog.query.filter_by(type_id=sort).order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = len(Blog.query.filter_by(type_id=sort).all()) / current_app.config['BLOG_PER_PAGE']
+    if len(Blog.query.filter_by(type_id=sort).all()) % current_app.config['BLOG_PER_PAGE'] != 0 :
+        pages_count = pages_count + 1
     if page > pages_count :
         return jsonify({
             "message" : "can not find the page"
@@ -170,7 +173,8 @@ def index_blogs2() :
     return jsonify({
         "pages_count" : pages_count ,
         "page" : page ,
-        "blogs" : [blog.to_json() for blog in blogs ]
+        "blogs" : [blog.to_json() for blog in blogs ] ,
+        "blog_num" : len(blogs)
         }), 200
 
 @blogs.route('/api/v2.0/send/',methods=['POST'])
