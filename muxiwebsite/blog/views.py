@@ -13,6 +13,7 @@ from ..login import Login
 from ..signup import Signup
 from werkzeug.security import generate_password_hash
 import base64
+import datetime
 
 @blogs.route('/')
 def index():
@@ -424,5 +425,24 @@ def ym2() :
             "blog_num" : len(blog) ,
         }) , 200
 
+
+@blogs.route('/api/v2.0/get_time/',methods=['GET'])
+def get_time() :
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    year = int(now[:4])
+    now = int(now[5:7])
+    res = []
+    for i in range(6) :
+        tmp = []
+        if now - i < 1 :
+            tmp.append(year-1)
+            tmp.append(now-i+12)
+        else :
+            tmp.append(year)
+            tmp.append(now-i)
+        res.append(tmp)
+    return jsonify({
+        'time' : [ { 'year' : item[0] , 'month' : item[1] } for item in res ]
+        }) , 200
 
 
