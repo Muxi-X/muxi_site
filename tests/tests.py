@@ -301,7 +301,6 @@ class BasicTestCase(unittest.TestCase) :
                         }) ,
                     content_type = 'application/json' ,
                     )
-        print response.status_code
         self.assertTrue (response.status_code == 200 )
 
     def test_p_ee_add_blog(self) :
@@ -365,7 +364,6 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.get(
                     url_for('blogs.view2',id=BLOG_ID,_external=True),
                     content_type = 'application/json')
-        blog = json.loads(response.data)['blog']
         self.assertTrue( response.status_code == 200 )
 
     def test_zz_s_get_month(self) :

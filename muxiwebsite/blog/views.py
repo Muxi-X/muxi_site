@@ -161,13 +161,11 @@ def index_blogs2() :
     page = request.args.get('page',1,type=int)
     sort = request.args.get('sort')
     item = Blog.query.filter_by(type_id=sort)
-    blog_list = item.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
-    pages_count = blog_list.total/current_app.config['BLOG_PER_PAGE']
-    print blog_list.total
-    if blog_list.total % current_app.config['BLOG_PER_PAGE'] != 0 :
+    blog_list = Blog.query.order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    blog_list = Blog.query.filter_by(type_id=sort).order_by('-id').paginate(page,current_app.config['BLOG_PER_PAGE'],False)
+    pages_count = len(blog_list.items) / current_app.config['BLOG_PER_PAGE']
+    if len(blog_list.items) % current_app.config['BLOG_PER_PAGE'] != 0 :
         pages_count = pages_count + 1
-        print "T"
-    print pages_count
     if page > pages_count :
         return jsonify({
             "message" : "can not find the page"
