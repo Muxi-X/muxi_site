@@ -286,8 +286,29 @@ class Share(db.Model):
             'username' : username,
             'comment' : url_for('shares.view_share2', id=self.id),
             'avatar' : author.avatar_url ,
+            'user_id' : author.id ,
         }
         return json_share
+
+    def to_json3(self):
+        author = User.query.filter_by(id=self.author_id).first()
+        if not author:
+            username = ""
+        else:
+            username = author.username
+
+        json_share = {
+            'id' : self.id,
+            'title' : self.title,
+            'share' : self.share,
+            'date' : self.timestamp,
+            'read_num' : self.read_num,
+            'username' : username,
+            'comment' : url_for('shares.view_share2', id=self.id),
+            'avatar' : author.avatar_url ,
+        }
+        return json_share
+
 
     def to_json2(self):
         json_share = {
