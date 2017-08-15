@@ -349,7 +349,7 @@ class Blog(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章分类: 一篇文章对应一个分类
-    type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
+    type_id = db.Column(db.Integer)
     comments = db.relationship('Comment', backref='blog', lazy='dynamic')
     likes_number = db.Column(db.Integer, default=0)
     comment_number = db.Column(db.Integer, default=0)
@@ -468,7 +468,6 @@ class Type(db.Model):
     __tablename__ = 'types'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(64))
-    blogs = db.relationship('Blog', backref="types", lazy="dynamic")
 
     def __repr__(self):
         return "<type %d>" % self.id
