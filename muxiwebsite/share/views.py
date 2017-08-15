@@ -456,7 +456,7 @@ def get_one_all() :
     shares = Share.query.filter_by(author_id=ID).all()
     return jsonify({
             'share_num' : len(shares) ,
-            'shares' : [ item.to_json() for item in shares ] ,
+            'shares' : [ item.to_json3() for item in shares ] ,
         }) , 200
 
 @shares.route('/api/v2.0/<int:id>/read_comment/',methods=['POST'])
