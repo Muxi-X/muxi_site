@@ -51,6 +51,8 @@ app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
 app.config['BLOG_PER_PAGE'] = 2
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['UPLOAD_FOLDER']=r'./images/'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Get from Environment
 app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
@@ -150,6 +152,8 @@ def create_app() :
     app.config['MUXI_USERS_PER_PAGE'] = 10
     app.config['BLOG_PER_PAGE'] = 10
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config['UPLOAD_FOLDER']=r'./images/'
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
     # Get from Environment
     app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
