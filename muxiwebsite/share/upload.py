@@ -4,7 +4,7 @@ from .. import app
 import json
 from flask import Flask, request, send_from_directory,render_template , current_app , jsonify
 import time
-UPLOAD_FOLDER=r'./muxiwebsite/share/images/'
+UPLOAD_FOLDER=os.getcwd() + '/images/'
 ALLOWED_EXTENSIONS=set(['png','jpg','jpeg'])
 
 def checkfloder():
@@ -25,13 +25,12 @@ def upload_picture():
         uploadtime ='.'.join(li)
         if file and allowed_file(file.filename):
             file.save(os.path.join(UPLOAD_FOLDER,uploadtime))
-            url = os.path.join(UPLOAD_FOLDER,uploadtime)
-            url = "120.77.246.73:5488/" + "muxi_site" + url[1:]
+            url = os.path.join('/pictures/',uploadtime)
             return jsonify({ "filename" : url })
         return render_template('error415.html')
     return render_template('upload.html')
 
-@shares.route('/pictures/<filename>')
+@shares.route('/pictures/<filename>/')
 def uploaded_file(filename):
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'],filename)
+    return send_from_directory(UPLOAD_FOLDER,filename)
 
