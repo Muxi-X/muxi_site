@@ -18,7 +18,7 @@ shares = Blueprint(
 )
 
 
-from . import views, forms
+from . import views, forms , upload
 
 
 """
