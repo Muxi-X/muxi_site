@@ -312,6 +312,7 @@ class Share(db.Model):
             'title' : self.title,
             'share' : self.share,
             'date' : self.timestamp,
+            'tag' : tag ,
             'read_num' : self.read_num,
             'username' : username,
             'comment' : url_for('shares.view_share2', id=self.id),
