@@ -276,9 +276,14 @@ class Share(db.Model):
             username = ""
         else:
             username = author.username
+        if not  self.tag :
+            tag = self.tag
+        else :
+            tag = ""
 
         json_share = {
             'id' : self.id,
+            'tag' : tag ,
             'title' : self.title,
             'share' : self.share,
             'date' : self.timestamp,
@@ -296,6 +301,11 @@ class Share(db.Model):
             username = ""
         else:
             username = author.username
+
+        if not self.tag :
+            tag = self.tag
+        else  :
+            tag = ""
 
         json_share = {
             'id' : self.id,
