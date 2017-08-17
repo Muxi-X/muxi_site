@@ -276,7 +276,7 @@ class Share(db.Model):
             username = ""
         else:
             username = author.username
-        if not  self.tag :
+        if  self.tag :
             tag = self.tag
         else :
             tag = ""
@@ -302,7 +302,7 @@ class Share(db.Model):
         else:
             username = author.username
 
-        if not self.tag :
+        if  self.tag :
             tag = self.tag
         else  :
             tag = ""
