@@ -4,7 +4,7 @@ from .. import app
 import json
 from flask import Flask, request, send_from_directory,render_template , current_app , jsonify
 import time
-UPLOAD_FOLDER=os.getcwd() + '/images/'
+UPLOAD_FOLDER= '/root' + '/avatar_for_muxisite/'
 ALLOWED_EXTENSIONS=set(['png','jpg','jpeg'])
 
 def checkfloder():
