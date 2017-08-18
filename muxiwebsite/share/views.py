@@ -322,7 +322,6 @@ def views2(id) :
     return jsonify ({
         'share' : share.to_json() ,
         'comments' : [ comment.to_json() for comment in comments ] ,
-        'comment_num' : len(comments) ,
         }) ,200
 
 @shares.route('/api/v2.0/<int:id>/edit/', methods=["PUT"])
