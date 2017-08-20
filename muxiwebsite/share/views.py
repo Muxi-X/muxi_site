@@ -385,10 +385,15 @@ def index2() :
                 'message' : 'can not find the page!'
                 }) , 404
 
+    share_num = len(shares)
+    if share_num == 0 :
+        return jsonify({ }) , 404
+
     return jsonify({
             'pages_count' : pages_count ,
             'page' : page ,
             'share' : [share.to_json() for share in shares ] ,
+            'share_num' : share_num ,
      }) , 200
 
 @shares.route('/api/v2.0/login/',methods=['POST'])
