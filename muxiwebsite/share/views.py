@@ -207,7 +207,7 @@ def get_shares2():
     获取所有分享
     """
     page = request.args.get('page', 1, type=int)
-    pagination = Share.query.paginate(
+    pagination = Share.query.order_by('-id').paginate(
         page,
         per_page=current_app.config['MUXI_SHARES_PER_PAGE'],
         error_out=False
