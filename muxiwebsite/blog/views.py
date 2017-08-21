@@ -141,8 +141,6 @@ def get_blogs2() :
     pages_count = len(Blog.query.all())/current_app.config['BLOG_PER_PAGE']
     if len(Blog.query.all()) % current_app.config['BLOG_PER_PAGE'] != 0 :
         pages_count = pages_count + 1
-    if page > pages_count :
-        return jsonify({}) , 404
     blogs_count = len(Blog.query.all())
 
     return jsonify({
@@ -165,10 +163,6 @@ def index_blogs2() :
     pages_count = len(Blog.query.filter_by(type_id=sort).all()) / current_app.config['BLOG_PER_PAGE']
     if len(Blog.query.filter_by(type_id=sort).all()) % current_app.config['BLOG_PER_PAGE'] != 0 :
         pages_count = pages_count + 1
-    if page > pages_count :
-        return jsonify({
-            "message" : "can not find the page"
-            }) , 404
     blogs = blog_list.items
     return jsonify({
         "pages_count" : pages_count ,
@@ -419,14 +413,26 @@ def get_month(year,month) :
     """
     归档博客，获取某年某年月的所有博客
     """
+    page = request.args.get('page',1,type=int)
     blogs = Blog.query.all()
+    blog2 = []
     real_blog = []
     for blog in blogs :
         if blog.find_month(year,month) == True :
-            real_blog.append(blog)
+            blog2.append(blog)
+    begin = (page - 1 ) * current_app.config['BLOG_PER_PAGE']
+    end = page * current_app.config['BLOG_PER_PAGE']
+    if end <= len(blog2) :
+        for i in range(begin,end) :
+            real_blog.append(blog2[i])
+    pages_count = len(blog2) / current_app.config['BLOG_PER_PAGE']
+    if len(blog2) % current_app.config['BLOG_PER_PAGE'] != 0 :
+        pages_count += 1
+
     return  jsonify({
             "blogs" : [ item.to_json() for item in real_blog ] ,
             "blog_num" : len(real_blog) ,
+            'pages_count' : pages_count ,
         }) , 200
 
 @blogs.route('/api/v2.0/index/',methods=['GET'])
