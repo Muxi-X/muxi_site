@@ -437,6 +437,9 @@ def get_month(year,month) :
 
 @blogs.route('/api/v2.0/index/',methods=['GET'])
 def ym2() :
+    """
+    获取所有博客
+    """
     blog = Blog.query.all()
     return jsonify({
             "blogs" : [ item.to_json2()  for item in blog ] ,
@@ -446,6 +449,9 @@ def ym2() :
 
 @blogs.route('/api/v2.0/get_time/',methods=['GET'])
 def get_time() :
+    """
+    获取当前时间，返回当前时间的前6个月
+    """
     now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     year = int(now[:4])
     now = int(now[5:7])

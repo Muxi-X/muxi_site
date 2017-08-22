@@ -430,6 +430,9 @@ def signup_for_share() :
 
 @shares.route('/api/v2.0/get_some/',methods=['GET'])
 def get_some() :
+    """
+    获取某些数量的分享
+    """
     num =   request.args.get("num",type=int)
     shares = Share.query.order_by("-id").all()
     real_num = len(shares)
@@ -444,6 +447,9 @@ def get_some() :
 @shares.route('/api/v2.0/change_avatar/',methods=['POST'])
 @login_required
 def change_avatar() :
+    """
+    修改share里的头像
+    """
     avatar = request.get_json().get("avatar")
     user = g.current_user
     user.avatar_url = avatar
@@ -456,6 +462,9 @@ def change_avatar() :
 @shares.route('/api/v2.0/get_one_all/',methods=['GET'])
 @login_required
 def get_one_all() :
+    """
+    获取某用户的所有的分享
+    """
     ID = g.current_user.id
     shares = Share.query.filter_by(author_id=ID).all()
     return jsonify({
@@ -466,10 +475,13 @@ def get_one_all() :
 @shares.route('/api/v2.0/<int:id>/read_comment/',methods=['POST'])
 @login_required
 def read_comment(id) :
+    """
+    将某篇分享的评论设为已读
+    """
     share = Share.query.filter_by(id=id).first()
     if g.current_user.id != share.author_id :
         return jsonify({ }) , 403
-    share.read_num = 0
+    share.read_num = 0  # 已读为0，未读为1
     db.session.add(share)
     db.session.commit()
     return jsonify({ }) , 200
