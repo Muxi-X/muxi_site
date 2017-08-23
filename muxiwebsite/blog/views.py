@@ -14,7 +14,7 @@ from ..signup import Signup
 from werkzeug.security import generate_password_hash
 import base64
 import datetime
-
+import pickle
 @blogs.route('/')
 def index():
     """
@@ -178,10 +178,10 @@ def add_blog2() :
     登录用户发博客
     """
     blog = Blog()
-    blog.title = request.get_json().get("title")
-    blog.body = request.get_json().get("body")
+    blog.title = pickle.dumps(request.get_json().get("title"))
+    blog.body = pickle.dumps(request.get_json().get("body"))
     blog.img_url = request.get_json().get("img_url")
-    blog.summary = request.get_json().get("summary")
+    blog.summary = pickle.dumps(request.get_json().get("summary"))
     blog.type_id = request.get_json().get("type_id")
     blog.author_id = g.current_user.id
     tag2 = request.get_json().get("tags")
@@ -235,7 +235,7 @@ def comment2(id) :
     发送评论
     """
     comment = Comment()
-    comment.comment = request.get_json().get("comment")
+    comment.comment = pickle.dumps(request.get_json().get("comment"))
     comment.blog_id = id
     comment.author_id = g.current_user.id
 

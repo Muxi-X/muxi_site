@@ -31,6 +31,7 @@ import markdown
 import json
 import requests
 import os
+import pickle
 
 
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
@@ -181,7 +182,9 @@ def delete(id):
 @login_required
 @permission_required(Permission.WRITE_ARTICLES)
 def edit(id):
-    """用户可以修改自己的分享"""
+    """
+    用户可以修改自己的分享
+    """
     form = EditForm()
     share = Share.query.filter_by(id=id).first()
     if form.validate_on_submit():
@@ -251,7 +254,7 @@ def add_comment2(id) :
     db.session.add(share)
     db.session.commit()
     comment = Comment()
-    comment.comment = request.get_json().get("comment")
+    comment.comment = pickle.dumps(request.get_json().get("comment"))
     comment.share_id = id
     comment.author_id = g.current_user.id
     comment.author_name = g.current_user.username
@@ -269,8 +272,8 @@ def add_share2() :
     登录用户发送分享
     '''
     share = Share()
-    share.title =  request.get_json().get("title")
-    share.share = request.get_json().get("share")
+    share.title =  pickle.dumps(request.get_json().get("title"))
+    share.share = pickle.dumps(request.get_json().get("share"))
     share.tag = request.get_json().get("tags")
     share.read_num = 0
     share.author_id = g.current_user.id
@@ -290,8 +293,8 @@ def add_share2() :
     headers = { "Content-Type" : "application/json" }
  #   r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
     return jsonify( {
-                    "share" : share.share ,
-                    "title" : share.title ,
+                    "share" : pickle.loads(share.share) ,
+                    "title" : pickle.loads(share.title)  ,
                     "tag" : share.tag ,
                     "author_id" : share.author_id ,
                     "id" :  share.id ,
@@ -333,8 +336,8 @@ def edit2(id) :
     share = Share.query.get_or_404(id)
     if g.current_user.id != share.author_id :
         return jsonif({ }) , 403
-    share.share = request.get_json().get("share")
-    share.title = request.get_json().get("title")
+    share.share = pickle.dumps(request.get_json().get("share"))
+    share.title = pickle.dumps(request.get_json().get("title"))
     db.session.add(share)
     db.session.commit()
     return jsonify({
