@@ -19,6 +19,7 @@ import bleach
 from markdown import markdown
 import hashlib
 import base64
+import pickle
 
 
 # secondary table
@@ -280,12 +281,20 @@ class Share(db.Model):
             tag = self.tag
         else :
             tag = ""
+        try :
+            share = pickle.loads(self.share)
+        except :
+            share = self.share
+        try :
+            title  = pickle.loads(self.title)
+        except :
+            title = self.title
         comment_num = len(Comment.query.filter_by(share_id=self.id).all())
         json_share = {
             'id' : self.id,
             'tag' : tag ,
-            'title' : self.title,
-            'share' : self.share,
+            'title' : title,
+            'share' : share,
             'date' : self.timestamp,
             'read_num' : self.read_num,
             'username' : username,
@@ -302,7 +311,14 @@ class Share(db.Model):
             username = ""
         else:
             username = author.username
-
+        try :
+            share = pickle.loads(self.share)
+        except :
+            share = self.share
+        try :
+            title  = pickle.loads(self.title)
+        except :
+            title = self.title
         if  self.tag :
             tag = self.tag
         else  :
@@ -310,8 +326,8 @@ class Share(db.Model):
         comment_num = len(Comment.query.filter_by(share_id=self.id).all())
         json_share = {
             'id' : self.id,
-            'title' : self.title,
-            'share' : self.share,
+            'title' : title ,
+            'share' : share,
             'date' : self.timestamp,
             'tag' : tag ,
             'comment_num' : comment_num ,
@@ -324,10 +340,18 @@ class Share(db.Model):
 
 
     def to_json2(self):
+        try :
+            share = pickle.loads(self.share)
+        except :
+            share = self.share
+        try :
+            title  = pickle.loads(self.title)
+        except :
+            title = self.title
         json_share = {
             'id' : self.id,
-            'title' : self.title,
-            'share' : self.share,
+            'title' : title ,
+            'share' : share ,
             'date' : self.timestamp,
         }
         return json_share
@@ -358,9 +382,13 @@ class Comment(db.Model):
     author_name = db.Column(db.String(30))
 
     def to_json(self):
+        try :
+            comment = pickle.loads(self.comment)
+        except  :
+            comment = self.comment
         json_comment = {
             'date' : self.timestamp,
-            'comment' : self.comment,
+            'comment' : comment,
             'username' : User.query.filter_by(id=self.author_id).first().username ,
             'avatar' : User.query.filter_by(id=self.author_id).first().avatar_url ,
         }
@@ -452,10 +480,18 @@ class Blog(db.Model):
             username = ""
         else:
             username = author.username
+        try :
+            body = pickle.loads(self.body)
+        except :
+            body = self.body
+        try :
+            title = pickle.loads(self.title)
+        except :
+            title = self.title
         json_blog = {
             'id' : self.id,
-            'title' : self.title,
-            'body' : self.body,
+            'title' : title,
+            'body' : body,
             'date' : self.timestamp,
             'username' : username,
             'comment' : url_for('blogs.view_comment2', id=self.id),
