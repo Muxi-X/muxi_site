@@ -179,7 +179,8 @@ $ git clone https://github.com/<your_username>/muxi_site.git
   
     ```
     MUXI_WEBSITE_SQL=mysql://<username>:<password>@<url-to-rds>/<database-name>
-    MUXI_WEBSITE_SERVERNAME=muxixyz.test
+    MUXI_WEBSITE_SERVERNAME=muxixyz.com
+    ZAODU_URL=    
     ```
 
   * 

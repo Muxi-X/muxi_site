@@ -3,11 +3,9 @@
 """
 authentication.py
 ~~~~~~~~~~~~~~~~~
-
     API验证模块
     木犀官网API采用用户注册邮箱和token两种形式验证
     建议使用token，更加安全
-
 """
 
 from flask import g, jsonify

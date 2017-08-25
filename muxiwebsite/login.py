@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+from flask import jsonify, request
+from muxiwebsite.models import User
+from muxiwebsite import db
+
+class Login() :
+    def __init__(self,username,pwd) :
+        self.username = username
+        self.pwd = pwd
+
+    def login(self):
+        user = User.query.filter_by(username=self.username).first()
+        token = " "
+        if not user:
+            return jsonify({}), 403
+        if not user.verify_password(self.pwd):
+            return jsonify({}), 400
+        token = user.generate_auth_token()
+        return   token , 200
+

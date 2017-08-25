@@ -16,9 +16,10 @@ from flask_login import AnonymousUserMixin
 from datetime import datetime
 import sys
 import bleach
-import markdown
+from markdown import markdown
 import hashlib
 import base64
+import pickle
 
 
 # secondary table
@@ -34,8 +35,8 @@ UBLike = db.Table(
 BTMap = db.Table(
     # 博客与标签的关联表
     "blog_tag_maps",
-    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id')),
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
+    db.Column('blog_id', db.Integer, db.ForeignKey('blogs.id',ondelete='cascade')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id',ondelete='cascade'))
 )
 
 
@@ -90,7 +91,6 @@ class Role(db.Model):
     def __repr__(self):
         """该类的'官方'表示方法"""
         return '<Role %r>' % self.name
-
 
 class Book(db.Model):
     """图书类"""
@@ -247,7 +247,8 @@ class Share(db.Model):
     share = db.Column(db.Text)
     tag = db.Column(db.Text)
     content = db.Column(db.Text)  # 存取markdown渲染以后的内容
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    read_num = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
 
@@ -271,21 +272,86 @@ class Share(db.Model):
             db.session.commit()
 
     def to_json(self):
+        author = User.query.filter_by(id=self.author_id).first()
+        if not author:
+            username = ""
+        else:
+            username = author.username
+        if  self.tag :
+            tag = self.tag
+        else :
+            tag = ""
+        try :
+            share = pickle.loads(self.share)
+        except :
+            share = self.share
+        try :
+            title  = pickle.loads(self.title)
+        except :
+            title = self.title
+        comment_num = len(Comment.query.filter_by(share_id=self.id).all())
         json_share = {
             'id' : self.id,
-            'title' : self.title,
-            'share' : self.share,
+            'tag' : tag ,
+            'title' : title,
+            'share' : share,
             'date' : self.timestamp,
-            'username' : User.query.filter_by(id=self.author_id).first().username,
-            'comment' : url_for('api.get_shares_id_comments', id=self.id)
+            'read_num' : self.read_num,
+            'username' : username,
+            'comment_num' : comment_num ,
+            'comment' : url_for('shares.view_share2', id=self.id),
+            'avatar' : author.avatar_url ,
+            'user_id' : author.id ,
         }
         return json_share
 
-    def to_json2(self):
+    def to_json3(self):
+        author = User.query.filter_by(id=self.author_id).first()
+        if not author:
+            username = ""
+        else:
+            username = author.username
+        try :
+            share = pickle.loads(self.share)
+        except :
+            share = self.share
+        try :
+            title  = pickle.loads(self.title)
+        except :
+            title = self.title
+        if  self.tag :
+            tag = self.tag
+        else  :
+            tag = ""
+        comment_num = len(Comment.query.filter_by(share_id=self.id).all())
         json_share = {
             'id' : self.id,
-            'title' : self.title,
-            'share' : self.share,
+            'title' : title ,
+            'share' : share,
+            'date' : self.timestamp,
+            'tag' : tag ,
+            'comment_num' : comment_num ,
+            'read_num' : self.read_num,
+            'username' : username,
+            'comment' : url_for('shares.view_share2', id=self.id),
+            'avatar' : author.avatar_url ,
+        }
+        return json_share
+
+
+    def to_json2(self):
+        try :
+            share = pickle.loads(self.share)
+        except :
+            share = self.share
+        try :
+            title  = pickle.loads(self.title)
+        except :
+            title = self.title
+        json_share = {
+            'id' : self.id,
+            'title' : title ,
+            'share' : share ,
             'date' : self.timestamp,
         }
         return json_share
@@ -309,17 +375,22 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
     count = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     share_id = db.Column(db.Integer, db.ForeignKey('shares.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
     author_name = db.Column(db.String(30))
 
     def to_json(self):
+        try :
+            comment = pickle.loads(self.comment)
+        except  :
+            comment = self.comment
         json_comment = {
             'date' : self.timestamp,
-            'comment' : self.comment,
-            'username' : User.query.filter_by(id=self.author_id).first().username
+            'comment' : comment,
+            'username' : User.query.filter_by(id=self.author_id).first().username ,
+            'avatar' : User.query.filter_by(id=self.author_id).first().avatar_url ,
         }
         return json_comment
 
@@ -337,10 +408,10 @@ class Blog(db.Model):
     body = db.Column(db.Text)
     summary = db.Column(db.Text)
     img_url = db.Column(db.String(164))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # 文章分类: 一篇文章对应一个分类
-    type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
+    type_id = db.Column(db.Integer)
     comments = db.relationship('Comment', backref='blog', lazy='dynamic')
     likes_number = db.Column(db.Integer, default=0)
     comment_number = db.Column(db.Integer, default=0)
@@ -356,7 +427,10 @@ class Blog(db.Model):
     tags = db.relationship(
         "Tag",
         secondary=BTMap,
-        backref=db.backref("blogs", lazy='dynamic'),
+        backref=db.backref("blogs", lazy='dynamic',cascade='all'),
+        passive_deletes = True ,
+        single_parent = True ,
+        cascade="all, delete-orphan" ,
         lazy="dynamic"
     )
 
@@ -399,6 +473,51 @@ class Blog(db.Model):
             db.session.add(b)
             db.session.commit()
 
+    def to_json(self):
+        author = User.query.filter_by(id=self.author_id).first()
+        comment_num = len(Comment.query.filter_by(blog_id=self.id).all())
+        if not author:
+            username = ""
+        else:
+            username = author.username
+        try :
+            body = pickle.loads(self.body)
+        except :
+            body = self.body
+        try :
+            title = pickle.loads(self.title)
+        except :
+            title = self.title
+        json_blog = {
+            'id' : self.id,
+            'title' : title,
+            'body' : body,
+            'date' : self.timestamp,
+            'username' : username,
+            'comment' : url_for('blogs.view_comment2', id=self.id),
+            'comment_num' : comment_num ,
+            'avatar' : author.avatar_url ,
+            'summary' : self.summary ,
+            'type' :  self.type_id ,
+            'img_url' : self.img_url ,
+            'tags' : [ item.value for item in self.tags ],
+            'tag_num' : len(list(self.tags)) ,
+        }
+        return json_blog
+
+    def to_json2(self) :
+        date = "%d/%02d/%02d" % (self.timestamp.year, self.timestamp.month, self.timestamp.day) ,
+        json_blog = {
+            "date" : date ,
+            "blog" : url_for('blogs.view2', id=self.id) ,
+        }
+        return json_blog
+
+    def find_month(self,year,month) :
+        if int(self.timestamp.year) == int(year) and int(self.timestamp.month) == int(month) :
+            return True
+        return False
+
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
@@ -419,7 +538,6 @@ class Type(db.Model):
     __tablename__ = 'types'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(64))
-    blogs = db.relationship('Blog', backref="types", lazy="dynamic")
 
     def __repr__(self):
         return "<type %d>" % self.id

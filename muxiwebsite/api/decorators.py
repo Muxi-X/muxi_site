@@ -8,6 +8,7 @@ def permission_required(permission) :
         @wraps(f)
         def decorated(*args,**kwargs):
             if not g.current_user.can(permission) :
+                print g.current_user.role
                 abort(403)
             return f(*args,**kwargs)
         return decorated
@@ -17,10 +18,10 @@ def login_required(f) :
     @wraps(f)
     def decorated(*args,**kwargs) :
         token = request.headers.get('token')
-        if User.verify_auth_token(token) is not None :
+        if token is not None :
             g.current_user = User.verify_auth_token(token)
             return f(*args,**kwargs)
-        return jsonify({ }) , 401
+        return jsonify({"login first!"}) , 401
     return decorated
 
 

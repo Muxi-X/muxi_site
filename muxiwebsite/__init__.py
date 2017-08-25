@@ -49,13 +49,15 @@ app.config["SHARE_PER_PAGE"] = 5
 app.config["MUXI_SHARES_PER_PAGE"] = 10
 app.config["SHARE_HOT_PER_PAGE"] = 3
 app.config['MUXI_USERS_PER_PAGE'] = 10
-app.config['BLOG_PER_PAGE'] = 10
+app.config['BLOG_PER_PAGE'] = 2
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['UPLOAD_FOLDER']=r'./images/'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # Get from Environment
 app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
-
+app.config['SEND_URL']=os.environ.get("ZAODU_URL") or ""
 
 # 初始化扩展(app全局属性)
 db = SQLAlchemy(app)
@@ -135,4 +137,56 @@ from i import i
 app.register_blueprint(i)
 
 from api import api
-app.register_blueprint(api, url_prefix="/api")
+app.register_blueprint(api)
+
+def create_app() :
+    # 实例创建＋蓝图注册
+    app = Flask(__name__)
+    # 配置(通用)
+    app.config['SECRET_KEY'] = "I hate flask!"
+    app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+    app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索每页最多加载5个搜索结果
+    app.config["SHARE_PER_PAGE"] = 5
+    app.config["MUXI_SHARES_PER_PAGE"] = 10
+    app.config["SHARE_HOT_PER_PAGE"] = 3
+    app.config['MUXI_USERS_PER_PAGE'] = 10
+    app.config['BLOG_PER_PAGE'] = 10
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config['UPLOAD_FOLDER']=r'./images/'
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+    # Get from Environment
+    app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
+    app.config['SEND_URL']=os.environ.get("ZAODU_URL") or ""
+
+
+    # 初始化扩展(app全局属性)
+    db.init_app(app)
+    login_manager.init_app(app)
+    pagedown.init_app(app)
+
+    # 蓝图注册
+    from .book import books
+    app.register_blueprint(books)
+
+    from .share import shares
+    app.register_blueprint(shares)
+
+    from .auth import auth
+    app.register_blueprint(auth)
+
+    from .blog import blogs
+    app.register_blueprint(blogs)
+
+    from profile import profile
+    app.register_blueprint(profile)
+
+    from i import i
+    app.register_blueprint(i)
+
+    from api import api
+    app.register_blueprint(api)
+
+    return app
+
