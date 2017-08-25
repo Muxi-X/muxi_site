@@ -160,7 +160,10 @@ def add_share():
                 }
             }
         headers = { "Content-Type" : "application/json" }
-        r = requests.post(URL,data=json.dumps(link),headers=headers)
+    try :
+        r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+    except :
+        pass
         return redirect(url_for('.index', page = 1))
     return render_template("share_send.html", form=form, tags = tags)
 
