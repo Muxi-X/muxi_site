@@ -168,7 +168,7 @@
     ```
     MUXI_WEBSITE_SQL=mysql://<username>:<password>@<url-to-rds>/<database-name>
     MUXI_WEBSITE_SERVERNAME=muxixyz.com
-    ZAODU_URL=""    
+    ZAODU_URL=    
     ```
 
   * 运行
