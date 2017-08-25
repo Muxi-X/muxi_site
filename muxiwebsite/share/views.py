@@ -291,7 +291,10 @@ def add_share2() :
             }
 
     headers = { "Content-Type" : "application/json" }
- #   r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+    try :
+        r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+    except :
+        pass
     return jsonify( {
                     "share" : pickle.loads(share.share) ,
                     "title" : pickle.loads(share.title)  ,
@@ -335,7 +338,7 @@ def edit2(id) :
     '''
     share = Share.query.get_or_404(id)
     if g.current_user.id != share.author_id :
-        return jsonif({ }) , 403
+        return jsonify({ }) , 403
     share.share = pickle.dumps(request.get_json().get("share"))
     share.title = pickle.dumps(request.get_json().get("title"))
     db.session.add(share)
