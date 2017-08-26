@@ -154,14 +154,15 @@ class BasicTestCase(unittest.TestCase) :
 
     def test_get_someone_shares(self) :
         response = self.client.get(
-                    url_for('shares.get_one_all',_external=True),
-                    headers = {
-                        "token": TOKEN2 ,
-                        "Accept" : "application/json" ,
-                        "Content_Type" :"application/json"
-                        },
+                    url_for('shares.get_one_all',id=1,_external=True),
                     content_type = 'application/json')
         self.assertTrue( response.status_code == 200 )
+
+    def test_get_all_id(self) :
+        response = self.client.get(
+                    url_for('shares.get_all_id',_external=True),
+                    content_type = 'application/json')
+        self.asserTrue( response.status_code == 200 )
 
     def test_qq_read_comments(self) :
         response = self.client.post(

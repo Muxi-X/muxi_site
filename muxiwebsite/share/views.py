@@ -468,13 +468,15 @@ def change_avatar() :
         "changed" : user.id ,
         }) , 200
 
-@shares.route('/api/v2.0/get_one_all/',methods=['GET'])
-@login_required
-def get_one_all() :
+@shares.route('/api/v2.0/get_one_all/<int:id>/',methods=['GET'])
+def get_one_all(id) :
     """
     获取某用户的所有的分享
     """
-    ID = g.current_user.id
+    ID = id
+    user = User.query.filter_by(id=ID).first()
+    if user is None :
+        return jsonify({}) , 404
     shares = Share.query.filter_by(author_id=ID).all()
     return jsonify({
             'share_num' : len(shares) ,
@@ -494,3 +496,13 @@ def read_comment(id) :
     db.session.add(share)
     db.session.commit()
     return jsonify({ }) , 200
+
+@shares.route('/api/v2.0/get_all_id/',methods=['GET'])
+def get_all_id() :
+    """
+    获取所有用户的ID
+    """
+    users = User.query.all()
+    return jsonify({
+            'ID' : [ user.id for user in users ] ,
+            }) , 200
