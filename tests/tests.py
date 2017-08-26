@@ -162,7 +162,7 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.get(
                     url_for('shares.get_all_id',_external=True),
                     content_type = 'application/json')
-        self.asserTrue( response.status_code == 200 )
+        self.assertTrue( response.status_code == 200 )
 
     def test_qq_read_comments(self) :
         response = self.client.post(
