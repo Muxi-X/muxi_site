@@ -364,6 +364,7 @@ def find_tag2(tag) :
         return jsonify({ }) , 404
     return jsonify({
         "pages_count" : pages_count ,
+        "page" : page , 
         "blog_num" : len(blogs_page.items) ,
         "blogs" : [ item.to_json() for item in blogs_page.items ] ,
         }) , 200
@@ -432,7 +433,8 @@ def get_month(year,month) :
     return  jsonify({
             "blogs" : [ item.to_json() for item in real_blog ] ,
             "blog_num" : len(real_blog) ,
-            'pages_count' : pages_count ,
+            "page" : page , 
+            "pages_count" : pages_count ,
         }) , 200
 
 @blogs.route('/api/v2.0/index/',methods=['GET'])

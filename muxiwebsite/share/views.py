@@ -329,7 +329,7 @@ def views2(id) :
     share = Share.query.get_or_404(id)
     comments = Comment.query.order_by('-id').filter_by(share_id=id).all()
     return jsonify ({
-        'share' : share.to_json() ,
+        'shares' : share.to_json() ,
         'comments' : [ comment.to_json() for comment in comments ] ,
         }) ,200
 
@@ -401,7 +401,7 @@ def index2() :
     return jsonify({
             'pages_count' : pages_count ,
             'page' : page ,
-            'share' : [share.to_json() for share in shares ] ,
+            'shares' : [share.to_json() for share in shares ] ,
             'share_num' : share_num ,
      }) , 200
 
@@ -504,5 +504,5 @@ def get_all_id() :
     """
     users = User.query.all()
     return jsonify({
-            'ID' : [ user.id for user in users ] ,
+            'ID' : [ (user.id ,  user.username ) for user in users ] ,
             }) , 200
