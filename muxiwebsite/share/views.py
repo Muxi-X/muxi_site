@@ -310,11 +310,19 @@ def add_share2() :
     db.session.add(share)
     db.session.commit()
     share_tag = tags2[share.tag]
+    try :
+        title = pickle.loads(share.title)
+    except :
+        title = share.title
+    try :
+        share_ = pickle.loads(share.share)
+    except :
+        share_ = share.share
     link  = {
             "msgtype" : "link" ,
             "link" : {
-                "title" : share.title ,
-                "text" : share.share[:10]  ,
+                "title" : title ,
+                "text" : share_[:10] ,
                 "picUrl": "" ,
                 "messageUrl" : url_for("shares.views2",id=share.id,_external=True) ,
                 }
