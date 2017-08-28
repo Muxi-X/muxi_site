@@ -85,6 +85,14 @@ def index():
         share.comment_count = share.comment.count()
         share.author_id = share.author_id
         share.author = User.query.filter_by(id=share.author_id).first().username
+        try :
+            share.share = pickle.loads(share.share)
+        except :
+            pass
+        try :
+            share.title = pickle.loads(share.title)
+        except :
+            pass
 
     return render_template('share_index.html', tags = tags, shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
 
@@ -124,7 +132,18 @@ def view_share(id):
     for comment in comments:
         comment.avatar = User.query.filter_by(id=comment.author_id).first().avatar_url
         comment.username = User.query.filter_by(id=comment.author_id).first().username
-        comment.content = comment.comment
+        try :
+            comment.content = pickle.loads(comment.comment)
+        except :
+            comment.content = comment.comment
+    try :
+        share.share = pickle.loads(share.share)
+    except :
+        pass
+    try :
+        share.title = pickle.loads(share.title)
+    except :
+        pass
     return render_template(
         'share_second.html',
         form = form,
@@ -150,11 +169,19 @@ def add_share():
         db.session.add(share)
         db.session.commit()
         share_tag = tags2[share.tag]
+        try :
+            title = pickle.loads(share.title)
+        except :
+            title = share.title
+        try :
+            share_ = pickle.loads(share.share)
+        except :
+            share_ = share.share
         link  = {
             "msgtype" : "link" ,
                 "link" : {
-                "title" : share.title ,
-                "text" : share.share[:10]  ,
+                "title" : title ,
+                "text" : share_[:10]  ,
                 "picUrl": "" ,
                 "messageUrl" : url_for("shares.view_share",id=share.id,_external=True) ,
                 }
@@ -283,11 +310,19 @@ def add_share2() :
     db.session.add(share)
     db.session.commit()
     share_tag = tags2[share.tag]
+    try :
+        title = pickle.loads(share.title)
+    except :
+        title = share.title
+    try :
+        share_ = pickle.loads(share.share)
+    except :
+        share_ = share.share
     link  = {
             "msgtype" : "link" ,
             "link" : {
-                "title" : share.title ,
-                "text" : share.share[:10]  ,
+                "title" : title ,
+                "text" : share_[:10] ,
                 "picUrl": "" ,
                 "messageUrl" : url_for("shares.views2",id=share.id,_external=True) ,
                 }
