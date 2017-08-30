@@ -184,7 +184,7 @@ def add_share():
         link  = {
             "msgtype" : "link" ,
                 "link" : {
-                ssingSchema"title" : title ,
+                "title" : title ,
                 "text" : share_[:10]  ,
                 "picUrl": "" ,
                 "messageUrl" : url_for("shares.view_share",id=share.id,_external=True) ,
