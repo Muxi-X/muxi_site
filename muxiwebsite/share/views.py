@@ -87,12 +87,12 @@ def index():
         share.author = User.query.filter_by(id=share.author_id).first().username
         try :
             share.share = pickle.loads(share.share)
-        except :
-            pass
+        except KeyError :
+            print "Share can not loads"
         try :
             share.title = pickle.loads(share.title)
-        except :
-            pass
+        except KeyError :
+            print "Title can not loads"
 
     return render_template('share_index.html', tags = tags, shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
 
@@ -134,16 +134,18 @@ def view_share(id):
         comment.username = User.query.filter_by(id=comment.author_id).first().username
         try :
             comment.content = pickle.loads(comment.comment)
-        except :
+        except KeyError :
+            print "Comment can not load"
             comment.content = comment.comment
     try :
         share.share = pickle.loads(share.share)
-    except :
-        pass
+    except KeyError :
+        print "Share can not load"
     try :
         share.title = pickle.loads(share.title)
-    except :
-        pass
+    except KeyError :
+        print "Title can not load"
+
     return render_template(
         'share_second.html',
         form = form,
@@ -171,12 +173,14 @@ def add_share():
         share_tag = tags2[share.tag]
         try :
             title = pickle.loads(share.title)
-        except :
+        except KeyError :
             title = share.title
+            print "Title can not load"
         try :
             share_ = pickle.loads(share.share)
-        except :
+        except KeyError :
             share_ = share.share
+            print "Share can not load"
         link  = {
             "msgtype" : "link" ,
                 "link" : {
@@ -189,8 +193,11 @@ def add_share():
         headers = { "Content-Type" : "application/json" }
         try :
             r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
-        except :
-            pass
+        except requests.exceptions.MissingSchema  :
+            print "Wrong type URL"
+        except requests.ConnectionError  :
+            print "The URL is overdue"
+
         return redirect(url_for('.index', page = 1))
     return render_template("share_send.html", form=form, tags = tags)
 
@@ -312,12 +319,14 @@ def add_share2() :
     share_tag = tags2[share.tag]
     try :
         title = pickle.loads(share.title)
-    except :
+    except KeyError :
         title = share.title
+        print "title can not load in  api"
     try :
         share_ = pickle.loads(share.share)
-    except :
+    except KeyError :
         share_ = share.share
+        print "share can not load in api"
     link  = {
             "msgtype" : "link" ,
             "link" : {
@@ -331,8 +340,10 @@ def add_share2() :
     headers = { "Content-Type" : "application/json" }
     try :
         r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
-    except :
-        pass
+    except requests.exceptions.MissingSchema  :
+        print "Wrong type of URL"
+    except requests.ConnectionError :
+        print "The URL  is overdue is api"
     return jsonify( {
                     "share" : pickle.loads(share.share) ,
                     "title" : pickle.loads(share.title)  ,
