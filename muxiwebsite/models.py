@@ -283,12 +283,12 @@ class Share(db.Model):
             tag = ""
         try :
             share = pickle.loads(self.share)
-        except IndexError :
+        except KeyError :
             share = self.share
             print "share can not load in api"
         try :
             title  = pickle.loads(self.title)
-        except IndexError :
+        except KeyError :
             title = self.title
             print "titie can not load in  api"
         comment_num = len(Comment.query.filter_by(share_id=self.id).all())
@@ -315,12 +315,12 @@ class Share(db.Model):
             username = author.username
         try :
             share = pickle.loads(self.share)
-        except IndexError :
+        except KeyError :
             share = self.share
             print "share can not load in api"
         try :
             title  = pickle.loads(self.title)
-        except IndexError :
+        except KeyError :
             title = self.title
             print "title can not load in api"
         if  self.tag :
@@ -346,12 +346,12 @@ class Share(db.Model):
     def to_json2(self):
         try :
             share = pickle.loads(self.share)
-        except IndexError :
+        except KeyError :
             share = self.share
             print "share can not load in api"
         try :
             title  = pickle.loads(self.title)
-        except IndexError :
+        except KeyError :
             title = self.title
             print "title can not load in api"
         json_share = {
@@ -390,7 +390,7 @@ class Comment(db.Model):
     def to_json(self):
         try :
             comment = pickle.loads(self.comment)
-        except IndexError  :
+        except KeyError  :
             comment = self.comment
             print "comment can not load  in api"
         json_comment = {
@@ -489,12 +489,12 @@ class Blog(db.Model):
             username = author.username
         try :
             body = pickle.loads(self.body)
-        except IndexError :
+        except KeyError :
             body = self.body
             print "blog can not load in api"
         try :
             title = pickle.loads(self.title)
-        except IndexError :
+        except KeyError :
             title = self.title
             print "blog 's title can not load in api"
         json_blog = {
