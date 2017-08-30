@@ -193,6 +193,8 @@ def add_share():
         headers = { "Content-Type" : "application/json" }
         try :
             r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+        try MissingSchema :
+            print "Wrong type URL"
         except ConnectionError  :
             print "The URL is overdue"
 
@@ -338,6 +340,8 @@ def add_share2() :
     headers = { "Content-Type" : "application/json" }
     try :
         r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+    except MissingSchema :
+        print "Wrong type of URL"
     except requests.ConnectionError :
         print "The URL  is overdue is api"
     return jsonify( {
