@@ -338,7 +338,7 @@ def add_share2() :
     headers = { "Content-Type" : "application/json" }
     try :
         r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
-    except ConnectionError :
+    except requests.ConnectionError :
         print "The URL  is overdue is api"
     return jsonify( {
                     "share" : pickle.loads(share.share) ,
