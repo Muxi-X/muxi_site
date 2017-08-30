@@ -283,7 +283,7 @@ class Share(db.Model):
             tag = ""
         try :
             share = pickle.loads(self.share)
-        except IndexError
+        except IndexError :
             share = self.share
             print "share can not load in api"
         try :
