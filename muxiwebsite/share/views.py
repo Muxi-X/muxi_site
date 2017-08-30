@@ -193,7 +193,7 @@ def add_share():
         headers = { "Content-Type" : "application/json" }
         try :
             r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
-        try MissingSchema :
+        except MissingSchema :
             print "Wrong type URL"
         except ConnectionError  :
             print "The URL is overdue"
