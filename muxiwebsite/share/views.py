@@ -87,11 +87,11 @@ def index():
         share.author = User.query.filter_by(id=share.author_id).first().username
         try :
             share.share = pickle.loads(share.share)
-        except KeyError :
-            print "Share can not loads"
+        except  :
+            print "Share key value"
         try :
             share.title = pickle.loads(share.title)
-        except KeyError :
+        except :
             print "Title can not loads"
 
     return render_template('share_index.html', tags = tags, shares=shares, flag=flag, Permission=Permission, shares_pages=shares_pages)
@@ -134,16 +134,16 @@ def view_share(id):
         comment.username = User.query.filter_by(id=comment.author_id).first().username
         try :
             comment.content = pickle.loads(comment.comment)
-        except KeyError :
+        except  :
             print "Comment can not load"
             comment.content = comment.comment
     try :
         share.share = pickle.loads(share.share)
-    except KeyError :
+    except :
         print "Share can not load"
     try :
         share.title = pickle.loads(share.title)
-    except KeyError :
+    except  :
         print "Title can not load"
 
     return render_template(
@@ -173,14 +173,15 @@ def add_share():
         share_tag = tags2[share.tag]
         try :
             title = pickle.loads(share.title)
-        except KeyError :
+        except  :
             title = share.title
             print "Title can not load"
         try :
             share_ = pickle.loads(share.share)
-        except KeyError :
+        except  :
             share_ = share.share
             print "Share can not load"
+
         link  = {
             "msgtype" : "link" ,
                 "link" : {
@@ -319,14 +320,15 @@ def add_share2() :
     share_tag = tags2[share.tag]
     try :
         title = pickle.loads(share.title)
-    except KeyError :
+    except  :
         title = share.title
         print "title can not load in  api"
     try :
         share_ = pickle.loads(share.share)
-    except KeyError :
+    except  :
         share_ = share.share
         print "share can not load in api"
+
     link  = {
             "msgtype" : "link" ,
             "link" : {
