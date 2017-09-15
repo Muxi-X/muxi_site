@@ -32,6 +32,7 @@ import json
 import requests
 import os
 import pickle
+from qiniu import Auth, put_file, etag, urlsafe_base64_encode 
 
 
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
@@ -553,4 +554,19 @@ def get_all_id() :
     users = User.query.all()
     return jsonify({
             'ID' : [ (user.id ,  user.username ) for user in users ] ,
-            }) , 200
+       }) , 200
+
+@shares.route('/api/v2.0/token-generate/',methods=['POST'])
+def generate_token() : 
+    """
+    生成上传图片的token
+    """
+    accesskey = app.config['ACCESSKEY']
+    secretkey = app.config['SECRETKEY']
+    q = Auth(accesskey,secretkey)
+    bucket = app.config['BUCKET_NAME']
+    key = request.get_json().get('key')
+    token = q.upload_token(bucket, key, 3600)
+    return jsonify({
+            'token' : token , 
+       }) ,200 

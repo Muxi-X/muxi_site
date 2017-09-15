@@ -15,6 +15,8 @@ from werkzeug.security import generate_password_hash
 import base64
 import datetime
 import pickle
+from .. import app 
+
 @blogs.route('/')
 def index():
     """

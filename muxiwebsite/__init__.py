@@ -66,6 +66,10 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
 
+"""qiniu configuration"""
+app.config['ACCESSKEY'] = os.getenv('qiniu_AccessKey')
+app.config['SECRETKEY'] = os.getenv('qiniu_SecretKey')
+app.config['BUCKET_NAME'] = os.getenv('BucketName')
 
 # Index
 def is_mobie():
@@ -160,6 +164,10 @@ def create_app() :
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("MUXI_WEBSITE_SQL") or "sqlite:///" + os.path.join(basedir, 'muxi_data.sqlite')  # 系统相应替换
     app.config['SEND_URL']=os.environ.get("ZAODU_URL") or ""
 
+    # qiniu configuration
+    app.config['ACCESSKEY'] = os.getenv('qiniu_AccessKey')
+    app.config['SECRETKEY'] = os.getenv('qiniu_SecretKey')
+    app.config['BUCKET_NAME'] = os.getenv('BucketName')
 
     # 初始化扩展(app全局属性)
     db.init_app(app)
