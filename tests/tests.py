@@ -207,14 +207,6 @@ class BasicTestCase(unittest.TestCase) :
                     )
         self.assertTrue( response.status_code == 200 )
 
-    def test_q_generate_token(self) :
-        response = self.client.post(
-                url_for('shares.generate_token',_external=True),
-                data = json.dumps(dict(key="###")),
-                content_type = 'application/json'
-                    )
-        self.assertTrue( response.status_code == 200 )
-
     def test_w_edit_share(self) :
         response = self.client.put(
                     url_for('shares.edit2',id=SHARE_ID,_external=True),
