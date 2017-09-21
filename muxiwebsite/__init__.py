@@ -34,6 +34,7 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 import markdown
 import os
+import redis 
 
 # the root path of xueer
 muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
@@ -43,6 +44,7 @@ muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
 app = Flask(__name__)
 # 配置(通用)
 app.config['SECRET_KEY'] = "I hate flask!"
+app.config['KEY_FOR_VERSION'] = "astringhardtoguess"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索每页最多加载5个搜索结果
 app.config["SHARE_PER_PAGE"] = 5
@@ -67,9 +69,16 @@ login_manager.login_view = 'auth.login'
 pagedown = PageDown(app)
 
 """qiniu configuration"""
-app.config['ACCESSKEY'] = os.getenv('qiniu_AccessKey')
-app.config['SECRETKEY'] = os.getenv('qiniu_SecretKey')
-app.config['BUCKET_NAME'] = os.getenv('BucketName')
+app.config['avatar_ACCESSKEY'] = os.getenv('avatar_AccessKey')
+app.config['avatar_SECRETKEY'] = os.getenv('avatar_SecretKey')
+app.config['avatar_BUCKETNAME'] = os.getenv('avatar_BucketName')
+
+app.config['apk_ACCESSKEY'] = os.getenv('apk_AccessKey')
+app.config['apk_SECRETKEY'] = os.getenv('apk_SecretKey')
+app.config['apk_BUCKETNAME'] = os.getenv('apk_BucketName')
+
+"""redis for versions configuration""" 
+rds = redis.StrictRedis(host=os.getenv('REDIS1_HOST'),port=6388,db=0)  
 
 # Index
 def is_mobie():
@@ -148,6 +157,7 @@ def create_app() :
     app = Flask(__name__)
     # 配置(通用)
     app.config['SECRET_KEY'] = "I hate flask!"
+    app.config['KEY_FOR_VERSION'] = "astringhardtoguess"
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['MAX_SEARCH_RESULTS'] = 5  # 图书搜索每页最多加载5个搜索结果
     app.config["SHARE_PER_PAGE"] = 5
@@ -165,11 +175,15 @@ def create_app() :
     app.config['SEND_URL']=os.environ.get("ZAODU_URL") or ""
 
     # qiniu configuration
-    app.config['ACCESSKEY'] = os.getenv('qiniu_AccessKey')
-    app.config['SECRETKEY'] = os.getenv('qiniu_SecretKey')
-    app.config['BUCKET_NAME'] = os.getenv('BucketName')
+    app.config['avatar_ACCESSKEY'] = os.getenv('avatar_AccessKey')
+    app.config['avatar_SECRETKEY'] = os.getenv('avatar_SecretKey')
+    app.config['avatar_BUCKETNAME'] = os.getenv('avatar_BucketName')
 
-    # 初始化扩展(app全局属性)
+    app.config['apk_ACCESSKEY'] = os.getenv('apk_AccessKey')
+    app.config['apk_SECRETKEY'] = os.getenv('apk_SecretKey')
+    app.config['apk_BUCKETNAME'] = os.getenv('apk_BucketName')
+
+   # 初始化扩展(app全局属性)
     db.init_app(app)
     login_manager.init_app(app)
     pagedown.init_app(app)
