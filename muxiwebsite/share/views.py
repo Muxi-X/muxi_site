@@ -32,6 +32,7 @@ import json
 import requests
 import os
 import pickle
+from qiniu import Auth, put_file, etag, urlsafe_base64_encode
 
 
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
@@ -553,4 +554,35 @@ def get_all_id() :
     users = User.query.all()
     return jsonify({
             'ID' : [ (user.id ,  user.username ) for user in users ] ,
-            }) , 200
+       }) , 200
+
+@shares.route('/api/v2.0/token-generate/',methods=['POST'])
+def generate_token() :
+    """
+    生成上传图片的token
+    """
+    accesskey = current_app.config['avatar_ACCESSKEY']
+    secretkey = current_app.config['avatar_SECRETKEY']
+    q = Auth(accesskey,secretkey)
+    bucket = current_app.config['avatar_BUCKETNAME']
+    key = request.get_json().get('key')
+    token = q.upload_token(bucket, key, 3600)
+    return jsonify({
+            'token' : token ,
+       }) ,200
+
+@shares.route('/api/v2.0/apk-token-generate/',methods=['POST'])
+def generate_token_apk() :
+    """
+    生成上传apk的token
+    """
+    print current_app.config['apk_BUCKETNAME']
+    accesskey = current_app.config['apk_ACCESSKEY']
+    secretkey = current_app.config['apk_SECRETKEY']
+    q = Auth(accesskey,secretkey)
+    bucket = current_app.config['apk_BUCKETNAME']
+    key = request.get_json().get('key')
+    token = q.upload_token(bucket, key, 3600)
+    return jsonify({
+            'token' : token ,
+       }) ,200

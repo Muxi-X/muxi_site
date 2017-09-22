@@ -11,4 +11,4 @@ api = Blueprint(
 )
 
 from . import authentication, users, comments, shares, users, find, \
-        likes, signup, login, profile, blog
+        likes, signup, login, profile, blog, version

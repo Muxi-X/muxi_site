@@ -24,3 +24,5 @@ WTForms==2.1
 MySQL-python==1.2.5
 gunicorn
 requests
+qiniu
+redis
