@@ -591,7 +591,6 @@ def generate_token_apk() :
 
 
 @shares.route('/v2.0/app/',methods=['GET'])
-@version_required
 @tojson
 def get_app() :
     """
@@ -605,7 +604,6 @@ def get_app() :
 
 
 @shares.route('/v2.0/app/',methods=['POST'])
-@version_required
 def update_app() :
     """
     更新木犀内外app版本信息
@@ -627,7 +625,6 @@ def update_app() :
     return jsonify({'msg': 'add new version data'}), 201
 
 @shares.route('/v2.0/app/latest/',methods=['GET'])
-@version_required
 @tojson
 def latest_app() :
     """
