@@ -601,7 +601,7 @@ def get_app() :
         rds.set('apps', "[{'name':'muxisite','version':'none','download_url':'none','v_name':'none'}]")
         rds.save()
     apps = rds.get('apps')
-    return ast.literal_eval(apps)
+    return ast.literal_eval(apps) , 200 
 
 
 @shares.route('/v2.0/app/',methods=['POST'])
@@ -636,4 +636,4 @@ def latest_app() :
     if not rds.get('apps'):
         rds.set('apps', "[]")
     apps = rds.get("apps")
-    return ast.literal_eval(apps)[-1]
+    return ast.literal_eval(apps)[-1] , 200

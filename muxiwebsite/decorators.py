@@ -33,8 +33,8 @@ def version_required(f) :
         if secret_key is not None :
             if secret_key == current_app.config['KEY_FOR_VERSION'] : 
                 return f(*args,**kwargs)
-            return jsonify({ }) , 401
-        return jsonify({ }) , 401
+            return jsonify({"msg" : "secret_key error!" }) , 401
+        return jsonify({"msg" : "not secret_key" }) , 401
     return decorated
 
 
