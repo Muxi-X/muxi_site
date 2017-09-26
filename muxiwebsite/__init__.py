@@ -34,7 +34,7 @@ from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 import markdown
 import os
-import redis 
+import redis
 
 # the root path of xueer
 muxi_root_path = os.path.abspath(os.path.dirname("__filename__"))
@@ -73,12 +73,9 @@ app.config['avatar_ACCESSKEY'] = os.getenv('avatar_AccessKey')
 app.config['avatar_SECRETKEY'] = os.getenv('avatar_SecretKey')
 app.config['avatar_BUCKETNAME'] = os.getenv('avatar_BucketName')
 
-app.config['apk_ACCESSKEY'] = os.getenv('apk_AccessKey')
-app.config['apk_SECRETKEY'] = os.getenv('apk_SecretKey')
-app.config['apk_BUCKETNAME'] = os.getenv('apk_BucketName')
 
-"""redis for versions configuration""" 
-rds = redis.StrictRedis(host=os.getenv('REDIS1_HOST'),port=6388,db=0)  
+"""redis for versions configuration"""
+rds = redis.StrictRedis(host=os.getenv('REDIS1_HOST'),port=6388,db=0)
 
 # Index
 def is_mobie():
@@ -179,9 +176,6 @@ def create_app() :
     app.config['avatar_SECRETKEY'] = os.getenv('avatar_SecretKey')
     app.config['avatar_BUCKETNAME'] = os.getenv('avatar_BucketName')
 
-    app.config['apk_ACCESSKEY'] = os.getenv('apk_AccessKey')
-    app.config['apk_SECRETKEY'] = os.getenv('apk_SecretKey')
-    app.config['apk_BUCKETNAME'] = os.getenv('apk_BucketName')
 
    # 初始化扩展(app全局属性)
     db.init_app(app)
