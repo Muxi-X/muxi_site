@@ -22,7 +22,7 @@ from .. import  db, app
 from ..models import Share, Comment, User, Permission
 from flask import url_for, render_template, redirect, request, current_app, Markup , jsonify , g
 from flask_login import current_user, login_required
-from ..decorators import permission_required , login_required
+from ..decorators import permission_required , login_required , version_required , tojson
 from ..login import Login
 from ..signup import Signup
 from sqlalchemy import desc
@@ -33,6 +33,8 @@ import requests
 import os
 import pickle
 from qiniu import Auth, put_file, etag, urlsafe_base64_encode
+import ast
+from muxiwebsite import rds
 
 
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
@@ -586,3 +588,52 @@ def generate_token_apk() :
     return jsonify({
             'token' : token ,
        }) ,200
+
+
+@shares.route('/v2.0/app/',methods=['GET'])
+@version_required
+@tojson
+def get_app() :
+    """
+    获取木犀内外app版本信息
+    """
+    if not rds.get('apps'):
+        rds.set('apps', "[{'name':'muxisite','version':'none','download_url':'none','v_name':'none'}]")
+        rds.save()
+    apps = rds.get('apps')
+    return ast.literal_eval(apps)
+
+
+@shares.route('/v2.0/app/',methods=['POST'])
+@version_required
+def update_app() :
+    """
+    更新木犀内外app版本信息
+    """
+    if not rds.get('apps'):
+        rds.set('apps', "[{'name':'muxisite','version':'none','download_url':'none','v_name':'none'}]")
+    version = request.get_json().get('version')
+    url = request.get_json().get('url')
+    name = request.get_json().get('name')
+    app_data = {
+            "v_name" : name,
+            "version" : version,
+            "download_url" : url,
+    }
+    apps = ast.literal_eval(rds.get('apps'))
+    apps.append(app_data)
+    rds.set('apps', str(apps))
+    rds.save()
+    return jsonify({'msg': 'add new version data'}), 201
+
+@shares.route('/v2.0/app/latest/',methods=['GET'])
+@version_required
+@tojson
+def latest_app() :
+    """
+    返回木犀内外app的最后一个版本信息
+    """
+    if not rds.get('apps'):
+        rds.set('apps', "[]")
+    apps = rds.get("apps")
+    return ast.literal_eval(apps)[-1]
