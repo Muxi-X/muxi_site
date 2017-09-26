@@ -8,8 +8,8 @@ muxiwebsite:
         - "5488:5488"
     volumes:
         - .:/muxiwebsite
- #   external_links: 
- #       - mysql-service:mysql 
+    external_links: 
+        - mysql-service:mysql 
     links:
         - redis1 
 
