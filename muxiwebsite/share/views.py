@@ -448,6 +448,8 @@ def index2() :
     share_num = len(shares)
     if share_num == 0 :
         return jsonify({ }) , 404
+    print current_app.config['REDIS1_HOST'] 
+    print current_app.config['avatar_ACCESSKEY']
 
     return jsonify({
             'pages_count' : pages_count ,

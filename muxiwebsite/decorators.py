@@ -40,10 +40,6 @@ def version_required(f) :
 
 def tojson(f):
     """
-    :function: tojson
-    :args:
-        - f: 被修饰的函数
-    :rv: f()
     将视图函数的返回值转化成json的形式
     """
     @functools.wraps(f)
