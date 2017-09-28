@@ -455,6 +455,7 @@ def index2() :
             'page' : page ,
             'shares' : [share.to_json() for share in shares ] ,
             'share_num' : share_num ,
+            'test' : os.getenv('REDIS1_HOST') 
      }) , 200
 
 @shares.route('/api/v2.0/login/',methods=['POST'])
