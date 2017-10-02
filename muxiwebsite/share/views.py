@@ -373,6 +373,7 @@ def delete2(id) :
             }) , 200
 
 @shares.route('/api/v2.0/<int:id>/views/',methods=['GET'])
+@shares.route('/api/v2.0/edit/<int:id>/',methods=['GET'])
 def views2(id) :
     '''
     查看单个分享,和它所有的评论
@@ -383,6 +384,7 @@ def views2(id) :
         'shares' : share.to_json() ,
         'comments' : [ comment.to_json() for comment in comments ] ,
         }) ,200
+
 
 @shares.route('/api/v2.0/<int:id>/edit/', methods=["PUT"])
 @login_required
