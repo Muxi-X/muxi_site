@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 import random
 from muxiwebsite.models import Share
 import json
+import base64 
 TOKEN = str(0)
 TOKEN2 = str(0)
 TOKEN1 = str(0)
@@ -72,7 +73,7 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.post(
                     url_for('blogs.login_for_blog',_external=True),
                     data = json.dumps({
-                        "password" : str(num_blog) ,
+                        "password" : "bXV4aXN0dWRpb0BjY251" , 
                         "username" : str(num_blog)
                         }) ,
                     content_type = 'application/json'
@@ -96,7 +97,7 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.post(
                     url_for('shares.login_for_share',_external=True),
                     data = json.dumps({
-                        "password" : str(num_share) ,
+                        "password" : "bXV4aXN0dWRpb0BjY251" ,  
                         "username" : str(num_share)
                         }) ,
                     content_type = 'application/json'

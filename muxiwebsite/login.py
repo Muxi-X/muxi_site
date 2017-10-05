@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from flask import jsonify, request
+from flask import jsonify, request ,current_app 
 from muxiwebsite.models import User
 from muxiwebsite import db
+import base64 
 
 class Login() :
     def __init__(self,username,pwd) :
@@ -14,9 +15,14 @@ class Login() :
         user = User.query.filter_by(username=self.username).first()
         token = " "
         if not user:
-            return jsonify({}), 403
-        if not user.verify_password(self.pwd):
-            return jsonify({}), 400
+            return jsonify({}), 401
+        try : 
+            pwd = base64.b64decode(self.pwd) 
+            pwd = unicode(pwd) 
+        except TypeError : 
+            return jsonify({}) , 401 
+        if not pwd == current_app.config["MUXI_SECRET_KEY"] :
+            return jsonify({}), 401
         token = user.generate_auth_token()
         return   token , 200
 
