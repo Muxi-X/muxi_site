@@ -55,6 +55,7 @@ app.config['BLOG_PER_PAGE'] = 2
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['UPLOAD_FOLDER']=r'./images/'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MUXI_SECRET_KEY'] = os.environ.get("MUXI_SECRET_KEY")
 
 # Get from Environment
 app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
@@ -165,6 +166,7 @@ def create_app() :
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['UPLOAD_FOLDER']=r'./images/'
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+    app.config['MUXI_SECRET_KEY'] = os.environ.get("MUXI_SECRET_KEY")
 
     # Get from Environment
     app.config['SERVER_NAME'] = os.environ.get("MUXI_WEBSITE_SERVERNAME")
