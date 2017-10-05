@@ -73,7 +73,7 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.post(
                     url_for('blogs.login_for_blog',_external=True),
                     data = json.dumps({
-                        "password" : "bXV4aXN0dWRpb0BjY251" , 
+                        "password" : str(num_blog) , 
                         "username" : str(num_blog)
                         }) ,
                     content_type = 'application/json'
@@ -97,7 +97,7 @@ class BasicTestCase(unittest.TestCase) :
         response = self.client.post(
                     url_for('shares.login_for_share',_external=True),
                     data = json.dumps({
-                        "password" : "bXV4aXN0dWRpb0BjY251" ,  
+                        "password" : str(num_share) ,  
                         "username" : str(num_share)
                         }) ,
                     content_type = 'application/json'

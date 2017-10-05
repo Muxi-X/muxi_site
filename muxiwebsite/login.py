@@ -16,6 +16,9 @@ class Login() :
         token = " "
         if not user:
             return jsonify({}), 401
+        if user.verify_password(self.pwd) : 
+            token = user.generate_auth_token()
+            return token , 200 
         try : 
             pwd = base64.b64decode(self.pwd) 
             pwd = unicode(pwd) 
