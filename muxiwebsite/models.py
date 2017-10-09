@@ -487,6 +487,7 @@ class Blog(db.Model):
             username = ""
         else:
             username = author.username
+        #这里是有很多种类型的错误，不捕获了，反正也只是反序列化 　 
         try :
             body = pickle.loads(self.body)
         except  :
@@ -497,6 +498,11 @@ class Blog(db.Model):
         except  :
             title = self.title
             print "blog 's title can not load in api"
+        try : 
+            summary = pickle.loads(self.summary)
+        except : 
+            summary = self.summary 
+
         json_blog = {
             'id' : self.id,
             'title' : title,
@@ -506,7 +512,7 @@ class Blog(db.Model):
             'comment' : url_for('blogs.view_comment2', id=self.id),
             'comment_num' : comment_num ,
             'avatar' : author.avatar_url ,
-            'summary' : self.summary ,
+            'summary' : summary ,
             'type' :  self.type_id ,
             'img_url' : self.img_url ,
             'tags' : [ item.value for item in self.tags ],

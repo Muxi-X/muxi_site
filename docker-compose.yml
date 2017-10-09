@@ -10,3 +10,12 @@ muxiwebsite:
         - .:/muxiwebsite
     external_links: 
         - mysql-service:mysql 
+    links:
+        - redis1 
+
+#------------------- redis servers---------------------
+redis1:
+    image: redis
+    command: redis-server --port 6388
+    ports:
+        - "6388:6388"

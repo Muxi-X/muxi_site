@@ -22,7 +22,7 @@ from .. import  db, app
 from ..models import Share, Comment, User, Permission
 from flask import url_for, render_template, redirect, request, current_app, Markup , jsonify , g
 from flask_login import current_user, login_required
-from ..decorators import permission_required , login_required
+from ..decorators import permission_required , login_required , version_required , tojson
 from ..login import Login
 from ..signup import Signup
 from sqlalchemy import desc
@@ -32,6 +32,9 @@ import json
 import requests
 import os
 import pickle
+from qiniu import Auth, put_file, etag, urlsafe_base64_encode
+import ast
+from muxiwebsite import rds
 
 
 tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
@@ -370,6 +373,7 @@ def delete2(id) :
             }) , 200
 
 @shares.route('/api/v2.0/<int:id>/views/',methods=['GET'])
+@shares.route('/api/v2.0/edit/<int:id>/',methods=['GET'])
 def views2(id) :
     '''
     查看单个分享,和它所有的评论
@@ -380,6 +384,7 @@ def views2(id) :
         'shares' : share.to_json() ,
         'comments' : [ comment.to_json() for comment in comments ] ,
         }) ,200
+
 
 @shares.route('/api/v2.0/<int:id>/edit/', methods=["PUT"])
 @login_required
@@ -445,6 +450,7 @@ def index2() :
     share_num = len(shares)
     if share_num == 0 :
         return jsonify({ }) , 404
+    print current_app.config['avatar_ACCESSKEY']
 
     return jsonify({
             'pages_count' : pages_count ,
@@ -553,4 +559,81 @@ def get_all_id() :
     users = User.query.all()
     return jsonify({
             'ID' : [ (user.id ,  user.username ) for user in users ] ,
-            }) , 200
+       }) , 200
+
+@shares.route('/api/v2.0/token-generate/',methods=['POST'])
+def generate_token() :
+    """
+    生成上传图片的token
+    """
+    accesskey = current_app.config['avatar_ACCESSKEY']
+    secretkey = current_app.config['avatar_SECRETKEY']
+    q = Auth(accesskey,secretkey)
+    bucket = current_app.config['avatar_BUCKETNAME']
+    key = request.get_json().get('key')
+    token = q.upload_token(bucket, key, 3600)
+    return jsonify({
+            'token' : token ,
+       }) ,200
+
+@shares.route('/api/v2.0/apk-token-generate/',methods=['POST'])
+def generate_token_apk() :
+    """
+    生成上传apk的token
+    """
+    print current_app.config['apk_BUCKETNAME']
+    accesskey = current_app.config['apk_ACCESSKEY']
+    secretkey = current_app.config['apk_SECRETKEY']
+    q = Auth(accesskey,secretkey)
+    bucket = current_app.config['apk_BUCKETNAME']
+    key = request.get_json().get('key')
+    token = q.upload_token(bucket, key, 3600)
+    return jsonify({
+            'token' : token ,
+       }) ,200
+
+
+@shares.route('/v2.0/app/',methods=['GET'])
+@tojson
+def get_app() :
+    """
+    获取木犀内外app版本信息
+    """
+    if not rds.get('apps'):
+        rds.set('apps', "[{'name':'muxisite','version':'none','download_url':'none','v_name':'none'}]")
+        rds.save()
+    apps = rds.get('apps')
+    return ast.literal_eval(apps) , 200 
+
+
+@shares.route('/v2.0/app/',methods=['POST'])
+def update_app() :
+    """
+    更新木犀内外app版本信息
+    """
+    if not rds.get('apps'):
+        rds.set('apps', "[{'name':'muxisite','version':'none','download_url':'none','v_name':'none'}]")
+    version = request.get_json().get('version')
+    url = request.get_json().get('url')
+    name = request.get_json().get('name')
+    app_data = {
+            "v_name" : name,
+            "version" : version,
+            "download_url" : url,
+    }
+    apps = ast.literal_eval(rds.get('apps'))
+    apps.append(app_data)
+    rds.set('apps', str(apps))
+    rds.save()
+    return jsonify({'msg': 'add new version data'}), 201
+
+@shares.route('/v2.0/app/latest/',methods=['GET'])
+@tojson
+def latest_app() :
+    """
+    返回木犀内外app的最后一个版本信息
+    """
+    if not rds.get('apps'):
+        rds.set('apps', "[]")
+    apps = rds.get("apps")
+    return ast.literal_eval(apps)[-1] , 200
