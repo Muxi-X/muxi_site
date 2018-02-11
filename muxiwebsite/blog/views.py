@@ -473,3 +473,74 @@ def get_time() :
         }) , 200
 
 
+
+@blogs.route('/api/v2.0/like/',methods=['POST'])
+@login_required
+def like_blog() :
+    """
+    对某篇博客点赞
+    :return: json
+    """
+    blog_id = request.get_json().get("blog_id")
+    user_id = g.current_user.id
+    blog = Blog.query.filter_by(id=blog_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    liked_blog = user.liked_blogs
+
+    if blog is None :
+        return jsonify({
+            "msg" : "no such blog",
+        }),404
+
+    if blog in liked_blog :
+        return jsonify({
+            "msg" : "already like the blog",
+        }), 403
+
+    liked_users = blog.liked_users
+    liked_users.append(user)
+    liked_blog.append(blog)
+    blog.likes_number += 1
+    db.session.add(user)
+    db.session.add(blog)
+    db.session.commit()
+    return jsonify({
+        "likes" : blog.likes_number  ,
+    }) , 200
+
+
+
+@blogs.route('/api/v2.0/unlike/',methods=['POST'])
+@login_required
+def unlike_blog() :
+    """
+    对某篇博客取消点赞
+    :return: json
+    """
+    blog_id = request.get_json().get("blog_id")
+    user_id = g.current_user.id
+    blog = Blog.query.filter_by(id=blog_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    liked_blog = user.liked_blogs
+
+    if blog is None :
+        return jsonify({
+            "msg" : "no such blog",
+        }),404
+
+    if blog not in liked_blog :
+        return jsonify({
+            "msg" : "already unlike the blog",
+        }), 403
+
+    liked_blog.remove(blog)
+    blog.likes_number -= 1
+    blog.liked_users.remove(user)
+    db.session.add(user)
+    db.session.add(blog)
+    db.session.commit()
+    return jsonify({
+        "likes" : blog.likes_number
+    }) , 200
+
+
