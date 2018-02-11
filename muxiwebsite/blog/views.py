@@ -544,3 +544,31 @@ def unlike_blog() :
     }) , 200
 
 
+
+@blogs.route('/api/v2.0/iflike/',methods=['GET'])
+@login_required
+def iflike_blog() :
+    """
+    查看当前用户是否赞过这篇博客
+    :return: json
+    """
+    blog_id = request.args.get("blog_id")
+    user_id = g.current_user.id
+    blog = Blog.query.filter_by(id=blog_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    liked_blog = user.liked_blogs
+
+    if blog is None :
+        return jsonify({
+            "msg" : "no such blog",
+        }),404
+
+    if blog not in liked_blog :
+        return jsonify({
+            "msg" : False ,
+        }), 200
+
+    return jsonify({
+        "msg" : True,
+    }), 200
+
