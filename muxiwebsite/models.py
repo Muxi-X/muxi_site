@@ -405,6 +405,7 @@ class Comment(db.Model):
         return "<the instance of model Comment>"
 
 
+
 class Blog(db.Model):
     """博客类"""
     __tablename__ = 'blogs'
@@ -428,7 +429,7 @@ class Blog(db.Model):
         "User",
         secondary=UBLike,
         backref=db.backref("liked_blogs", lazy="dynamic"),
-        lazy="dynamic"
+        lazy="dynamic",
     )
     # 博客对应的标签
     tags = db.relationship(
@@ -501,7 +502,10 @@ class Blog(db.Model):
         try : 
             summary = pickle.loads(self.summary)
         except : 
-            summary = self.summary 
+            summary = self.summary
+
+        if len(summary) == 0 :
+            summary = body[:100]
 
         json_blog = {
             'id' : self.id,
@@ -517,6 +521,8 @@ class Blog(db.Model):
             'img_url' : self.img_url ,
             'tags' : [ item.value for item in self.tags ],
             'tag_num' : len(list(self.tags)) ,
+	        'likes' : self.likes_number,
+            'likes_users' : [ item.username for item in self.liked_users ] ,
         }
         return json_blog
 

@@ -411,7 +411,7 @@ def index2() :
     '''
     page = request.args.get('page',1,type=int)
     sort_args = request.args.get("sort")
-    if sort_args == None :
+    if sort_args == None or sort_args == 'new' :
         shares_pages = \
         Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
         pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE']
@@ -424,7 +424,6 @@ def index2() :
         shares = shares_pages.items
 
     elif sort_args == "hot" :
-        page = 1
         shares_count = {}
         shares = []
         for share in Share.query.all():
@@ -432,8 +431,10 @@ def index2() :
         shares_count = sorted(shares_count.items(), lambda x ,y : cmp(y[1],x[1]))
         for tuple_ in shares_count :
             shares.append(tuple_[0])
-        shares = shares[:5]
-        pages_count = 1
+        start = (page-1)*current_app.config['SHARE_PER_PAGE']
+        end = (page)*current_app.config['SHARE_PER_PAGE']
+        shares = shares[start:end]
+        pages_count = len(shares) / current_app.config['SHARE_PER_PAGE'] + 1
         shares_pages = None
 
     elif sort_args in tags :
@@ -446,6 +447,19 @@ def index2() :
             return jsonify({
                 'message' : 'can not find the page!'
                 }) , 404
+
+    elif sort_args == 'mine' :
+        uid = request.args.get('id')
+        shares = []
+        item = Share.query.filter_by(author_id=uid)
+        shares_pages = item.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
+        shares = shares_pages.items
+        if page > pages_count :
+            return jsonify({
+                'message' : 'can not find the page!'
+                }) , 404
+
 
     share_num = len(shares)
     if share_num == 0 :
@@ -603,7 +617,7 @@ def get_app() :
         rds.set('apps', "[{'name':'muxisite','version':'none','download_url':'none','v_name':'none'}]")
         rds.save()
     apps = rds.get('apps')
-    return ast.literal_eval(apps) , 200 
+    return ast.literal_eval(apps) , 200
 
 
 @shares.route('/v2.0/app/',methods=['POST'])
