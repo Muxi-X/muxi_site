@@ -7,7 +7,7 @@ models.py
 """
 
 from . import db, login_manager, app
-from itsdangerous import JSONWebSignatureSerializer as Serializer
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from random import seed
 from flask import current_app, request, url_for
 from flask_login import UserMixin, current_user
@@ -179,9 +179,8 @@ class User(db.Model, UserMixin):
 
     def generate_auth_token(self):
         """generate a token"""
-        s = Serializer(
-            current_app.config['SECRET_KEY']
-        )
+        s = Serializer(current_app.config['SECRET_KEY'],expires_in = 604800 )
+        # token 七天过期
         return s.dumps({'id': self.id})
 
     @staticmethod
@@ -488,7 +487,7 @@ class Blog(db.Model):
             username = ""
         else:
             username = author.username
-        #这里是有很多种类型的错误，不捕获了，反正也只是反序列化 　 
+        #这里是有很多种类型的错误，不捕获了，反正也只是反序列化 　
         try :
             body = pickle.loads(self.body)
         except  :
@@ -499,9 +498,9 @@ class Blog(db.Model):
         except  :
             title = self.title
             print "blog 's title can not load in api"
-        try : 
+        try :
             summary = pickle.loads(self.summary)
-        except : 
+        except :
             summary = self.summary
 
         if len(summary) == 0 :
