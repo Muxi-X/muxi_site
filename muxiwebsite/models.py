@@ -180,6 +180,7 @@ class User(db.Model, UserMixin):
     def generate_auth_token(self):
         """generate a token"""
         s = Serializer(current_app.config['SECRET_KEY'],expires_in = 604800 )
+        # token 七天过期
         return s.dumps({'id': self.id})
 
     @staticmethod
