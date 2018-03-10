@@ -332,23 +332,24 @@ def add_share2() :
         share_ = share.share
         print "share can not load in api"
 
-    link  = {
+        messgaeURL = "http://share.muxixyz.com/view/" + share.id+ "/?page%20=1&sort%20=new"
+        link  = {
             "msgtype" : "link" ,
-            "link" : {
+                "link" : {
                 "title" : title ,
-                "text" : share_[:10] ,
+                "text" : share_[:10]  ,
                 "picUrl": "" ,
-                "messageUrl" : url_for("shares.views2",id=share.id,_external=True) ,
+               # "messageUrl" : url_for("shares.view_share",id=share.id,_external=True) ,
+                "messageUrl" : messageURL,
                 }
             }
-
-    headers = { "Content-Type" : "application/json" }
-    try :
-        r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
-    except requests.exceptions.MissingSchema  :
-        print "Wrong type of URL"
-    except requests.ConnectionError :
-        print "The URL  is overdue is api"
+        headers = { "Content-Type" : "application/json" }
+        try :
+            r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+        except requests.exceptions.MissingSchema  :
+            print "Wrong type URL"
+        except requests.ConnectionError  :
+            print "The URL is overdue"
     return jsonify( {
                     "share" : pickle.loads(share.share) ,
                     "title" : pickle.loads(share.title)  ,
@@ -426,14 +427,19 @@ def index2() :
     elif sort_args == "hot" :
         shares_count = {}
         shares = []
-        for share in Share.query.all():
-            shares_count[share] = share.comment.count()
+        share_ = Share.query.all()
+        shares_ = []
+        for share in share_ :
+            shares_count[share.id] = share.comment.count()
+           # print share.id
         shares_count = sorted(shares_count.items(), lambda x ,y : cmp(y[1],x[1]))
         for tuple_ in shares_count :
-            shares.append(tuple_[0])
+            shares_.append(tuple_[0])
         start = (page-1)*current_app.config['SHARE_PER_PAGE']
         end = (page)*current_app.config['SHARE_PER_PAGE']
-        shares = shares[start:end]
+        shares_ = shares_[start:end]
+        for each in shares_ :
+            shares.append(Share.query.filter_by(id=each).first())
         pages_count = len(shares) / current_app.config['SHARE_PER_PAGE'] + 1
         shares_pages = None
 
