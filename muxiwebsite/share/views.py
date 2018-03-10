@@ -292,6 +292,7 @@ def add_comment2(id) :
     '''
     share = Share.query.filter_by(id=id).first()
     share.read_num = 1
+    share.comment_num += 1
     db.session.add(share)
     db.session.commit()
     comment = Comment()
@@ -332,24 +333,25 @@ def add_share2() :
         share_ = share.share
         print "share can not load in api"
 
-        messgaeURL = "http://share.muxixyz.com/view/" + share.id+ "/?page%20=1&sort%20=new"
-        link  = {
+    messageURL = "http://share.muxixyz.com/view/" + str(share.id) + "/?page%20=1&sort%20=new"
+    link  = {
             "msgtype" : "link" ,
                 "link" : {
                 "title" : title ,
                 "text" : share_[:10]  ,
                 "picUrl": "" ,
                # "messageUrl" : url_for("shares.view_share",id=share.id,_external=True) ,
-                "messageUrl" : messageURL,
+                "messageUrl" : messageURL ,
                 }
             }
-        headers = { "Content-Type" : "application/json" }
-        try :
-            r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
-        except requests.exceptions.MissingSchema  :
-            print "Wrong type URL"
-        except requests.ConnectionError  :
-            print "The URL is overdue"
+    headers = { "Content-Type" : "application/json" }
+    try :
+        r = requests.post(current_app.config['SEND_URL'],data=json.dumps(link),headers=headers)
+    except requests.exceptions.MissingSchema  :
+        print "Wrong type URL"
+    except requests.ConnectionError  :
+        print "The URL is overdue"
+
     return jsonify( {
                     "share" : pickle.loads(share.share) ,
                     "title" : pickle.loads(share.title)  ,
@@ -430,11 +432,11 @@ def index2() :
         share_ = Share.query.all()
         shares_ = []
         for share in share_ :
-            shares_count[share.id] = share.comment.count()
-           # print share.id
+            shares_count[share.id] = share.comment_num
         shares_count = sorted(shares_count.items(), lambda x ,y : cmp(y[1],x[1]))
         for tuple_ in shares_count :
             shares_.append(tuple_[0])
+        shares_ = [ v[0]  for v in shares_count  ]
         start = (page-1)*current_app.config['SHARE_PER_PAGE']
         end = (page)*current_app.config['SHARE_PER_PAGE']
         shares_ = shares_[start:end]
@@ -482,7 +484,7 @@ def index2() :
 @shares.route('/api/v2.0/login/',methods=['POST'])
 def login_for_share() :
     """
-    登陆
+    登录
     """
     username  = request.get_json().get("username")
     pwd = request.get_json().get("password")
@@ -657,3 +659,4 @@ def latest_app() :
         rds.set('apps', "[]")
     apps = rds.get("apps")
     return ast.literal_eval(apps)[-1] , 200
+

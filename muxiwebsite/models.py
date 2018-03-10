@@ -250,6 +250,7 @@ class Share(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.now)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='shares', lazy='dynamic')
+    comment_num = db.Column(db.Integer,default=0)
 
     @staticmethod
     def generate_fake(count=10):
@@ -290,7 +291,7 @@ class Share(db.Model):
         except  :
             title = self.title
             print "titie can not load in  api"
-        comment_num = len(Comment.query.filter_by(share_id=self.id).all())
+        #comment_num = len(Comment.query.filter_by(share_id=self.id).all())
         json_share = {
             'id' : self.id,
             'tag' : tag ,
@@ -299,7 +300,7 @@ class Share(db.Model):
             'date' : self.timestamp,
             'read_num' : self.read_num,
             'username' : username,
-            'comment_num' : comment_num ,
+            'comment_num' : self.comment_num ,
             'comment' : url_for('shares.view_share2', id=self.id),
             'avatar' : author.avatar_url ,
             'user_id' : author.id ,
@@ -326,14 +327,14 @@ class Share(db.Model):
             tag = self.tag
         else  :
             tag = ""
-        comment_num = len(Comment.query.filter_by(share_id=self.id).all())
+       # comment_num = len(Comment.query.filter_by(share_id=self.id).all())
         json_share = {
             'id' : self.id,
             'title' : title ,
             'share' : share,
             'date' : self.timestamp,
             'tag' : tag ,
-            'comment_num' : comment_num ,
+            'comment_num' : self.comment_num ,
             'read_num' : self.read_num,
             'username' : username,
             'comment' : url_for('shares.view_share2', id=self.id),
