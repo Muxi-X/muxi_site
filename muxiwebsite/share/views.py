@@ -427,23 +427,14 @@ def index2() :
         shares = shares_pages.items
 
     elif sort_args == "hot" :
-        shares_count = {}
-        shares = []
-        share_ = Share.query.all()
-        shares_ = []
-        for share in share_ :
-            shares_count[share.id] = share.comment_num
-        shares_count = sorted(shares_count.items(), lambda x ,y : cmp(y[1],x[1]))
-        for tuple_ in shares_count :
-            shares_.append(tuple_[0])
-        shares_ = [ v[0]  for v in shares_count  ]
-        start = (page-1)*current_app.config['SHARE_PER_PAGE']
-        end = (page)*current_app.config['SHARE_PER_PAGE']
-        shares_ = shares_[start:end]
-        for each in shares_ :
-            shares.append(Share.query.filter_by(id=each).first())
-        pages_count = len(shares) / current_app.config['SHARE_PER_PAGE'] + 1
-        shares_pages = None
+        shares_pages = Share.query.order_by('-comment_num').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
+        shares = shares_pages.items
+        pages_count = shares_pages.total / current_app.config['SHARE_PER_PAGE'] + 1
+        if page > pages_count :
+            return jsonify({
+                'message' : 'can not find the page!'
+            }) , 404
+
 
     elif sort_args in tags :
         shares = []
