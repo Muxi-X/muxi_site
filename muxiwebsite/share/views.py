@@ -651,3 +651,11 @@ def latest_app() :
     apps = rds.get("apps")
     return ast.literal_eval(apps)[-1] , 200
 
+@shares.route('/api/v2.0/token/',methods=['GET'])
+@login_required
+def test_token() :
+    """
+    验证token是否过期
+    """
+    return jsonify({ }), 200
+
