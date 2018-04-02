@@ -37,7 +37,7 @@ import ast
 from muxiwebsite import rds
 
 
-tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','desgin':'设计','product':'产品'}
+tags2 = {'frontend' : ' 前端', 'backend' : '后端', 'android':'安卓','design':'设计','product':'产品'}
 tags = ['frontend', 'backend', 'android', 'design', 'product']
 
 @shares.route('/')
@@ -414,6 +414,7 @@ def index2() :
     '''
     page = request.args.get('page',1,type=int)
     sort_args = request.args.get("sort")
+    shares = []
     if sort_args == None or sort_args == 'new' :
         shares_pages = \
         Share.query.order_by('-id').paginate(page,current_app.config['SHARE_PER_PAGE'],False)
